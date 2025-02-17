@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Doska</string>
+
+    <!-- Menu Drawer: Ads Section -->
+    <string name="menu_ads_category">Объявления</string>
+    <string name="menu_ads_my_items">Мои объявления</string>
+    <string name="menu_ads_cars">Машины</string>
+    <string name="menu_ads_computers">Компьютеры</string>
+    <string name="menu_ads_phones">Телефоны</string>
+    <string name="menu_ads_appliances">Бытовая техника</string>
+
+    <!-- Menu Drawer: Account Section -->
+    <string name="menu_account_category">Аккаунт</string>
+    <string name="account_register">Регистрация</string>
+    <string name="account_login">Вход</string>
+    <string name="account_logout">Выход</string>
+
 </resources>

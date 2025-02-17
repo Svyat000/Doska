@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <!-- Ads Section -->
+    <item android:title="@string/menu_ads_category">
+        <menu>
+            <item
+                android:id="@+id/menu_ads_my_items"
+                android:title="@string/menu_ads_my_items" />
+            <item
+                android:id="@+id/menu_ads_cars"
+                android:title="@string/menu_ads_cars" />
+            <item
+                android:id="@+id/menu_ads_computers"
+                android:title="@string/menu_ads_computers" />
+            <item
+                android:id="@+id/menu_ads_phones"
+                android:title="@string/menu_ads_phones" />
+            <item
+                android:id="@+id/menu_ads_appliances"
+                android:title="@string/menu_ads_appliances" />
+        </menu>
+    </item>
+
+    <!-- Account Section -->
+    <item android:title="@string/menu_account_category">
+        <menu>
+            <item
+                android:id="@+id/menu_account_register"
+                android:title="@string/account_register" />
+            <item
+                android:id="@+id/menu_account_login"
+                android:title="@string/account_login" />
+            <item
+                android:id="@+id/menu_account_logout"
+                android:title="@string/account_logout" />
+        </menu>
+    </item>
+</menu>
