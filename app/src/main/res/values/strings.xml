@@ -15,4 +15,9 @@
     <string name="account_login">Вход</string>
     <string name="account_logout">Выход</string>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
+
+
 </resources>
