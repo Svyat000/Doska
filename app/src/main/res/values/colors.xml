@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- account colors -->
+    <color name="account_header_background">#3F497A</color>
+    <color name="account_text_primary">@color/white</color>
 </resources>

@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:background="#3F497A">
+    android:layout_height="@dimen/account_header_height"
+    android:background="@color/account_header_background">
 
+    <!-- Profile Image -->
     <ImageView
-        android:id="@+id/imageViewAccountImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/account_image"
+        android:layout_width="@dimen/account_image_size"
+        android:layout_height="@dimen/account_image_size"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginTop="@dimen/spacing_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_launcher_foreground" />
+        tools:src="@drawable/ic_account_avatar" />
 
+    <!-- User Info -->
     <TextView
-        android:id="@+id/textViewAccountEmail"
+        android:id="@+id/account_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="sddrozdov000@gmail.com"
-        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:textAppearance="@style/TextAppearance.Account.Email"
+        android:textColor="@color/account_text_primary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageViewAccountImage"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewAccountImage" />
+        app:layout_constraintStart_toStartOf="@id/account_image"
+        app:layout_constraintTop_toBottomOf="@id/account_image"
+        tools:text="@string/account_email_placeholder" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
