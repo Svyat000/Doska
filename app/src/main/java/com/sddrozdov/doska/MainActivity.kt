@@ -11,11 +11,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.sddrozdov.doska.databinding.ActivityMainBinding
+import com.sddrozdov.doska.dialogHelper.DialogHelper
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
+
+    private val dialogHelper = DialogHelper(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +26,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         setupActionBarToggle()
 
@@ -48,7 +50,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -57,28 +58,37 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_ads_my_items -> {
-                Toast.makeText(this,"Нажали на мои объявления",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на мои объявления", Toast.LENGTH_LONG).show()
             }
+
             R.id.menu_ads_cars -> {
-                Toast.makeText(this,"Нажали на объявления по машинам",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на объявления по машинам", Toast.LENGTH_LONG).show()
             }
+
             R.id.menu_ads_computers -> {
-                Toast.makeText(this,"Нажали на объявления по компьютерам",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на объявления по компьютерам", Toast.LENGTH_LONG)
+                    .show()
             }
+
             R.id.menu_ads_phones -> {
-                Toast.makeText(this,"Нажали на объявления по телефонам",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на объявления по телефонам", Toast.LENGTH_LONG).show()
             }
+
             R.id.menu_ads_appliances -> {
-                Toast.makeText(this,"Нажали на объявления по бытовой технике",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на объявления по бытовой технике", Toast.LENGTH_LONG)
+                    .show()
             }
+
             R.id.menu_account_register -> {
-                Toast.makeText(this,"Нажали на регистрацию",Toast.LENGTH_LONG).show()
+                dialogHelper.createSignDialog()
             }
+
             R.id.menu_account_login -> {
-                Toast.makeText(this,"Нажали на вход",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на вход", Toast.LENGTH_LONG).show()
             }
+
             R.id.menu_account_logout -> {
-                Toast.makeText(this,"Нажали на выход",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Нажали на выход", Toast.LENGTH_LONG).show()
             }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)

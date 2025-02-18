@@ -21,6 +21,14 @@
 
     <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
 
+    <!-- Sign Dialog -->
+    <string name="sign_dialog_email_hint">Email</string>
+    <string name="sign_dialog_password_hint">Password</string>
+
+    <string name="sign_dialog_sign_in_button">Войти</string>
+    <string name="sign_dialog_sign_up_button">Зарегистрироваться</string>
+    <string name="sign_dialog_forget_password_button">Забыли пароль?</string>
+
 
 
 </resources>
