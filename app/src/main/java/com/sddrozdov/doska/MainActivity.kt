@@ -80,11 +80,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             }
 
             R.id.menu_account_register -> {
-                dialogHelper.createSignDialog()
+                dialogHelper.createSignDialog(0)
             }
 
             R.id.menu_account_login -> {
-                Toast.makeText(this, "Нажали на вход", Toast.LENGTH_LONG).show()
+                dialogHelper.createSignDialog(1)
             }
 
             R.id.menu_account_logout -> {
