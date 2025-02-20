@@ -34,6 +34,12 @@
     <string name="sign_dialog_sign_up_error">Не удалось зарегистрироваться</string>
     <string name="sign_dialog_sign_in_error">Не удалось войти</string>
 
+    <string name="sign_dialog_send_email_reset_password">На ваш Email адрес отправлено письмо для восстановления пароля</string>
+    <string name="sign_dialog_enter_your_Email">Для восстановления пароля укажите ваш Email</string>
+
+
+
+
     <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
     <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
 

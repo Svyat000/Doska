@@ -19,9 +19,9 @@
     <EditText
         android:id="@+id/signDialog_enter_Email"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:autofillHints=""
         android:ems="10"
@@ -29,12 +29,12 @@
         android:inputType="text|textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_Dialog_Title" />
+        app:layout_constraintTop_toBottomOf="@+id/signDialog_PleaseEnterEmail" />
 
     <EditText
         android:id="@+id/signDialog_enter_Password"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:autofillHints=""
         android:ems="10"
@@ -64,4 +64,17 @@
         app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
         app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
         app:layout_constraintTop_toBottomOf="@+id/signDialog_SingUpAndInButton" />
+
+    <TextView
+        android:id="@+id/signDialog_PleaseEnterEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/sign_dialog_enter_your_Email"
+        android:textColor="@color/color_red"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
+        app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
+        app:layout_constraintTop_toBottomOf="@+id/sign_Dialog_Title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

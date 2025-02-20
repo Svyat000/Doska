@@ -6,4 +6,5 @@
     <!-- account colors -->
     <color name="account_header_background">#3F497A</color>
     <color name="account_text_primary">@color/white</color>
+    <color name="color_red">#EA1C0A</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.sddrozdov.doska.dialogHelper
 
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
@@ -26,7 +27,30 @@ class DialogHelper(private val act: MainActivity) {
         binding.signDialogSingUpAndInButton.setOnClickListener {
             takeFromTheFieldsEmailAndPassword(index, binding, dialog)
         }
+        binding.signDialogForgetPasswordButton.setOnClickListener {
+            setOnClickResetPassword(binding, dialog)
+        }
         dialog.show()
+    }
+
+    private fun setOnClickResetPassword(binding: SignDialogBinding, dialog: AlertDialog) {
+
+        if (binding.signDialogEnterEmail.text.isNotEmpty()) {
+            act.mAuth.sendPasswordResetEmail(binding.signDialogEnterEmail.text.toString())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(
+                            act,
+                            R.string.sign_dialog_send_email_reset_password,
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    }
+                }
+            dialog.dismiss()
+        } else {
+            binding.signDialogPleaseEnterEmail.visibility = View.VISIBLE
+        }
     }
 
     private fun takeFromTheFieldsEmailAndPassword(
