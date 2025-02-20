@@ -47,7 +47,7 @@
         android:id="@+id/signDialog_SingUpAndInButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="537dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/sign_dialog_sign_up_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"

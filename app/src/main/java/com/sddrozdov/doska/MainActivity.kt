@@ -10,7 +10,9 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
+import com.google.firebase.auth.FirebaseAuth
 import com.sddrozdov.doska.databinding.ActivityMainBinding
+import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
     private val dialogHelper = DialogHelper(this)
+
+    val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,11 +84,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             }
 
             R.id.menu_account_register -> {
-                dialogHelper.createSignDialog(0)
+                dialogHelper.createSignDialog(DialogConstants.SIGN_UP_STATE)
             }
 
             R.id.menu_account_login -> {
-                dialogHelper.createSignDialog(1)
+                dialogHelper.createSignDialog(DialogConstants.SIGN_IN_STATE)
             }
 
             R.id.menu_account_logout -> {
