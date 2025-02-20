@@ -2,6 +2,7 @@ package com.sddrozdov.doska
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -11,11 +12,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
+
+    private lateinit var accountTextView: TextView
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
@@ -40,6 +44,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+            uiUpdate(mAuth.currentUser)
+    }
+
     private fun setupActionBarToggle() {
         val toggle = ActionBarDrawerToggle(
             this,
@@ -51,6 +60,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         binding.mainDrawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         binding.mainNavigationView.setNavigationItemSelectedListener(this)
+
+        accountTextView =
+            binding.mainNavigationView.getHeaderView(0).findViewById(R.id.account_email)
     }
 
 
@@ -92,11 +104,21 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             }
 
             R.id.menu_account_logout -> {
-                Toast.makeText(this, "Нажали на выход", Toast.LENGTH_LONG).show()
+                uiUpdate(null)
+                mAuth.signOut()
             }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
+    fun uiUpdate(user: FirebaseUser?) {
+        accountTextView.text = if (user == null) {
+            resources.getString(R.string.not_reg)
+        } else {
+            user.email
+        }
+
+
+    }
 }

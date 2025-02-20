@@ -13,9 +13,12 @@ class DialogHelper(private val act: MainActivity) {
 
     private val accountHelper = AccountHelper(act)
 
+
     fun createSignDialog(index: Int) {
-        val builder = AlertDialog.Builder(act)
+        val builderDialog = AlertDialog.Builder(act)
         _binding = SignDialogBinding.inflate(act.layoutInflater)
+
+        builderDialog.setView(binding.root)
 
         if (index == DialogConstants.SIGN_UP_STATE) {
             binding.signDialogTitle.text = act.resources.getString(R.string.account_register)
@@ -27,21 +30,24 @@ class DialogHelper(private val act: MainActivity) {
                 act.resources.getString(R.string.sign_dialog_sign_in_button)
         }
 
+
+        val dialog = builderDialog.create()
+
         binding.signDialogSingUpAndInButton.setOnClickListener {
+            dialog.dismiss()
             if (index == DialogConstants.SIGN_UP_STATE) {
-                accountHelper.signUpWithEmail(
+                accountHelper.signUpWithEmailAndPassword(
                     binding.signDialogEnterEmail.text.toString(),
                     binding.signDialogEnterPassword.text.toString()
                 )
             } else {
-
+                accountHelper.signInWithEmailAndPassword(
+                    binding.signDialogEnterEmail.text.toString(),
+                    binding.signDialogEnterPassword.text.toString()
+                )
             }
+
         }
-
-
-
-
-        builder.setView(binding.root)
-        builder.show()
+        dialog.show()
     }
 }

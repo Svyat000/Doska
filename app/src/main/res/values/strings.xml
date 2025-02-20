@@ -18,6 +18,9 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
+    <string name="not_reg">Войдите или зарегистрируйтесь!</string>
+
+
 
     <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
 
@@ -28,11 +31,11 @@
     <string name="sign_dialog_sign_in_button">Войти</string>
     <string name="sign_dialog_sign_up_button">Зарегистрироваться</string>
     <string name="sign_dialog_forget_password_button">Забыли пароль?</string>
-    <string name="sign_dialog_error">Не удалось зарегистрироваться</string>
+    <string name="sign_dialog_sign_up_error">Не удалось зарегистрироваться</string>
+    <string name="sign_dialog_sign_in_error">Не удалось войти</string>
 
     <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
     <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
-
 
 
 

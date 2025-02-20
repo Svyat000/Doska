@@ -7,14 +7,28 @@ import com.sddrozdov.doska.R
 
 class AccountHelper(private val act: MainActivity) {
 
-    fun signUpWithEmail(email: String, password: String) {
+    fun signUpWithEmailAndPassword(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             act.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         sendEmailVerification(task.result.user!!)
+                        act.uiUpdate(task.result.user)
                     } else {
-                        Toast.makeText(act, R.string.sign_dialog_error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(act, R.string.sign_dialog_sign_up_error, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+    }
+
+    fun signInWithEmailAndPassword(email: String, password: String) {
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            act.mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        act.uiUpdate(task.result.user)
+                    } else {
+                        Toast.makeText(act, R.string.sign_dialog_sign_in_error, Toast.LENGTH_SHORT).show()
                     }
                 }
         }
@@ -37,4 +51,6 @@ class AccountHelper(private val act: MainActivity) {
             }
         }
     }
+
+
 }
