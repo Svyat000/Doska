@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     override fun onStart() {
         super.onStart()
-            uiUpdate(mAuth.currentUser)
+        uiUpdate(mAuth.currentUser)
     }
 
     private fun setupActionBarToggle() {
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         accountTextView =
             binding.mainNavigationView.getHeaderView(0).findViewById(R.id.account_email)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -118,7 +117,5 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         } else {
             user.email
         }
-
-
     }
 }

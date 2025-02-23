@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "937015841533",
+    "project_id": "bulletinboardkotlin-5a467",
+    "storage_bucket": "bulletinboardkotlin-5a467.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937015841533:android:ed4b92b1c2f47c23596494",
+        "android_client_info": {
+          "package_name": "com.sddrozdov.doska"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937015841533-3j4d7j3vsdlj07tibvvrql7per1d47rs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sddrozdov.doska",
+            "certificate_hash": "68fc87b081c9b20543ae7b92ca8a38ca95f71b4b"
+          }
+        },
+        {
+          "client_id": "937015841533-tr9mk5tt3cikigp87knfgeqrg9vpipfb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzTRqh7ruvKLfS4ykfjkqU4qF-IFKpTrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937015841533-tr9mk5tt3cikigp87knfgeqrg9vpipfb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

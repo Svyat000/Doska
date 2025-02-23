@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
 
-class AccountHelper(private val act: MainActivity) {
+class AccountHelperEmailAndPassword(private val act: MainActivity) {
 
     fun signUpWithEmailAndPassword(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
@@ -15,7 +15,8 @@ class AccountHelper(private val act: MainActivity) {
                         sendEmailVerification(task.result.user!!)
                         act.uiUpdate(task.result.user)
                     } else {
-                        Toast.makeText(act, R.string.sign_dialog_sign_up_error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(act, R.string.sign_dialog_sign_up_error, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         }
@@ -28,7 +29,8 @@ class AccountHelper(private val act: MainActivity) {
                     if (task.isSuccessful) {
                         act.uiUpdate(task.result.user)
                     } else {
-                        Toast.makeText(act, R.string.sign_dialog_sign_in_error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(act, R.string.sign_dialog_sign_in_error, Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         }
@@ -51,6 +53,4 @@ class AccountHelper(private val act: MainActivity) {
             }
         }
     }
-
-
 }

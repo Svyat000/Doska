@@ -44,9 +44,16 @@ android {
 dependencies {
 
     // Firebase
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
+
+    //Google Auth
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -58,7 +65,7 @@ dependencies {
     // Room
     ksp(libs.androidx.room.compiler)
 
-    // Тестирование
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

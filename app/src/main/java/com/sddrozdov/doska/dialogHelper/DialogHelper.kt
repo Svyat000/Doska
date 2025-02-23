@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
-import com.sddrozdov.doska.accountHelper.AccountHelper
+import com.sddrozdov.doska.accountHelper.AccountHelperEmailAndPassword
 import com.sddrozdov.doska.databinding.SignDialogBinding
 
 class DialogHelper(private val act: MainActivity) {
@@ -13,7 +13,7 @@ class DialogHelper(private val act: MainActivity) {
     private var _binding: SignDialogBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
-    private val accountHelper = AccountHelper(act)
+    private val accountHelper = AccountHelperEmailAndPassword(act)
 
     fun createSignDialog(index: Int) {
         val builderDialog = AlertDialog.Builder(act)
