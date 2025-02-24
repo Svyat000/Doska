@@ -2,8 +2,8 @@ package com.sddrozdov.doska.accountHelper
 
 import android.util.Log
 import android.widget.Toast
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
@@ -22,55 +22,48 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
         act.mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    sendEmailVerification(task.result.user!!)
-                    act.uiUpdate(task.result.user)
-                } else {
-                    handleSignUpError(task.exception)
-
-                }
+                    task.result.user?.let { user ->
+                        sendEmailVerification(user)
+                        act.uiUpdate(user)
+                    } ?: run {
+                        // Обработка случая, когда user равен null
+                        Toast.makeText(act, R.string.error_user_not_found, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else if (task.exception is FirebaseAuthUserCollisionException) {
+                    linkEmailToGmail(email, password)
+                } else handleSignUpError(task.exception)
             }
     }
 
+
     private fun handleSignUpError(exception: Exception?) {
+
         when (exception) {
-            is FirebaseAuthUserCollisionException -> {
-                Log.d("MyLog", "Exception: ${exception.errorCode}")
-                Toast.makeText(
-                    act,
-                    FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+//            is FirebaseAuthUserCollisionException -> {
+//                Log.d("MyLog", "Exception: ${exception.errorCode}")
+//                Toast.makeText(
+//                    act,
+//                    FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE,
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
 
             is FirebaseAuthInvalidCredentialsException -> {
-                Log.d("MyLog", "Exception: ${exception.errorCode}")
-                if (exception.errorCode == FirebaseAuthConstants.ERROR_INVALID_EMAIL) {
+                Log.d("MyLog", "Exception111: ${exception.errorCode}")
+                if (exception.errorCode == FirebaseAuthConstants.ERROR_INVALID_CREDENTIAL) {
                     Toast.makeText(
                         act,
-                        FirebaseAuthConstants.ERROR_INVALID_EMAIL,
+                        act.getString(R.string.wrong_email_or_password),
                         Toast.LENGTH_LONG
                     ).show()
-                    Toast.makeText(
-                        act,
-                        FirebaseAuthConstants.ERROR_WRONG_PASSWORD,
-                        Toast.LENGTH_LONG
-                    ).show()
+
                 }
             }
 
             is FirebaseAuthWeakPasswordException -> {
                 Log.d("MyLog", "Exception: ${exception.errorCode}")
                 Toast.makeText(act, FirebaseAuthConstants.ERROR_WEAK_PASSWORD, Toast.LENGTH_LONG)
-                    .show()
-            }
-
-            is FirebaseAuthInvalidUserException -> {
-                Log.d("MyLog", "Exception: ${exception.errorCode}")
-                Toast.makeText(
-                    act,
-                    FirebaseAuthConstants.ERROR_INVALID_CREDENTIAL,
-                    Toast.LENGTH_LONG
-                )
                     .show()
             }
 
@@ -109,6 +102,28 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
+    }
+
+    private fun linkEmailToGmail(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        if (act.mAuth.currentUser != null) {
+
+            act.mAuth.currentUser?.linkWithCredential(credential)?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        act,
+                        act.getString(R.string.link_done),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        } else {
+            Toast.makeText(
+                act,
+                act.getString(R.string.login_to_Google_via_email),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

@@ -36,6 +36,9 @@
 
     <string name="sign_dialog_send_email_reset_password">На ваш Email адрес отправлено письмо для восстановления пароля</string>
     <string name="sign_dialog_enter_your_Email">Для восстановления пароля укажите ваш Email</string>
+    <string name="wrong_email_or_password">Почта или пароль указаны неверно, либо их не существует</string>
+    <string name="link_done">Почта успешно подключена к Google Account</string>
+    <string name="login_to_Google_via_email">Войдите в гугл аккаунт чтобы подключить вход через почту</string>
 
 
 
@@ -43,6 +46,7 @@
     <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
     <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
     <string name="error_empty_fields">Поля не должны быть пустыми</string>
+    <string name="error_user_not_found">Пользователь не найден</string>
 
 
 </resources>
