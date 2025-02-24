@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signDialog_SingUpAndInGoogleButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:buttonSize="wide"
+        app:layout_constraintEnd_toEndOf="@+id/signDialog_SingUpAndInButton"
+        app:layout_constraintStart_toStartOf="@+id/signDialog_SingUpAndInButton"
+        app:layout_constraintTop_toBottomOf="@+id/signDialog_enter_Password" />
+
     <TextView
         android:id="@+id/sign_Dialog_Title"
         android:layout_width="wrap_content"
@@ -48,12 +59,13 @@
         android:id="@+id/signDialog_SingUpAndInButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/sign_dialog_sign_up_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
         app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_enter_Password" />
+        app:layout_constraintTop_toBottomOf="@+id/signDialog_SingUpAndInGoogleButton" />
 
     <Button
         android:id="@+id/signDialog_forgetPasswordButton"

@@ -1,6 +1,8 @@
 package com.sddrozdov.doska
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -10,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -25,6 +29,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
     private val dialogHelper = DialogHelper(this)
+
+    private var acc: AccountHelperGoogleSignIn? = null
 
     val mAuth = FirebaseAuth.getInstance()
 
@@ -43,6 +49,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             insets
         }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -71,6 +78,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
         when (item.itemId) {
             R.id.menu_ads_my_items -> {
                 Toast.makeText(this, "Нажали на мои объявления", Toast.LENGTH_LONG).show()
@@ -96,6 +104,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
             R.id.menu_account_register -> {
                 dialogHelper.createSignDialog(DialogConstants.SIGN_UP_STATE)
+
             }
 
             R.id.menu_account_login -> {
@@ -104,7 +113,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
             R.id.menu_account_logout -> {
                 uiUpdate(null)
-                mAuth.signOut()
+                acc?.signOut()
             }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)

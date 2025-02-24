@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.accountHelper.AccountHelperEmailAndPassword
+import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.databinding.SignDialogBinding
 
 class DialogHelper(private val act: MainActivity) {
@@ -14,6 +15,7 @@ class DialogHelper(private val act: MainActivity) {
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
     private val accountHelper = AccountHelperEmailAndPassword(act)
+    val accountHelperGoogleSignIn = AccountHelperGoogleSignIn(act)
 
     fun createSignDialog(index: Int) {
         val builderDialog = AlertDialog.Builder(act)
@@ -30,11 +32,14 @@ class DialogHelper(private val act: MainActivity) {
         binding.signDialogForgetPasswordButton.setOnClickListener {
             setOnClickResetPassword(binding, dialog)
         }
+        binding.signDialogSingUpAndInGoogleButton.setOnClickListener {
+            accountHelperGoogleSignIn.launchCredentialManager()
+            dialog.dismiss()
+        }
         dialog.show()
     }
 
     private fun setOnClickResetPassword(binding: SignDialogBinding, dialog: AlertDialog) {
-
         if (binding.signDialogEnterEmail.text.isNotEmpty()) {
             act.mAuth.sendPasswordResetEmail(binding.signDialogEnterEmail.text.toString())
                 .addOnCompleteListener { task ->
