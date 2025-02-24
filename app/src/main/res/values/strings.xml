@@ -42,7 +42,7 @@
 
     <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
     <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
-
+    <string name="error_empty_fields">Поля не должны быть пустыми</string>
 
 
 </resources>

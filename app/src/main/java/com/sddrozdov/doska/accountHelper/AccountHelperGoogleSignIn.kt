@@ -76,10 +76,10 @@ class AccountHelperGoogleSignIn(private val act: MainActivity) {
             auth.signInWithCredential(credential)
                 .addOnCompleteListener(act) { task ->
                     if (task.isSuccessful) {
-                        Log.d(TAG, "signInWithCredential:success")
+                        Log.d(TAG, "GoogleSignInWithCredential:success")
                         act.uiUpdate(auth.currentUser)
                     } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        Log.w(TAG, "GoogleSignInWithCredential:failure", task.exception)
                         act.uiUpdate(null)
                     }
                 }
