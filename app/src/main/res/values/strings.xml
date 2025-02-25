@@ -21,7 +21,6 @@
     <string name="not_reg">Войдите или зарегистрируйтесь!</string>
 
 
-
     <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
 
     <!-- Sign Dialog -->
@@ -41,12 +40,11 @@
     <string name="login_to_Google_via_email">Войдите в гугл аккаунт чтобы подключить вход через почту</string>
 
 
-
-
     <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
     <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
     <string name="error_empty_fields">Поля не должны быть пустыми</string>
     <string name="error_user_not_found">Пользователь не найден</string>
+    <string name="add_new_ads">Добавить новое объявление</string>
 
 
 </resources>

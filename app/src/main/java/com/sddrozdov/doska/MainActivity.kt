@@ -2,8 +2,9 @@ package com.sddrozdov.doska
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
+import com.sddrozdov.doska.act.EditAdsAct
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     private val dialogHelper = DialogHelper(this)
 
-    private var acc: AccountHelperGoogleSignIn? = null
+    private var accountHelperGoogle: AccountHelperGoogleSignIn? = null
 
     val mAuth = FirebaseAuth.getInstance()
 
@@ -41,22 +42,33 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        WindowInsetUtil.applyWindowInsets(binding.root)
+
         setupActionBarToggle()
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.mainDrawerLayout) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.id_new_ads){
+            val intent = Intent(this,EditAdsAct::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     private fun setupActionBarToggle() {
+        setSupportActionBar(binding.mainContentToolbar.toolbar)
         val toggle = ActionBarDrawerToggle(
             this,
             binding.mainDrawerLayout,
@@ -113,7 +125,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
             R.id.menu_account_logout -> {
                 uiUpdate(null)
-                acc?.signOut()
+                accountHelperGoogle?.signOut()
             }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
@@ -125,6 +137,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
             resources.getString(R.string.not_reg)
         } else {
             user.email
+        }
+    }
+
+    object WindowInsetUtil{
+        fun applyWindowInsets(view: View){
+            ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
     }
 }
