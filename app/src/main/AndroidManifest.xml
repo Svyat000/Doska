@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Doska"
         tools:targetApi="31">
         <activity
-            android:name=".act.EditAdsAct"
+            android:name=".act.EditAdsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

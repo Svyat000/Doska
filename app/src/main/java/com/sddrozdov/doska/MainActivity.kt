@@ -17,7 +17,7 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
-import com.sddrozdov.doska.act.EditAdsAct
+import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.id_new_ads){
-            val intent = Intent(this,EditAdsAct::class.java)
+            val intent = Intent(this,EditAdsActivity::class.java)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
