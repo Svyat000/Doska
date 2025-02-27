@@ -25,12 +25,34 @@ object CityHelper {
                     countryArray.add(countriesNames.getString(i))
                 }
             }
-
         } catch (e: IOException) {
             // Обработка исключений (например, вывод в лог)
             e.printStackTrace()
         }
         return countryArray // Возвращаем список стран
+    }
+
+    fun getAllSities(context: Context, country: String): ArrayList<String> {
+        val cityArray = ArrayList<String>() // Список для хранения названий стран
+        try {
+            // Открытие потока для чтения JSON файла
+            val inputStream: InputStream = context.assets.open("countriesAndTheirCities.json")
+            val size: Int = inputStream.available()
+            val bytesArray = ByteArray(size)
+            inputStream.read(bytesArray)
+            val jsonFileContent = String(bytesArray)
+            val jsonObject = JSONObject(jsonFileContent)
+            val cityNames = jsonObject.getJSONArray(country) //получение массива по ( Стране )
+
+            for (i in 0 until cityNames.length()) {
+                // Добавление названий стран в список
+                cityArray.add(cityNames.getString(i))
+            }
+        } catch (e: IOException) {
+            // Обработка исключений (например, вывод в лог)
+            e.printStackTrace()
+        }
+        return cityArray // Возвращаем список стран
     }
 
     // Метод для фильтрации списка данных на основе введенного текста
