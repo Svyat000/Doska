@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".act.EditAdsAct">
+    tools:context=".act.EditAdsActivity">
 
     <ScrollView
         android:layout_width="409dp"
@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/editActAdsImages"
@@ -32,21 +32,18 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp" />
 
-            <SearchView
-                android:id="@+id/editActAdsCountrySearch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp" />
-
-            <Spinner
-                android:id="@+id/editActAdsCountrySpinner"
+            <TextView
+                android:id="@+id/EditAdsActSelectCountry"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp" />
+                android:layout_margin="5dp"
+                android:background="@android:drawable/editbox_background"
+                android:gravity="center"
+                android:onClick="onClickSelectCountry"
+                android:padding="10dp"
+                android:text="@string/select_country"
+                android:textColor="#1B1111" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

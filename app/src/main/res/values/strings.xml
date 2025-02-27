@@ -46,5 +46,8 @@
     <string name="error_user_not_found">Пользователь не найден</string>
     <string name="add_new_ads">Добавить новое объявление</string>
 
+    <string name="select_country">Выберите страну</string>
+    <string name="select_city">Выберите город</string>
+
 
 </resources>

@@ -15,10 +15,11 @@ class DialogSpinnerHelper {
     // Метод для показа диалогового окна
     fun showSpinnerDialog(context: Context, countryList: ArrayList<String>) {
         val alertDialogBuilder = AlertDialog.Builder(context)
+        val dialog = alertDialogBuilder.create()
         // Надувание пользовательского макета для диалогового окна
         val rootView = LayoutInflater.from(context).inflate(R.layout.spinner_layout, null)
 
-        val adapter = RcViewDialogSpinnerAdapter()
+        val adapter = RcViewDialogSpinnerAdapter(context, dialog)
         // Получение ссылки на RecyclerView из макета
         val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerViewSpinnerView)
         // Получение ссылки на SearchView из макета
@@ -28,12 +29,13 @@ class DialogSpinnerHelper {
         // Установка адаптера для RecyclerView
         recyclerView.adapter = adapter
         // Установка пользовательского представления в диалоге
-        alertDialogBuilder.setView(rootView)
-        // Настройка SearchView
-        setSearchView(adapter, countryList, searchView)
+        dialog.setView(rootView)
         // Обновление адаптера с первоначальным списком стран
         adapter.updateAdapter(countryList)
-        alertDialogBuilder.show()
+        // Настройка SearchView
+        setSearchView(adapter, countryList, searchView)
+
+        dialog.show()
     }
 
     // Метод для настройки SearchView
