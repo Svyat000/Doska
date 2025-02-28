@@ -21,6 +21,7 @@ import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
+import com.sddrozdov.doska.utilites.ImagePicker
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
@@ -46,12 +47,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
         setupActionBarToggle()
 
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.id_new_ads){
-            val intent = Intent(this,EditAdsActivity::class.java)
+        if (item.itemId == R.id.id_new_ads) {
+            val intent = Intent(this, EditAdsActivity::class.java)
             startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -140,8 +140,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         }
     }
 
-    object WindowInsetUtil{
-        fun applyWindowInsets(view: View){
+    object WindowInsetUtil {
+        fun applyWindowInsets(view: View) {
             ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
                 val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

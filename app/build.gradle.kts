@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
 
-    //Google Auth
+    // Google Auth
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
@@ -71,8 +71,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
 
-    //coroutine
+    // Coroutine
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    // images
+    implementation(libs.piximagepicker)
 
 }
