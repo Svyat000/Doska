@@ -13,7 +13,7 @@ import com.sddrozdov.doska.fragments.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
 import com.sddrozdov.doska.utilites.CityHelper
 
-class EditAdsActivity : AppCompatActivity(),FragmentCloseInterface {
+class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     private var _binding: ActivityEditAdsBinding? = null
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
@@ -35,8 +35,8 @@ class EditAdsActivity : AppCompatActivity(),FragmentCloseInterface {
         // Получение списка стран из CityHelper
         val countryList = CityHelper.getAllCountries(this)
         // Показ диалогового окна со списком стран
-        dialogSpinnerHelper.showSpinnerDialog(this, countryList,binding.editAdsActSelectCountry)
-        if(binding.editAdsActSelectCity.text.toString() != getString(R.string.select_city)){
+        dialogSpinnerHelper.showSpinnerDialog(this, countryList, binding.editAdsActSelectCountry)
+        if (binding.editAdsActSelectCity.text.toString() != getString(R.string.select_city)) {
             binding.editAdsActSelectCity.text = getString(R.string.select_city)
         }
     }
@@ -55,9 +55,9 @@ class EditAdsActivity : AppCompatActivity(),FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-         binding.editAdsActScrollView.visibility = View.GONE
+        binding.editAdsActScrollView.visibility = View.GONE
         val fragmentManager = supportFragmentManager.beginTransaction()
-        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this))
+        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()))
         fragmentManager.commit()
     }
 
