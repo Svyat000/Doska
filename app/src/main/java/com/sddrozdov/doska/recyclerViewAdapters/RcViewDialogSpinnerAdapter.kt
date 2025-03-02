@@ -1,12 +1,11 @@
 package com.sddrozdov.doska.recyclerViewAdapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.sddrozdov.doska.R
+import com.sddrozdov.doska.databinding.SpListItemBinding
 
 class RcViewDialogSpinnerAdapter(
     private val editAdsActSelectCountryOrCity: TextView,
@@ -16,47 +15,31 @@ class RcViewDialogSpinnerAdapter(
 
     private val tempListForCountriesAndCities = ArrayList<String>()
 
-    // ВьюХолдер для отдельного элемента списка
     class CountryViewHolder(
-        itemView: View,
+        private val binding: SpListItemBinding,
         private val editAdsActSelectCountryOrCity: TextView,
-        var dialog: AlertDialog
-    ) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        private var dialog: AlertDialog
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         private var itemText = ""
 
-        // Метод для установки текста в TextView
         fun setTextInTextView(countryName: String) {
-            // Получение ссылки на TextView из элемента списка
-            val countryLinkFromElement = itemView.findViewById<TextView>(R.id.tvSpItem)
-            // Установка имени страны в TextView
-            countryLinkFromElement.text = countryName
+            binding.tvSpItem.text = countryName
             itemText = countryName
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            editAdsActSelectCountryOrCity.text = itemText
-            dialog.dismiss()
+            binding.root.setOnClickListener {
+                editAdsActSelectCountryOrCity.text = itemText
+                dialog.dismiss()
+            }
         }
     }
 
-    // Метод для создания нового ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
-        // Инфляция макета элемента списка
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.sp_list_item, parent, false)
-        return CountryViewHolder(
-            itemView,
-            editAdsActSelectCountryOrCity,
-            dialog
-        ) // Возвращаем новый ViewHolder
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = SpListItemBinding.inflate(inflater, parent, false)
+        return CountryViewHolder(binding, editAdsActSelectCountryOrCity, dialog)
     }
 
-    // Метод для привязки данных к ViewHolder
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        // Установка данных для текущего элемента списка
         holder.setTextInTextView(tempListForCountriesAndCities[position])
     }
 
