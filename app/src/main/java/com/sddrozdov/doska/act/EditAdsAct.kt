@@ -9,9 +9,11 @@ import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
+import com.sddrozdov.doska.fragments.FragmentCloseInterface
+import com.sddrozdov.doska.fragments.ImageListFragment
 import com.sddrozdov.doska.utilites.CityHelper
 
-class EditAdsActivity : AppCompatActivity() {
+class EditAdsActivity : AppCompatActivity(),FragmentCloseInterface {
 
     private var _binding: ActivityEditAdsBinding? = null
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
@@ -53,5 +55,13 @@ class EditAdsActivity : AppCompatActivity() {
     }
 
     fun onClickGetImages(view: View) {
+         binding.editAdsActScrollView.visibility = View.GONE
+        val fragmentManager = supportFragmentManager.beginTransaction()
+        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this))
+        fragmentManager.commit()
+    }
+
+    override fun onFragClose() {
+        binding.editAdsActScrollView.visibility = View.VISIBLE
     }
 }
