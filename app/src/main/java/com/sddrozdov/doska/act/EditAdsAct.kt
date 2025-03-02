@@ -33,14 +33,14 @@ class EditAdsActivity : AppCompatActivity() {
         // Получение списка стран из CityHelper
         val countryList = CityHelper.getAllCountries(this)
         // Показ диалогового окна со списком стран
-        dialogSpinnerHelper.showSpinnerDialog(this, countryList,binding.EditAdsActSelectCountry)
+        dialogSpinnerHelper.showSpinnerDialog(this, countryList,binding.editAdsActSelectCountry)
         if(binding.editAdsActSelectCity.text.toString() != getString(R.string.select_city)){
             binding.editAdsActSelectCity.text = getString(R.string.select_city)
         }
     }
 
     fun onClickSelectCity(view: View) {
-        val selectedCountry = binding.EditAdsActSelectCountry.text.toString()
+        val selectedCountry = binding.editAdsActSelectCountry.text.toString()
         if (selectedCountry != getString(R.string.select_country)) {
             // Получение списка стран из CityHelper
             val cityList = CityHelper.getAllSities(this, selectedCountry)
@@ -50,5 +50,8 @@ class EditAdsActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.first_select_your_country), Toast.LENGTH_LONG)
                 .show()
         }
+    }
+
+    fun onClickGetImages(view: View) {
     }
 }
