@@ -1,4 +1,4 @@
 package com.sddrozdov.doska.models
 
-data class SelectImageItem(val title: String, val imageUri: String)
+data class SelectImageItem(var title: String, val imageUri: String)
 

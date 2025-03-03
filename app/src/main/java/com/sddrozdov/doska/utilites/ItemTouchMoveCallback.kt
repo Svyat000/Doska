@@ -38,9 +38,12 @@ class ItemTouchMoveCallback(val itemTouchAdapter: ItemTouchAdapter) : ItemTouchH
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         viewHolder.itemView.alpha = 1.0f
         super.clearView(recyclerView, viewHolder)
+        itemTouchAdapter.onClear()
+
     }
 
     interface ItemTouchAdapter {
         fun onMove(startPosition: Int, targetPosition: Int)
+        fun onClear()
     }
 }

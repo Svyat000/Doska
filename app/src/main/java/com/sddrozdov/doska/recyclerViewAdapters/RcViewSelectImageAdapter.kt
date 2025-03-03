@@ -10,7 +10,7 @@ import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
 class RcViewSelectImageAdapter :
     RecyclerView.Adapter<RcViewSelectImageAdapter.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
-    private val mainArray = ArrayList<SelectImageItem>()
+    val mainArray = ArrayList<SelectImageItem>()
 
     class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -44,8 +44,15 @@ class RcViewSelectImageAdapter :
     override fun onMove(startPosition: Int, targetPosition: Int) {
         val targetItem = mainArray[targetPosition]
         mainArray[targetPosition] = mainArray[startPosition]
+        val titleStart = mainArray[targetPosition].title
+        mainArray[targetPosition].title = targetItem.title
         mainArray[startPosition] = targetItem
+        mainArray[startPosition].title = titleStart
         notifyItemMoved(startPosition,targetPosition)
+    }
+
+    override fun onClear() {
+        notifyDataSetChanged()
     }
 
 }

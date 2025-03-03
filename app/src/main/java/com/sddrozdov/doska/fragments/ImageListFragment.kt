@@ -55,7 +55,7 @@ class ImageListFragment(private val onFragmentCloseInterface: FragmentCloseInter
 
     override fun onDetach() {
         super.onDetach()
-        onFragmentCloseInterface.onFragClose()
+        onFragmentCloseInterface.onFragClose(adapter.mainArray)
     }
 
 }

@@ -11,6 +11,8 @@ import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.fragments.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
+import com.sddrozdov.doska.models.SelectImageItem
+import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapter
 import com.sddrozdov.doska.utilites.CityHelper
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
@@ -19,6 +21,8 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
     private var dialogSpinnerHelper = DialogSpinnerHelper()
+
+    private lateinit var imageAdapter: ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,11 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
+    private fun init() {
+        imageAdapter = ImageAdapter()
+        binding.editActAdsImages.adapter = imageAdapter
+    }
+
     fun onClickSelectCity(view: View) {
         val selectedCountry = binding.editAdsActSelectCountry.text.toString()
         if (selectedCountry != getString(R.string.select_country)) {
@@ -61,7 +70,8 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         fragmentManager.commit()
     }
 
-    override fun onFragClose() {
+    override fun onFragClose(list: ArrayList<SelectImageItem>) {
         binding.editAdsActScrollView.visibility = View.VISIBLE
+        imageAdapter.updateAdapter(list)
     }
 }

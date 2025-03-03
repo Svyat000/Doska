@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.databinding.ImageAdapterItemBinding
+import com.sddrozdov.doska.models.SelectImageItem
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
-    private val imageArray = ArrayList<String>()
+    private val imageArray = ArrayList<SelectImageItem>()
 
     class ImageViewHolder(private val binding: ImageAdapterItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -26,14 +27,14 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.setData(imageArray[position])
+        holder.setData(imageArray[position].imageUri)
     }
 
     override fun getItemCount(): Int {
         return imageArray.size
     }
 
-    fun updateAdapter(newImageArray: ArrayList<String>) {
+    fun updateAdapter(newImageArray: ArrayList<SelectImageItem>) {
         imageArray.clear()
         imageArray.addAll(newImageArray)
         notifyDataSetChanged()
