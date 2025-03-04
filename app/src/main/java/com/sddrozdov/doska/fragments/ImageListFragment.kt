@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
-import com.sddrozdov.doska.models.SelectImageItem
 import com.sddrozdov.doska.recyclerViewAdapters.RcViewSelectImageAdapter
 import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
@@ -44,11 +43,7 @@ class ImageListFragment(
         binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewImageItem.adapter = adapter
 
-        val updateListTemp = ArrayList<SelectImageItem>()
-        for (i in 0 until newList.size) {
-            updateListTemp.add(SelectImageItem(i.toString(), newList[i]))
-        }
-        adapter.updateAdapter(updateListTemp,true)
+        adapter.updateAdapter(newList,true)
     }
 
     override fun onDetach() {
@@ -77,10 +72,6 @@ class ImageListFragment(
     }
 
     fun updateAdapter(newList: ArrayList<String>){
-        val updateListTemp = ArrayList<SelectImageItem>()
-        for (i in adapter.mainArray.size until newList.size+adapter.mainArray.size) {
-            updateListTemp.add(SelectImageItem(i.toString(), newList[i-adapter.mainArray.size]))
-        }
-        adapter.updateAdapter(updateListTemp,false)
+        adapter.updateAdapter(newList,false)
     }
 }

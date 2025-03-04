@@ -11,7 +11,6 @@ import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.fragments.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
-import com.sddrozdov.doska.models.SelectImageItem
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapter
 import com.sddrozdov.doska.utilites.CityHelper
 
@@ -66,15 +65,31 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        binding.editAdsActScrollView.visibility = View.GONE
-        val fragmentManager = supportFragmentManager.beginTransaction()
-        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()))
-        fragmentManager.commit()
+
+        if(imageAdapter.imageArray.size == 0){
+           TODO() // magePicker.getImages(this,3)
+        }else{
+            openChooseImageFragment(imageAdapter.imageArray)
+        }
+
+//        binding.editAdsActScrollView.visibility = View.GONE
+//        val fragmentManager = supportFragmentManager.beginTransaction()
+//        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()
+//        fragmentManager.commit()
     }
 
-    override fun onFragClose(list: ArrayList<SelectImageItem>) {
+    override fun onFragClose(list: ArrayList<String>) {
         binding.editAdsActScrollView.visibility = View.VISIBLE
         imageAdapter.updateAdapter(list)
         chooseImageFrag = null
+    }
+
+    private fun openChooseImageFragment(newList: ArrayList<String>) {
+        // chooseImageFragment = ImageListFragment(this,newList)
+        binding.editAdsActScrollView.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.editAdsActPlace_holder, chooseImageFrag!!)
+        fm.commit()
+
     }
 }
