@@ -17,6 +17,8 @@ import com.sddrozdov.doska.utilites.CityHelper
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
+    private var chooseImageFrag: ImageListFragment? = null
+
     private var _binding: ActivityEditAdsBinding? = null
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
@@ -73,5 +75,6 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     override fun onFragClose(list: ArrayList<SelectImageItem>) {
         binding.editAdsActScrollView.visibility = View.VISIBLE
         imageAdapter.updateAdapter(list)
+        chooseImageFrag = null
     }
 }

@@ -35,7 +35,10 @@ class RcViewSelectImageAdapter :
         return mainArray.size
     }
 
-    fun updateAdapter(newList: List<SelectImageItem>) {
+    fun updateAdapter(newList: List<SelectImageItem>, needClear: Boolean) {
+        if(needClear){
+           TODO()
+        }
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()

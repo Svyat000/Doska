@@ -11,46 +11,44 @@ import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
 import com.sddrozdov.doska.models.SelectImageItem
 import com.sddrozdov.doska.recyclerViewAdapters.RcViewSelectImageAdapter
+import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
-class ImageListFragment(private val onFragmentCloseInterface: FragmentCloseInterface,private val newList : ArrayList<String>) : Fragment() {
+class ImageListFragment(
+    private val onFragmentCloseInterface: FragmentCloseInterface,
+    private val newList: ArrayList<String>
+) : Fragment() {
 
-    private val binding: ImageListFragmentBinding? = null
+    private lateinit var binding: ImageListFragmentBinding
 
-    private val adapter  = RcViewSelectImageAdapter()
+    private val adapter = RcViewSelectImageAdapter()
 
     private val dragCallback = ItemTouchMoveCallback(adapter)
+
     private val touchHelper = ItemTouchHelper(dragCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.image_list_fragment, container, false)
-
+    ): View {
+        binding = ImageListFragmentBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = binding?.recyclerViewImageItem
+        setUpToolbar()
+        touchHelper.attachToRecyclerView(binding.recyclerViewImageItem)
 
-        touchHelper.attachToRecyclerView(recyclerView)
-
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
-        recyclerView?.adapter = adapter
+        binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewImageItem.adapter = adapter
 
         val updateListTemp = ArrayList<SelectImageItem>()
-        for (i in 0 until newList.size){
-            updateListTemp.add(SelectImageItem(i.toString(),newList[i]))
+        for (i in 0 until newList.size) {
+            updateListTemp.add(SelectImageItem(i.toString(), newList[i]))
         }
-        adapter.updateAdapter(updateListTemp)
-
-        val bBack = binding?.ImageFragmentBack
-        bBack?.setOnClickListener{
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-
-        }
+        adapter.updateAdapter(updateListTemp,true)
     }
 
     override fun onDetach() {
@@ -58,4 +56,31 @@ class ImageListFragment(private val onFragmentCloseInterface: FragmentCloseInter
         onFragmentCloseInterface.onFragClose(adapter.mainArray)
     }
 
+    private fun setUpToolbar() {
+        binding.imageListFragmentToolBar.inflateMenu(R.menu.menu_choose_image)
+        val deleteItem = binding.imageListFragmentToolBar.menu.findItem(R.id.delete_image)
+        val addItem = binding.imageListFragmentToolBar.menu.findItem(R.id.add_image)
+
+        binding.imageListFragmentToolBar.setNavigationOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        }
+
+        deleteItem.setOnMenuItemClickListener {
+            adapter.updateAdapter(ArrayList(),true)
+            true
+        }
+        addItem.setOnMenuItemClickListener {
+            val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
+            // ImagePicker.getImages(activity as AppCompatActivity , 9) TODO
+            true
+        }
+    }
+
+    fun updateAdapter(newList: ArrayList<String>){
+        val updateListTemp = ArrayList<SelectImageItem>()
+        for (i in adapter.mainArray.size until newList.size+adapter.mainArray.size) {
+            updateListTemp.add(SelectImageItem(i.toString(), newList[i-adapter.mainArray.size]))
+        }
+        adapter.updateAdapter(updateListTemp,false)
+    }
 }

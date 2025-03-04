@@ -16,6 +16,8 @@ import io.ak1.pix.models.VideoOptions
 
 object ImagePicker {
 
+    const val MAX_IMAGE_COUNT = 3
+
     private fun getOption(imageCounter: Int): Options {
         val options = Options().apply {
             ratio = Ratio.RATIO_AUTO                       //Image/video capture ratio
@@ -33,19 +35,23 @@ object ImagePicker {
         return options
     }
 
-    private fun closePixFragment(editAdsActivity: EditAdsActivity){
+    private fun closePixFragment(editAdsActivity: EditAdsActivity) {
         val fragmentLists = editAdsActivity.supportFragmentManager.fragments
         fragmentLists.forEach {
             if (it.isVisible) editAdsActivity.supportFragmentManager.beginTransaction()
                 .remove(it).commit()
         }
     }
+
     fun launcher(
         editAdsActivity: EditAdsActivity,
         launcher: ActivityResultLauncher<Intent>?,
         imageCounter: Int
     ) {
-        editAdsActivity.addPixToActivity(R.id.editAdsActPlace_holder, getOption(imageCounter)) { result ->
+        editAdsActivity.addPixToActivity(
+            R.id.editAdsActPlace_holder,
+            getOption(imageCounter)
+        ) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
                     closePixFragment(editAdsActivity)
@@ -58,7 +64,7 @@ object ImagePicker {
         }
     }
 
-    fun getLauncherForMultiSelectedImages(editAdsActivity: EditAdsActivity,uri: List<Uri>){
-       // if(uri.size > 1 && editAdsActivity.chooseImageFrag == null)
+    fun getLauncherForMultiSelectedImages(editAdsActivity: EditAdsActivity, uri: List<Uri>) {
+        // if(uri.size > 1 && editAdsActivity.chooseImageFrag == null)
     }
 }
