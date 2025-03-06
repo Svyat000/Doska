@@ -8,12 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.components.ComponentRuntime
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
 import com.sddrozdov.doska.recyclerViewAdapters.SelectImageAdapterInFragment
 import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class ImageListFragment(
     private val onFragmentCloseInterface: FragmentCloseInterface,
@@ -27,6 +33,8 @@ class ImageListFragment(
     private val dragCallback = ItemTouchMoveCallback(adapter)
 
     private val touchHelper = ItemTouchHelper(dragCallback)
+
+    private lateinit var job: Job
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +53,9 @@ class ImageListFragment(
         binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewImageItem.adapter = adapter
 
-        ImageManager.imageResize(newList) //TODO()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            //ImageManager.imageResize(newList) //TODO()
+        }
 
         //adapter.updateAdapter(newList, true)
     }
@@ -53,6 +63,7 @@ class ImageListFragment(
     override fun onDetach() {
         super.onDetach()
         onFragmentCloseInterface.onFragClose(adapter.mainArray)
+        job.cancel()
     }
 
     private fun setUpToolbar() {

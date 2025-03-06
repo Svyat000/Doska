@@ -18,6 +18,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //multiDexEnabled = true
     }
 
     buildTypes {
@@ -64,7 +65,7 @@ dependencies {
     implementation(libs.androidx.exifinterface)
 
     // Room
-    ksp(libs.androidx.room.compiler)
+    //ksp(libs.androidx.room.compiler)
 
     // Testing
     testImplementation(libs.junit)
@@ -73,10 +74,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.contrib)
 
     // Coroutine
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    //implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    //implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
-    // images
+
+
+    // Images
     implementation(libs.piximagepicker)
+
+    // Picasso
+    implementation (libs.picasso)
 
 }

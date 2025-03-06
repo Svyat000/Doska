@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
 import com.sddrozdov.doska.act.EditAdsActivity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
@@ -68,7 +69,7 @@ object ImageManager {
         }
     }
 
-    suspend fun imageResize(uris: List<Uri>, activity: Activity): List<Bitmap> {
+    suspend fun imageResize(uris: List<Uri>, activity: Activity): List<Bitmap> = withContext(Dispatchers.IO) {
 
         val tempList = ArrayList<List<Int>>()
         for (i in uris.indices) {
@@ -96,7 +97,7 @@ object ImageManager {
 
         }
 
-        return TODO()
+        return@withContext TODO()
 
     }
 
