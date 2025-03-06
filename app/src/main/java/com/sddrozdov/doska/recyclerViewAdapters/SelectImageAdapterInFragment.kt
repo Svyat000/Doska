@@ -15,7 +15,7 @@ class SelectImageAdapterInFragment :
     RecyclerView.Adapter<SelectImageAdapterInFragment.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
     val mainArray = ArrayList<String>()
 
-    class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding,private val context: Context) :
+    class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding, private val context: Context, val adapter : SelectImageAdapterInFragment) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun setData(item: String) {
@@ -24,6 +24,13 @@ class SelectImageAdapterInFragment :
                 val test = context as EditAdsActivity//
                 //ImagePicker.getImages(context as EditAdsActivity, 1)//
                 test.editImagePos = adapterPosition//
+            }
+            binding.imageDelete.setOnClickListener {
+                adapter.mainArray. removeAt(adapterPosition)
+                adapter.notifyItemRemoved(adapterPosition)
+                for(i in 0 until adapter.mainArray.size){
+                    adapter.notifyItemChanged(i)
+                }
             }
 
             binding.selImageItemTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
@@ -34,7 +41,7 @@ class SelectImageAdapterInFragment :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectImageHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = SelectImageItemInFragmentBinding.inflate(inflater, parent, false)
-        return SelectImageHolder(binding,parent.context)
+        return SelectImageHolder(binding,parent.context,this)
     }
 
     override fun onBindViewHolder(holder: SelectImageHolder, position: Int) {

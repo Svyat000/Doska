@@ -1,8 +1,10 @@
 package com.sddrozdov.doska.utilites
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +17,9 @@ import io.ak1.pix.models.Mode
 import io.ak1.pix.models.Options
 import io.ak1.pix.models.Ratio
 import io.ak1.pix.models.VideoOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object ImagePicker {
 
@@ -58,8 +63,20 @@ object ImagePicker {
         }
     }
 
-    fun getLauncherForMultiSelectedImages(editAdsActivity: EditAdsActivity, uri: List<Uri>) {
-        // if(uri.size > 1 && editAdsActivity.chooseImageFrag == null)
+    fun getLauncherForMultiSelectedImages(editAdsActivity: EditAdsActivity, uris: List<Uri>) {
+
+//         if(uris.size > 1 && editAdsActivity.chooseImageFrag == null){
+//             editAdsActivity.openChooseImageFrag(uris)
+//         } else if(editAdsActivity != null){
+//             editAdsActivity.chooseImageFrag?.updateAdapter(uris)
+//         }else if(uris.size == 1 && editAdsActivity.chooseImageFrag == null){
+//             CoroutineScope(Dispatchers.Main).launch {
+//                 editAdsActivity.binding.pBarLoad.visibility = View.VISIBLE
+//                 val bitMapArray = ImageManager.imageResize(uris,editAdsActivity) as ArrayList<Bitmap>
+//                 editAdsActivity.binding.pBarLoad.visibility = View.GONE
+//                 editAdsActivity.imageAdapter.updateAdapter(bitMapArray)
+//             }
+//         }
     }
     fun getLauncherForSingleImage(editAdsActivity: EditAdsActivity): ActivityResultLauncher<Intent>{
         return editAdsActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){

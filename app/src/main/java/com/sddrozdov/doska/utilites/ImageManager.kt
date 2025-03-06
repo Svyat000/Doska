@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import android.net.Uri
 import android.widget.ImageView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
 
@@ -18,7 +20,7 @@ object ImageManager {
     fun getImageSize(uri: Uri, activity: Activity): List<Int> {
 
         val inputStream = activity.contentResolver.openInputStream(uri)
-        val fTemp = File(activity.cacheDir,"temp.tmp")
+        val fTemp = File(activity.cacheDir, "temp.tmp")
 
         if (inputStream != null) {
             fTemp.copyInputStreamToFile(inputStream)
@@ -40,19 +42,26 @@ object ImageManager {
         }
     }
 
-    private fun imageRotation(imageFile : File): Int {
+    private fun imageRotation(imageFile: File): Int {
         val rotation: Int
         val exif = ExifInterface(imageFile.absoluteFile)
-        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL)
+        val orientation =
+            exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        TODO()
 
-return 1
+        return TODO()
     }
 
-    fun chooseScaleType(im: ImageView, bitmap: Bitmap){
-
+    fun chooseScaleType(imageView: ImageView, bitmap: Bitmap) {
+        if(bitmap.width > bitmap.height){
+            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        } else {
+            imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
     }
-    fun imageResize(){
 
+    suspend fun imageResize(uris: List<Uri>,activity: Activity):List<Bitmap> {
+        return TODO()
     }
 
 }

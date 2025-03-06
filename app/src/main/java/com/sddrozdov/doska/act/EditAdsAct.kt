@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.act
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -70,9 +71,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View) {
 
-        if(imageAdapter.imageArray.size == 0){
-           TODO() // ImagePicker.getImages(this,3)
-        }else{
+        if (imageAdapter.imageArray.size == 0) {
+            TODO() // ImagePicker.getImages(this,3)
+        } else {
             openChooseImageFragment(imageAdapter.imageArray)
         }
 
@@ -88,8 +89,8 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFrag = null
     }
 
-    private fun openChooseImageFragment(newList: ArrayList<String>) {
-        // chooseImageFragment = ImageListFragment(this,newList)
+    fun openChooseImageFragment(newList: ArrayList<String>) {
+       // chooseImageFragment = ImageListFragment(this,newList)
         binding.editAdsActScrollView.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.editAdsActPlace_holder, chooseImageFrag!!)

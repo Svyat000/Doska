@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.fragments
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,7 +77,7 @@ class ImageListFragment(
     }
 
     fun setSingleImage(uri: String, position: Int) {
-        adapter.mainArray[position] = uri
-        adapter.notifyDataSetChanged()
+//        adapter.mainArray[position] = uri
+//        adapter.notifyDataSetChanged()
     }
 }
