@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
 import com.sddrozdov.doska.recyclerViewAdapters.SelectImageAdapterInFragment
+import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
@@ -44,7 +45,9 @@ class ImageListFragment(
         binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewImageItem.adapter = adapter
 
-        adapter.updateAdapter(newList, true)
+        ImageManager.imageResize(newList) //TODO()
+
+        //adapter.updateAdapter(newList, true)
     }
 
     override fun onDetach() {

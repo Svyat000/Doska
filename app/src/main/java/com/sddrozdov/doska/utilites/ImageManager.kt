@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
+import com.sddrozdov.doska.act.EditAdsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -44,27 +45,59 @@ object ImageManager {
     }
 
     private fun imageRotation(imageFile: File): Int {
-        val rotation : Int
+        val rotation: Int
         val exifInterface = ExifInterface(imageFile.absoluteFile)
-        val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        rotation = if(orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270){
-            90
-        } else{
-            0
-        }
+        val orientation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        rotation =
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                90
+            } else {
+                0
+            }
         return rotation
     }
 
     fun chooseScaleType(imageView: ImageView, bitmap: Bitmap) {
-        if(bitmap.width > bitmap.height){
+        if (bitmap.width > bitmap.height) {
             imageView.scaleType = ImageView.ScaleType.CENTER_CROP
         } else {
             imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
         }
     }
 
-    suspend fun imageResize(uris: List<Uri>,activity: Activity):List<Bitmap> {
+    suspend fun imageResize(uris: List<Uri>, activity: Activity): List<Bitmap> {
+
+        val tempList = ArrayList<List<Int>>()
+        for (i in uris.indices) {
+            val size = getImageSize(uris[i],activity) //TODO()
+            val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
+
+            if (imageRatio > 1) {
+
+                if (size[WIDTH] > MAX_IMAGE_SIZE) {
+                    tempList.add(listOf(MAX_IMAGE_SIZE, (MAX_IMAGE_SIZE / imageRatio).toInt()))
+                } else {
+                    tempList.add(listOf(size[WIDTH], size[HEIGHT]))
+                }
+
+            } else {
+
+                if (size[HEIGHT] > MAX_IMAGE_SIZE) {
+                    tempList.add(listOf((MAX_IMAGE_SIZE * imageRatio).toInt(), MAX_IMAGE_SIZE))
+                } else {
+                    tempList.add(listOf(size[WIDTH], size[HEIGHT]))
+                }
+
+            }
+
+
+        }
+
         return TODO()
+
     }
 
 }
