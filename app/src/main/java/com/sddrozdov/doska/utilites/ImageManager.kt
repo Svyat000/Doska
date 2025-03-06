@@ -3,9 +3,9 @@ package com.sddrozdov.doska.utilites
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
 import android.net.Uri
 import android.widget.ImageView
+import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -29,6 +29,7 @@ object ImageManager {
         val option = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
         }
+
         BitmapFactory.decodeFile(fTemp.path, option)
 
         return if (imageRotation(fTemp) == 90)
@@ -43,13 +44,15 @@ object ImageManager {
     }
 
     private fun imageRotation(imageFile: File): Int {
-        val rotation: Int
-        val exif = ExifInterface(imageFile.absoluteFile)
-        val orientation =
-            exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        TODO()
-
-        return TODO()
+        val rotation : Int
+        val exifInterface = ExifInterface(imageFile.absoluteFile)
+        val orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        rotation = if(orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270){
+            90
+        } else{
+            0
+        }
+        return rotation
     }
 
     fun chooseScaleType(imageView: ImageView, bitmap: Bitmap) {
