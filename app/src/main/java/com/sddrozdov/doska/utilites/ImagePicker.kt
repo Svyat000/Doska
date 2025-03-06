@@ -3,7 +3,9 @@ package com.sddrozdov.doska.utilites
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import io.ak1.pix.helpers.PixEventCallback
@@ -43,28 +45,25 @@ object ImagePicker {
         }
     }
 
-    fun launcher(
-        editAdsActivity: EditAdsActivity,
-        launcher: ActivityResultLauncher<Intent>?,
-        imageCounter: Int
-    ) {
-        editAdsActivity.addPixToActivity(
-            R.id.editAdsActPlace_holder,
-            getOption(imageCounter)
+    fun launcher(editAdsActivity: EditAdsActivity, launcher: ActivityResultLauncher<Intent>?, imageCounter: Int) {
+        editAdsActivity.addPixToActivity(R.id.editAdsActPlace_holder, getOption(imageCounter)
         ) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
                     closePixFragment(editAdsActivity)
                     Log.d("MyLog", "Фрагмент открыт")
                 }
-
                 PixEventCallback.Status.BACK_PRESSED -> TODO()
-
             }
         }
     }
 
     fun getLauncherForMultiSelectedImages(editAdsActivity: EditAdsActivity, uri: List<Uri>) {
         // if(uri.size > 1 && editAdsActivity.chooseImageFrag == null)
+    }
+    fun getLauncherForSingleImage(editAdsActivity: EditAdsActivity): ActivityResultLauncher<Intent>{
+        return editAdsActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result: ActivityResult ->
+        }
     }
 }

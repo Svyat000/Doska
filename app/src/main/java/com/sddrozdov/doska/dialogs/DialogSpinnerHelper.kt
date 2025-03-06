@@ -10,7 +10,7 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.R
-import com.sddrozdov.doska.recyclerViewAdapters.RcViewDialogSpinnerAdapter
+import com.sddrozdov.doska.recyclerViewAdapters.DialogSpinnerAdapterForCitiesAndCountries
 import com.sddrozdov.doska.utilites.CityHelper
 
 class DialogSpinnerHelper {
@@ -28,7 +28,7 @@ class DialogSpinnerHelper {
             // Надувание пользовательского макета для диалогового окна
             val rootView = LayoutInflater.from(context).inflate(R.layout.spinner_layout, null)
 
-            val adapter = RcViewDialogSpinnerAdapter(editAdsActSelectCountryOrCity, dialog)
+            val adapter = DialogSpinnerAdapterForCitiesAndCountries(editAdsActSelectCountryOrCity, dialog)
             // Получение ссылки на RecyclerView из макета
 
             val recyclerView = rootView.findViewById<RecyclerView>(R.id.recyclerViewSpinnerView)
@@ -60,7 +60,7 @@ class DialogSpinnerHelper {
 
     // Метод для настройки SearchView
     private fun setSearchView(
-        adapter: RcViewDialogSpinnerAdapter,
+        adapter: DialogSpinnerAdapterForCitiesAndCountries,
         countryList: ArrayList<String>,
         searchView: SearchView?
     ) {

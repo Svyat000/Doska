@@ -3,7 +3,7 @@ package com.sddrozdov.doska.utilites
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemTouchMoveCallback(val itemTouchAdapter: ItemTouchAdapter) : ItemTouchHelper.Callback() {
+class ItemTouchMoveCallback(private val itemTouchAdapter: ItemTouchAdapter) : ItemTouchHelper.Callback() {
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder

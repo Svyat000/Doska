@@ -6,7 +6,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.databinding.ImageAdapterItemBinding
 
-class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+class ImageAdapterForViewPager : RecyclerView.Adapter<ImageAdapterForViewPager.ImageViewHolder>() {
 
     val imageArray = ArrayList<String>()
 

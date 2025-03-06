@@ -11,8 +11,9 @@ import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.fragments.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
-import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapter
+import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
+import com.sddrozdov.doska.utilites.ImagePicker
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
@@ -23,7 +24,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     private var dialogSpinnerHelper = DialogSpinnerHelper()
 
-    private lateinit var imageAdapter: ImageAdapter
+    private lateinit var imageAdapter: ImageAdapterForViewPager
+
+    var editImagePos = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
 
+        //ImagePicker.launcher(this,3)
     }
 
     fun onClickSelectCountry(view: View) {
@@ -47,7 +51,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun init() {
-        imageAdapter = ImageAdapter()
+        imageAdapter = ImageAdapterForViewPager()
         binding.editActAdsImages.adapter = imageAdapter
     }
 
@@ -67,7 +71,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: View) {
 
         if(imageAdapter.imageArray.size == 0){
-           TODO() // magePicker.getImages(this,3)
+           TODO() // ImagePicker.getImages(this,3)
         }else{
             openChooseImageFragment(imageAdapter.imageArray)
         }

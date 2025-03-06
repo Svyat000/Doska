@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.R
+import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.SelectImageItemInFragmentBinding
+import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
-class RcViewSelectImageAdapter :
-    RecyclerView.Adapter<RcViewSelectImageAdapter.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
+class SelectImageAdapterInFragment :
+    RecyclerView.Adapter<SelectImageAdapterInFragment.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
     val mainArray = ArrayList<String>()
 
     class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding,private val context: Context) :
@@ -18,6 +20,12 @@ class RcViewSelectImageAdapter :
 
         fun setData(item: String) {
             //binding.selImageItemTitle.text = item.title
+            binding.editImageButton.setOnClickListener {
+                val test = context as EditAdsActivity//
+                //ImagePicker.getImages(context as EditAdsActivity, 1)//
+                test.editImagePos = adapterPosition//
+            }
+
             binding.selImageItemTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
             binding.imageItemInFragment.setImageURI(item.toUri())
         }

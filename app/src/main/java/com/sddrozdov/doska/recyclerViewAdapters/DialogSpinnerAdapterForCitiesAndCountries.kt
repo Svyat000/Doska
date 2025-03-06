@@ -7,11 +7,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.databinding.SpListItemBinding
 
-class RcViewDialogSpinnerAdapter(
+class DialogSpinnerAdapterForCitiesAndCountries(
     private val editAdsActSelectCountryOrCity: TextView,
     private val dialog: AlertDialog
 ) :
-    RecyclerView.Adapter<RcViewDialogSpinnerAdapter.CountryViewHolder>() {
+    RecyclerView.Adapter<DialogSpinnerAdapterForCitiesAndCountries.CountryViewHolder>() {
 
     private val tempListForCountriesAndCities = ArrayList<String>()
 
