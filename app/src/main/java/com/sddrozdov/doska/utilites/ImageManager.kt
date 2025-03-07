@@ -3,10 +3,13 @@ package com.sddrozdov.doska.utilites
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Picture
 import android.net.Uri
+import android.util.Log
 import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
 import com.sddrozdov.doska.act.EditAdsActivity
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -69,36 +72,44 @@ object ImageManager {
         }
     }
 
-    suspend fun imageResize(uris: List<Uri>, activity: Activity): List<Bitmap> = withContext(Dispatchers.IO) {
+    suspend fun imageResize(uris: List<Uri>, activity: Activity): List<Bitmap> =
+        withContext(Dispatchers.IO) {
 
-        val tempList = ArrayList<List<Int>>()
-        for (i in uris.indices) {
-            val size = getImageSize(uris[i],activity) //TODO()
-            val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
+            val tempList = ArrayList<List<Int>>()
+            val bitmapList = ArrayList<Bitmap>()
 
-            if (imageRatio > 1) {
+            for (i in uris.indices) {
+                val size = getImageSize(uris[i], activity)
+                val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
 
-                if (size[WIDTH] > MAX_IMAGE_SIZE) {
-                    tempList.add(listOf(MAX_IMAGE_SIZE, (MAX_IMAGE_SIZE / imageRatio).toInt()))
+                if (imageRatio > 1) {
+
+                    if (size[WIDTH] > MAX_IMAGE_SIZE) {
+                        tempList.add(listOf(MAX_IMAGE_SIZE, (MAX_IMAGE_SIZE / imageRatio).toInt()))
+                    } else {
+                        tempList.add(listOf(size[WIDTH], size[HEIGHT]))
+                    }
+
                 } else {
-                    tempList.add(listOf(size[WIDTH], size[HEIGHT]))
+
+                    if (size[HEIGHT] > MAX_IMAGE_SIZE) {
+                        tempList.add(listOf((MAX_IMAGE_SIZE * imageRatio).toInt(), MAX_IMAGE_SIZE))
+                    } else {
+                        tempList.add(listOf(size[WIDTH], size[HEIGHT]))
+                    }
+
                 }
-
-            } else {
-
-                if (size[HEIGHT] > MAX_IMAGE_SIZE) {
-                    tempList.add(listOf((MAX_IMAGE_SIZE * imageRatio).toInt(), MAX_IMAGE_SIZE))
-                } else {
-                    tempList.add(listOf(size[WIDTH], size[HEIGHT]))
-                }
-
             }
 
-
+            for (i in uris.indices) {
+                val exception = runCatching {
+                    bitmapList.add(
+                        Picasso.get().load(uris[i])
+                            .resize(tempList[i][WIDTH], tempList[i][HEIGHT]).get()
+                    )
+                }
+                Log.d("Loggg", "bitmap ${exception.isSuccess}")
+            }
+            return@withContext bitmapList
         }
-
-        return@withContext TODO()
-
-    }
-
 }

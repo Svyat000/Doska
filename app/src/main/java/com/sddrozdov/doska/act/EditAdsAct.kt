@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.act
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -18,14 +19,14 @@ import com.sddrozdov.doska.utilites.ImagePicker
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
-    private var chooseImageFrag: ImageListFragment? = null
+    var chooseImageFrag: ImageListFragment? = null
 
     private var _binding: ActivityEditAdsBinding? = null
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
 
     private var dialogSpinnerHelper = DialogSpinnerHelper()
 
-    private lateinit var imageAdapter: ImageAdapterForViewPager
+    lateinit var imageAdapter: ImageAdapterForViewPager
 
     var editImagePos = 0
 
@@ -38,7 +39,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
 
-        //ImagePicker.launcher(this,3)
+        init()
     }
 
     fun onClickSelectCountry(view: View) {
@@ -72,9 +73,11 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: View) {
 
         if (imageAdapter.imageArray.size == 0) {
-            TODO() // ImagePicker.getImages(this,3)
+           ImagePicker.launcher(this,3)
         } else {
-            openChooseImageFragment(imageAdapter.imageArray)
+            openChooseImageFragment(null)
+            chooseImageFrag?.updateAdapterFromEdit(imageAdapter.imageArray)
+
         }
 
 //        binding.editAdsActScrollView.visibility = View.GONE
@@ -83,14 +86,14 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 //        fragmentManager.commit()
     }
 
-    override fun onFragClose(list: ArrayList<String>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         binding.editAdsActScrollView.visibility = View.VISIBLE
         imageAdapter.updateAdapter(list)
         chooseImageFrag = null
     }
 
-    fun openChooseImageFragment(newList: ArrayList<String>) {
-       // chooseImageFragment = ImageListFragment(this,newList)
+    fun openChooseImageFragment(newList: ArrayList<Uri>?) {
+        chooseImageFrag = ImageListFragment(this,newList)
         binding.editAdsActScrollView.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.editAdsActPlace_holder, chooseImageFrag!!)

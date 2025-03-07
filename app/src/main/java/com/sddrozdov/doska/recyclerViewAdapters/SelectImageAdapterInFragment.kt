@@ -1,6 +1,7 @@
 package com.sddrozdov.doska.recyclerViewAdapters
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -13,16 +14,16 @@ import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
 class SelectImageAdapterInFragment :
     RecyclerView.Adapter<SelectImageAdapterInFragment.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
-    val mainArray = ArrayList<String>()
+    val mainArray = ArrayList<Bitmap>()
 
     class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding, private val context: Context, val adapter : SelectImageAdapterInFragment) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setData(item: String) {
+        fun setData(bitmapItem: Bitmap) {
             //binding.selImageItemTitle.text = item.title
             binding.editImageButton.setOnClickListener {
                 val test = context as EditAdsActivity//
-                //ImagePicker.getImages(context as EditAdsActivity, 1)//
+                ImagePicker.launcher(context as EditAdsActivity, 1)
                 test.editImagePos = adapterPosition//
             }
             binding.imageDelete.setOnClickListener {
@@ -34,7 +35,7 @@ class SelectImageAdapterInFragment :
             }
 
             binding.selImageItemTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
-            binding.imageItemInFragment.setImageURI(item.toUri())
+            binding.imageItemInFragment.setImageBitmap(bitmapItem)
         }
     }
 
@@ -52,7 +53,7 @@ class SelectImageAdapterInFragment :
         return mainArray.size
     }
 
-    fun updateAdapter(newList: List<String>, needClear: Boolean) {
+    fun updateAdapter(newList: List<Bitmap>, needClear: Boolean) {
         if(needClear){
            TODO()
         }
