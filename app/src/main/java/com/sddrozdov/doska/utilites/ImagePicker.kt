@@ -78,18 +78,15 @@ object ImagePicker {
         } else if (uris.size == 1 && editAdsActivity.chooseImageFrag == null) {
             CoroutineScope(Dispatchers.Main).launch {
                 // editAdsActivity.binding.pBarLoad.visibility = View.VISIBLE
-                val bitMapArray = ImageManager.imageResize(
-                    uris as ArrayList<Uri>,
-                    editAdsActivity
-                ) as ArrayList<Bitmap>
+                val bitMapArray = ImageManager.imageResize(uris as ArrayList<Uri>, editAdsActivity) as ArrayList<Bitmap>
                 //editAdsActivity.binding.pBarLoad.visibility = View.GONE
                 editAdsActivity.imageAdapter.updateAdapter(bitMapArray)
             }
         }
     }
 
-    fun getLauncherForSingleImage(editAdsActivity: EditAdsActivity): ActivityResultLauncher<Intent> {
-        return editAdsActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        }
+    fun singleImage(editAdsActivity: EditAdsActivity, uri: Uri) {
+        editAdsActivity.chooseImageFrag?.setSingleImage(uri, editAdsActivity.editImagePos)
+
     }
 }

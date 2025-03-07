@@ -1,21 +1,21 @@
 package com.sddrozdov.doska.fragments
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
+import android.widget.ProgressBar
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.components.ComponentRuntime
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
+import com.sddrozdov.doska.dialogs.ProgressDialog
 import com.sddrozdov.doska.recyclerViewAdapters.SelectImageAdapterInFragment
 import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
@@ -23,7 +23,6 @@ import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class ImageListFragment(
@@ -58,12 +57,7 @@ class ImageListFragment(
         binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
         binding.recyclerViewImageItem.adapter = adapter
 
-        if (newList != null) {
-            job = CoroutineScope(Dispatchers.Main).launch {
-                val bitmapList = ImageManager.imageResize(newList,activity as Activity) //TODO()
-                adapter.updateAdapter(bitmapList, true)
-            }
-        }
+        if (newList != null) resizeSelectedImages(newList, true)
     }
 
     fun updateAdapterFromEdit(bitmapList: List<Bitmap>) {
@@ -98,31 +92,29 @@ class ImageListFragment(
     }
 
     fun updateAdapter(newList: ArrayList<Uri>) {
-//        job = CoroutineScope(Dispatchers.Main).launch {
-//            val bitmapList = ImageManager.imageResize(newList) //TODO()
-//            adapter.updateAdapter(bitmapList, false)
-//        }
         resizeSelectedImages(newList, false)
     }
 
     fun setSingleImage(uri: Uri, position: Int) {
 
+        val progressBar = binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
+
         job = CoroutineScope(Dispatchers.Main).launch {
+            progressBar.visibility = View.VISIBLE
             val bitmapList = ImageManager.imageResize(arrayListOf(uri), activity as Activity)
+            progressBar.visibility = View.GONE
             adapter.mainArray[position] = bitmapList[0]
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(position)
         }
     }
 
     private fun resizeSelectedImages(newList: ArrayList<Uri>, needClear: Boolean) {
         job = CoroutineScope(Dispatchers.Main).launch {
-            // val dialog = ProgressDialog.createProgressDialog(activity as Activity)
+            val dialog = ProgressDialog.createProgressDialog(activity as Activity)
             val bitmapList = ImageManager.imageResize(newList, activity as Activity)
-            // dialog.dismiss()
+            dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
-            // if(adapter.mainArray.size > 2) addImageItem?.isVisible = false
+            //if(adapter.mainArray.size > 2) addImageItem?.isVisible = false
         }
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.sddrozdov.doska.recyclerViewAdapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class SelectImageAdapterInFragment :
             //binding.selImageItemTitle.text = item.title
             binding.editImageButton.setOnClickListener {
                 val test = context as EditAdsActivity//
-                ImagePicker.launcher(context as EditAdsActivity, 1)
+                //ImagePicker.launcher(context as EditAdsActivity, 1)
                 test.editImagePos = adapterPosition//
             }
             binding.imageDelete.setOnClickListener {
