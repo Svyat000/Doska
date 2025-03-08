@@ -7,5 +7,8 @@
     </style>
 
     <style name="Theme.Doska" parent="Base.Theme.Doska" />
+    <style name = "ActionBarCustom">
+        <item name="android:textColorSecondary">@color/color_blue</item>
+    </style>
 
 </resources>

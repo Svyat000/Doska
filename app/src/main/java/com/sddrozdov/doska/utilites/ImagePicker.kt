@@ -1,12 +1,8 @@
 package com.sddrozdov.doska.utilites
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import io.ak1.pix.helpers.PixEventCallback
@@ -41,11 +37,7 @@ object ImagePicker {
         return options
     }
 
-
-    fun launcher(
-        editAdsActivity: EditAdsActivity,
-        imageCounter: Int
-    ) {
+    fun launcher(editAdsActivity: EditAdsActivity, imageCounter: Int) {
         editAdsActivity.addPixToActivity(
             R.id.editAdsActPlace_holder, getOption(imageCounter)
         ) { result ->
@@ -87,6 +79,5 @@ object ImagePicker {
 
     fun singleImage(editAdsActivity: EditAdsActivity, uri: Uri) {
         editAdsActivity.chooseImageFrag?.setSingleImage(uri, editAdsActivity.editImagePos)
-
     }
 }

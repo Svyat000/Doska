@@ -23,6 +23,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
+        android:background="@color/material_dynamic_neutral90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -33,14 +34,14 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.appcompat.widget.Toolbar
-        app:navigationIcon="?attr/homeAsUpIndicator"
         android:id="@+id/imageListFragmentToolBar"
         android:layout_width="408dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/material_dynamic_neutral_variant80"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/ActionBarCustom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 </androidx.constraintlayout.widget.ConstraintLayout>
