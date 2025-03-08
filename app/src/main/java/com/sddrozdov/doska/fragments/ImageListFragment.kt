@@ -16,6 +16,8 @@ import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.ImageListFragmentBinding
 import com.sddrozdov.doska.dialogs.ProgressDialog
+import com.sddrozdov.doska.interfaces.AdapterCallback
+import com.sddrozdov.doska.interfaces.FragmentCloseInterface
 import com.sddrozdov.doska.recyclerViewAdapters.SelectImageAdapterInFragment
 import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
@@ -28,11 +30,11 @@ import kotlinx.coroutines.launch
 class ImageListFragment(
     private val onFragmentCloseInterface: FragmentCloseInterface,
     private val newList: ArrayList<Uri>?
-) : Fragment() {
+) : Fragment(), AdapterCallback {
 
     private lateinit var binding: ImageListFragmentBinding
 
-    private val adapter = SelectImageAdapterInFragment()
+    private val adapter = SelectImageAdapterInFragment(this)
 
     private val dragCallback = ItemTouchMoveCallback(adapter)
 
@@ -72,19 +74,17 @@ class ImageListFragment(
 
     private fun setUpToolbar() {
         binding.imageListFragmentToolBar.inflateMenu(R.menu.menu_choose_image)
-        val deleteItem = binding.imageListFragmentToolBar.menu.findItem(R.id.delete_image)
-        val addItem = binding.imageListFragmentToolBar.menu.findItem(R.id.add_image)
 
         binding.imageListFragmentToolBar.setNavigationOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
         }
-
-        deleteItem.setOnMenuItemClickListener {
-            adapter.updateAdapter(ArrayList(), true)
-
-            true
-        }
-        addItem.setOnMenuItemClickListener {
+        binding.imageListFragmentToolBar.menu.findItem(R.id.delete_image)
+            .setOnMenuItemClickListener {
+                adapter.updateAdapter(ArrayList(), true)
+                binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
+                true
+            }
+        binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
             ImagePicker.launcher(activity as EditAdsActivity, imageCount)
             true
@@ -97,7 +97,8 @@ class ImageListFragment(
 
     fun setSingleImage(uri: Uri, position: Int) {
 
-        val progressBar = binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
+        val progressBar =
+            binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
 
         job = CoroutineScope(Dispatchers.Main).launch {
             progressBar.visibility = View.VISIBLE
@@ -114,7 +115,12 @@ class ImageListFragment(
             val bitmapList = ImageManager.imageResize(newList, activity as Activity)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
-            //if(adapter.mainArray.size > 2) addImageItem?.isVisible = false
+            if (adapter.mainArray.size > 2) binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible =
+                false
         }
+    }
+
+    override fun onItemDelete() {
+        binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
     }
 }

@@ -11,7 +11,7 @@ import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
-import com.sddrozdov.doska.fragments.FragmentCloseInterface
+import com.sddrozdov.doska.interfaces.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper

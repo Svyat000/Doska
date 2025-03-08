@@ -1,4 +1,4 @@
-package com.sddrozdov.doska.fragments
+package com.sddrozdov.doska.interfaces
 
 import android.graphics.Bitmap
 

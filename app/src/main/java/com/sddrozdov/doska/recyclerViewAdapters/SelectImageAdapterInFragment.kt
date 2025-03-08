@@ -3,18 +3,16 @@ package com.sddrozdov.doska.recyclerViewAdapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.SelectImageItemInFragmentBinding
+import com.sddrozdov.doska.interfaces.AdapterCallback
 import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
-class SelectImageAdapterInFragment :
-    RecyclerView.Adapter<SelectImageAdapterInFragment.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
+class SelectImageAdapterInFragment(private val adapterCallback: AdapterCallback) : RecyclerView.Adapter<SelectImageAdapterInFragment.SelectImageHolder>(),ItemTouchMoveCallback.ItemTouchAdapter {
     val mainArray = ArrayList<Bitmap>()
 
     class SelectImageHolder(private val binding: SelectImageItemInFragmentBinding, private val context: Context, val adapter : SelectImageAdapterInFragment) :
@@ -24,7 +22,7 @@ class SelectImageAdapterInFragment :
             //binding.selImageItemTitle.text = item.title
             binding.editImageButton.setOnClickListener {
                 val test = context as EditAdsActivity//
-                //ImagePicker.launcher(context as EditAdsActivity, 1)
+                ImagePicker.launcher(context as EditAdsActivity, 1)
                 test.editImagePos = adapterPosition//
             }
             binding.imageDelete.setOnClickListener {
@@ -33,6 +31,7 @@ class SelectImageAdapterInFragment :
                 for(i in 0 until adapter.mainArray.size){
                     adapter.notifyItemChanged(i)
                 }
+                adapter.adapterCallback.onItemDelete()
             }
 
             binding.selImageItemTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
@@ -55,10 +54,7 @@ class SelectImageAdapterInFragment :
     }
 
     fun updateAdapter(newList: List<Bitmap>, needClear: Boolean) {
-        if(needClear){
-           TODO()
-        }
-        mainArray.clear()
+        if(needClear) mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
     }
