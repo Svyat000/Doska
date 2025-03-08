@@ -69,9 +69,7 @@ object ImagePicker {
             editAdsActivity.chooseImageFrag?.updateAdapter(uris as ArrayList<Uri>)
         } else if (uris.size == 1 && editAdsActivity.chooseImageFrag == null) {
             CoroutineScope(Dispatchers.Main).launch {
-                // editAdsActivity.binding.pBarLoad.visibility = View.VISIBLE
                 val bitMapArray = ImageManager.imageResize(uris as ArrayList<Uri>, editAdsActivity) as ArrayList<Bitmap>
-                //editAdsActivity.binding.pBarLoad.visibility = View.GONE
                 editAdsActivity.imageAdapter.updateAdapter(bitMapArray)
             }
         }

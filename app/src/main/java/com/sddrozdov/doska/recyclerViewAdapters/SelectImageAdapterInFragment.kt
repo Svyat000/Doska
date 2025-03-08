@@ -9,6 +9,7 @@ import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.SelectImageItemInFragmentBinding
 import com.sddrozdov.doska.interfaces.AdapterCallback
+import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
 import com.sddrozdov.doska.utilites.ItemTouchMoveCallback
 
@@ -19,11 +20,10 @@ class SelectImageAdapterInFragment(private val adapterCallback: AdapterCallback)
         RecyclerView.ViewHolder(binding.root) {
 
         fun setData(bitmapItem: Bitmap) {
-            //binding.selImageItemTitle.text = item.title
             binding.editImageButton.setOnClickListener {
                 val test = context as EditAdsActivity//
-                ImagePicker.launcher(context as EditAdsActivity, 1)
-                test.editImagePos = adapterPosition//
+                ImagePicker.launcher(context, 1)
+                test.editImagePos = adapterPosition
             }
             binding.imageDelete.setOnClickListener {
                 adapter.mainArray. removeAt(adapterPosition)
@@ -35,6 +35,7 @@ class SelectImageAdapterInFragment(private val adapterCallback: AdapterCallback)
             }
 
             binding.selImageItemTitle.text = context.resources.getStringArray(R.array.title_image_array)[adapterPosition]
+            ImageManager.chooseScaleType(binding.imageItemInFragment,bitmapItem)
             binding.imageItemInFragment.setImageBitmap(bitmapItem)
         }
     }

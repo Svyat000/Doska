@@ -3,15 +3,12 @@ package com.sddrozdov.doska.utilites
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Picture
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import androidx.exifinterface.media.ExifInterface
-import com.sddrozdov.doska.act.EditAdsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.InputStream
@@ -55,8 +52,7 @@ object ImageManager {
             ExifInterface.TAG_ORIENTATION,
             ExifInterface.ORIENTATION_NORMAL
         )
-        rotation =
-            if (orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+        rotation = if (orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_ROTATE_270) {
                 90
             } else {
                 0
@@ -83,21 +79,17 @@ object ImageManager {
                 val imageRatio = size[WIDTH].toFloat() / size[HEIGHT].toFloat()
 
                 if (imageRatio > 1) {
-
                     if (size[WIDTH] > MAX_IMAGE_SIZE) {
                         tempList.add(listOf(MAX_IMAGE_SIZE, (MAX_IMAGE_SIZE / imageRatio).toInt()))
                     } else {
                         tempList.add(listOf(size[WIDTH], size[HEIGHT]))
                     }
-
                 } else {
-
                     if (size[HEIGHT] > MAX_IMAGE_SIZE) {
                         tempList.add(listOf((MAX_IMAGE_SIZE * imageRatio).toInt(), MAX_IMAGE_SIZE))
                     } else {
                         tempList.add(listOf(size[WIDTH], size[HEIGHT]))
                     }
-
                 }
             }
 

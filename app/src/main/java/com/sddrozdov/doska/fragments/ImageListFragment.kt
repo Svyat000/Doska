@@ -97,8 +97,7 @@ class ImageListFragment(
 
     fun setSingleImage(uri: Uri, position: Int) {
 
-        val progressBar =
-            binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
+        val progressBar = binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
 
         job = CoroutineScope(Dispatchers.Main).launch {
             progressBar.visibility = View.VISIBLE
