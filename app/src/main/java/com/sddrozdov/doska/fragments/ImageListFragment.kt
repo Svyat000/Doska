@@ -30,9 +30,9 @@ import kotlinx.coroutines.launch
 class ImageListFragment(
     private val onFragmentCloseInterface: FragmentCloseInterface,
     private val newList: ArrayList<Uri>?
-) : Fragment(), AdapterCallback {
+) : BaseSelectImageFragment(), AdapterCallback {
 
-    private lateinit var binding: ImageListFragmentBinding
+    //private lateinit var binding: ImageListFragmentBinding
 
     private val adapter = SelectImageAdapterInFragment(this)
 
@@ -42,22 +42,16 @@ class ImageListFragment(
 
     private var job: Job? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = ImageListFragmentBinding.inflate(inflater)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
-        touchHelper.attachToRecyclerView(binding.recyclerViewImageItem)
 
-        binding.recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerViewImageItem.adapter = adapter
+        binding.apply {
+            touchHelper.attachToRecyclerView(recyclerViewImageItem)
+            recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
+            recyclerViewImageItem.adapter = adapter
+        }
+
 
         if (newList != null) resizeSelectedImages(newList, true)
     }
@@ -73,22 +67,27 @@ class ImageListFragment(
     }
 
     private fun setUpToolbar() {
-        binding.imageListFragmentToolBar.inflateMenu(R.menu.menu_choose_image)
 
-        binding.imageListFragmentToolBar.setNavigationOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
-        }
-        binding.imageListFragmentToolBar.menu.findItem(R.id.delete_image)
-            .setOnMenuItemClickListener {
-                adapter.updateAdapter(ArrayList(), true)
-                binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
+        binding.apply {
+            imageListFragmentToolBar.inflateMenu(R.menu.menu_choose_image)
+
+            imageListFragmentToolBar.setNavigationOnClickListener {
+                activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)
+                    ?.commit()
+            }
+            imageListFragmentToolBar.menu.findItem(R.id.delete_image)
+                .setOnMenuItemClickListener {
+                    adapter.updateAdapter(ArrayList(), true)
+                    imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
+                    true
+                }
+            imageListFragmentToolBar.menu.findItem(R.id.add_image).setOnMenuItemClickListener {
+                val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
+                ImagePicker.launcher(activity as EditAdsActivity, imageCount)
                 true
             }
-        binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).setOnMenuItemClickListener {
-            val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.launcher(activity as EditAdsActivity, imageCount)
-            true
         }
+
     }
 
     fun updateAdapter(newList: ArrayList<Uri>) {
@@ -97,7 +96,8 @@ class ImageListFragment(
 
     fun setSingleImage(uri: Uri, position: Int) {
 
-        val progressBar = binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
+        val progressBar =
+            binding.recyclerViewImageItem[position].findViewById<ProgressBar>(R.id.ProgressBarInSingleItem)
 
         job = CoroutineScope(Dispatchers.Main).launch {
             progressBar.visibility = View.VISIBLE

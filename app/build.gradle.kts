@@ -79,12 +79,13 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-
-
     // Images
     implementation(libs.piximagepicker)
 
     // Picasso
     implementation (libs.picasso)
+
+    //Test advertising vk
+    // implementation(libs.mytarget.sdk)
 
 }
