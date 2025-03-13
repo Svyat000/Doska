@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sddrozdov.doska.R
@@ -30,9 +29,9 @@ import kotlinx.coroutines.launch
 class ImageListFragment(
     private val onFragmentCloseInterface: FragmentCloseInterface,
     private val newList: ArrayList<Uri>?
-) : BaseSelectImageFragment(), AdapterCallback {
+) : BaseAdsFragment(), AdapterCallback {
 
-    //private lateinit var binding: ImageListFragmentBinding
+    private lateinit var binding: ImageListFragmentBinding
 
     private val adapter = SelectImageAdapterInFragment(this)
 
@@ -41,6 +40,11 @@ class ImageListFragment(
     private val touchHelper = ItemTouchHelper(dragCallback)
 
     private var job: Job? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = ImageListFragmentBinding.inflate(layoutInflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
