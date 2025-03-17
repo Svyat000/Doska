@@ -51,6 +51,10 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             binding.editAdsActSelectCity.text = getString(R.string.select_city)
         }
     }
+    fun onClickSelectCategory(view: View) {
+        val listCategory = resources.getStringArray(R.array.category).toMutableList() as ArrayList
+        dialogSpinnerHelper.showSpinnerDialog(this,listCategory,binding.editAdsActSelectCat)
+    }
 
     private fun init() {
         imageAdapter = ImageAdapterForViewPager()

@@ -52,8 +52,16 @@
     <string name="Country">Страна</string>
     <string name="City">Город</string>
     <string name="Phone">Телефон</string>
-    <string name="PhoneNumber">Номер телефона</string>
-    <string name="Index">Индекс</string>
+    <string name="PhoneNumber">*Номер телефона</string>
+    <string name="Index">*Индекс</string>
+
+    <string name="price">Цена</string>
+    <string name="price_hint">*Цена</string>
+    <string name="select_category">Выберите категорию</string>
+    <string name="description">Описание</string>
+    <string name="description_hint">*Описание</string>
+    <string name="category">Категория</string>
+    <string name="Publicate">Опубликовать</string>
 
 
 </resources>
