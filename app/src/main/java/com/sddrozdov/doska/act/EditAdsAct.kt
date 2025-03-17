@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
+import com.sddrozdov.doska.database.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.interfaces.FragmentCloseInterface
@@ -40,6 +41,14 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
 
         init()
+        clickPublicate()
+    }
+
+    fun clickPublicate(){
+        binding.buttonPublicate.setOnClickListener{
+            val dbManager = DbManager()
+            dbManager.publicateAd()
+        }
     }
 
     fun onClickSelectCountry(view: View) {
@@ -89,6 +98,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 //        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()
 //        fragmentManager.commit()
     }
+
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
         binding.editAdsActScrollView.visibility = View.VISIBLE
