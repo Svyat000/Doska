@@ -49,6 +49,11 @@
     <string name="select_country">Выберите страну</string>
     <string name="select_city">Выберите город</string>
     <string name="first_select_your_country">Сначала выберите страну</string>
+    <string name="Country">Страна</string>
+    <string name="City">Город</string>
+    <string name="Phone">Телефон</string>
+    <string name="PhoneNumber">Номер телефона</string>
+    <string name="Index">Индекс</string>
 
 
 </resources>
