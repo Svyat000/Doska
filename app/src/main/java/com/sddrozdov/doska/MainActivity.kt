@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.act.EditAdsActivity
+import com.sddrozdov.doska.database.DbManager
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     val mAuth = FirebaseAuth.getInstance()
 
+    val dbManager = DbManager()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         WindowInsetUtil.applyWindowInsets(binding.root)
 
         setupActionBarToggle()
+        dbManager.readDataFromDB()
 
     }
 
