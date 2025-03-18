@@ -14,11 +14,14 @@ import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.interfaces.FragmentCloseInterface
 import com.sddrozdov.doska.fragments.ImageListFragment
+import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
 import com.sddrozdov.doska.utilites.ImagePicker
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
+
+    private val dbManager = DbManager()
 
     var chooseImageFrag: ImageListFragment? = null
 
@@ -44,11 +47,23 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         clickPublicate()
     }
 
-    fun clickPublicate(){
-        binding.buttonPublicate.setOnClickListener{
-            val dbManager = DbManager()
-            dbManager.publicateAd()
+    fun clickPublicate() {
+        binding.buttonPublicate.setOnClickListener {
+            dbManager.publicationAd(fillAd())
         }
+    }
+
+    private fun fillAd(): Ads {
+        val ads: Ads
+        binding.apply {
+            ads = Ads(
+                editAdsActSelectCountry.text.toString(), editAdsActSelectCity.text.toString(),
+                editTextPhoneNumber.text.toString(), editTextIndex.text.toString(),
+                editAdsActSelectCat.text.toString(), editTextPrice.text.toString(),
+                editTextDescription.text.toString(), dbManager.db.push().key
+            )
+        }
+        return ads
     }
 
     fun onClickSelectCountry(view: View) {
@@ -60,9 +75,10 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             binding.editAdsActSelectCity.text = getString(R.string.select_city)
         }
     }
+
     fun onClickSelectCategory(view: View) {
         val listCategory = resources.getStringArray(R.array.category).toMutableList() as ArrayList
-        dialogSpinnerHelper.showSpinnerDialog(this,listCategory,binding.editAdsActSelectCat)
+        dialogSpinnerHelper.showSpinnerDialog(this, listCategory, binding.editAdsActSelectCat)
     }
 
     private fun init() {
@@ -86,7 +102,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     fun onClickGetImages(view: View) {
 
         if (imageAdapter.imageArray.size == 0) {
-           ImagePicker.launcher(this,3)
+            ImagePicker.launcher(this, 3)
         } else {
             openChooseImageFragment(null)
             chooseImageFrag?.updateAdapterFromEdit(imageAdapter.imageArray)
@@ -107,7 +123,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun openChooseImageFragment(newList: ArrayList<Uri>?) {
-        chooseImageFrag = ImageListFragment(this,newList)
+        chooseImageFrag = ImageListFragment(this, newList)
         binding.editAdsActScrollView.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.editAdsActPlace_holder, chooseImageFrag!!)
