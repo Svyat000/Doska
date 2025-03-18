@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Doska</string>
+    <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
 
     <!-- Menu Drawer: Ads Section -->
     <string name="menu_ads_category">Объявления</string>
@@ -8,44 +9,44 @@
     <string name="menu_ads_computers">Компьютеры</string>
     <string name="menu_ads_phones">Телефоны</string>
     <string name="menu_ads_appliances">Бытовая техника</string>
+    <!-- Этот раздел содержит категории для размещения объявлений. -->
 
     <!-- Menu Drawer: Account Section -->
     <string name="menu_account_category">Аккаунт</string>
     <string name="account_register">Регистрация</string>
     <string name="account_login">Вход</string>
     <string name="account_logout">Выход</string>
+    <!--Этот раздел отвечает за управление аккаунтом пользователя. -->
 
+    <!-- General Actions -->
     <string name="open">Open</string>
     <string name="close">Close</string>
 
+    <!-- User Authentication Messages -->
     <string name="not_reg">Войдите или зарегистрируйтесь!</string>
-
-
-    <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
-
-    <!-- Sign Dialog -->
     <string name="sign_dialog_email_hint">Email</string>
     <string name="sign_dialog_password_hint">Password</string>
-
     <string name="sign_dialog_sign_in_button">Войти</string>
     <string name="sign_dialog_sign_up_button">Зарегистрироваться</string>
     <string name="sign_dialog_forget_password_button">Забыли пароль?</string>
     <string name="sign_dialog_sign_up_error">Не удалось зарегистрироваться</string>
     <string name="sign_dialog_sign_in_error">Не удалось войти</string>
-
-    <string name="sign_dialog_send_email_reset_password">На ваш Email адрес отправлено письмо для восстановления пароля</string>
-    <string name="sign_dialog_enter_your_Email">Для восстановления пароля укажите ваш Email</string>
     <string name="wrong_email_or_password">Почта или пароль указаны неверно, либо их не существует</string>
-    <string name="link_done">Почта успешно подключена к Google Account</string>
-    <string name="login_to_Google_via_email">Войдите в гугл аккаунт чтобы подключить вход через почту</string>
-
-
-    <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
-    <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
     <string name="error_empty_fields">Поля не должны быть пустыми</string>
     <string name="error_user_not_found">Пользователь не найден</string>
-    <string name="add_new_ads">Добавить новое объявление</string>
+    <!-- Сообщения для аутентификации и обработки ошибок при входе/регистрации. -->
 
+    <!-- Email Verification and Password Recovery -->
+    <string name="sign_dialog_send_email_reset_password">На ваш Email адрес отправлено письмо для восстановления пароля</string>
+    <string name="sign_dialog_enter_your_Email">Для восстановления пароля укажите ваш Email</string>
+    <string name="sign_dialog_successful_send_verification_email">Письмо для подтверждения успешно отправлено вам на почту!</string>
+    <string name="sign_dialog_error_send_verification_email">Не удалось отправить письмо вам на почту!</string>
+    <string name="link_done">Почта успешно подключена к Google Account</string>
+    <string name="login_to_Google_via_email">Войдите в гугл аккаунт чтобы подключить вход через почту</string>
+    <!-- Сообщения, связанные с восстановлением пароля и верификацией email. -->
+
+    <!-- Ad Creation -->
+    <string name="add_new_ads">Добавить новое объявление</string>
     <string name="select_country">Выберите страну</string>
     <string name="select_city">Выберите город</string>
     <string name="first_select_your_country">Сначала выберите страну</string>
@@ -54,7 +55,6 @@
     <string name="Phone">Телефон</string>
     <string name="PhoneNumber">*Номер телефона</string>
     <string name="Index">*Индекс</string>
-
     <string name="price">Цена</string>
     <string name="price_hint">*Цена</string>
     <string name="select_category">Выберите категорию</string>
@@ -62,6 +62,6 @@
     <string name="description_hint">*Описание</string>
     <string name="category">Категория</string>
     <string name="Publicate">Опубликовать</string>
-
-
+    <string name="price_desc">Цена</string>
+    <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
