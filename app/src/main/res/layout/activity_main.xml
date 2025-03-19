@@ -10,8 +10,8 @@
     tools:openDrawer="start">
 
     <include
-        android:id="@+id/mainContentToolbar"
-        layout="@layout/main_content_toolbar"
+        android:id="@+id/main_content"
+        layout="@layout/main_content_and_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,11 +20,11 @@
     <!-- NavigationView как дочерний элемент, с layout_gravity для указания позиции -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/mainNavigationView"
-        app:headerLayout="@layout/nav_header_main"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/drawer_main_menu"
         tools:openDrawer="start" />
 </androidx.drawerlayout.widget.DrawerLayout>

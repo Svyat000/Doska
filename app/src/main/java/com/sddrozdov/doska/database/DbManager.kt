@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.database
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,7 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.models.Ads
 
-class DbManager {
+class DbManager(val readDataCallback: ReadDataCallback?) {
     val db = Firebase.database.getReference("main")
     val auth = Firebase.auth
 
@@ -30,6 +31,8 @@ class DbManager {
                         adArray.add(ad)
                     }
                 }
+                Log.d("MyTag", " CALLBACK LOG IN DBMANAGER")
+                readDataCallback?.readData(adArray)
             }
 
             override fun onCancelled(error: DatabaseError) {

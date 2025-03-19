@@ -21,7 +21,7 @@ import com.sddrozdov.doska.utilites.ImagePicker
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
-    private val dbManager = DbManager()
+    private val dbManager = DbManager(null)
 
     var chooseImageFrag: ImageListFragment? = null
 
@@ -59,8 +59,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             ads = Ads(
                 editAdsActSelectCountry.text.toString(), editAdsActSelectCity.text.toString(),
                 editTextPhoneNumber.text.toString(), editTextIndex.text.toString(),
-                editAdsActSelectCat.text.toString(), editTextPrice.text.toString(),
-                editTextDescription.text.toString(), dbManager.db.push().key
+                editAdsActSelectCat.text.toString(), editTitle.text.toString(),
+                editTextPrice.text.toString(), editTextDescription.text.toString(),
+                dbManager.db.push().key
             )
         }
         return ads

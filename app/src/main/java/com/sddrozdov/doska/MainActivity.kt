@@ -2,6 +2,7 @@ package com.sddrozdov.doska
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,18 +14,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.database.DbManager
+import com.sddrozdov.doska.database.ReadDataCallback
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
-import com.sddrozdov.doska.utilites.ImagePicker
+import com.sddrozdov.doska.models.Ads
+import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
 
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, ReadDataCallback {
 
     private lateinit var accountTextView: TextView
 
@@ -37,7 +41,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     val mAuth = FirebaseAuth.getInstance()
 
-    val dbManager = DbManager()
+    val dbManager = DbManager(this)
+
+    val adsAdapter = AdsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +56,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
         setupActionBarToggle()
         dbManager.readDataFromDB()
+        initRecyclerView()
 
     }
 
@@ -71,12 +78,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         return super.onCreateOptionsMenu(menu)
     }
 
+    private fun initRecyclerView() {
+        binding.apply {
+            mainContent.rcView.layoutManager = LinearLayoutManager(this@MainActivity)
+            mainContent.rcView.adapter = adsAdapter
+        }
+    }
+
     private fun setupActionBarToggle() {
-        setSupportActionBar(binding.mainContentToolbar.toolbar)
+        setSupportActionBar(binding.mainContent.toolbar)
         val toggle = ActionBarDrawerToggle(
             this,
             binding.mainDrawerLayout,
-            binding.mainContentToolbar.toolbar,
+            binding.mainContent.toolbar,
             R.string.open,
             R.string.close
         )
@@ -152,5 +166,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                 insets
             }
         }
+    }
+
+    override fun readData(list: List<Ads>) {
+        Log.d("MyTag", " CALLBACK LOG IN MAIN ACT FUN READDATA")
+        adsAdapter.updateAdapter(list)
     }
 }

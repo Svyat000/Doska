@@ -63,5 +63,7 @@
     <string name="category">Категория</string>
     <string name="Publicate">Опубликовать</string>
     <string name="price_desc">Цена</string>
+    <string name="Title">Заголовок</string>
+    <string name="title_hint">*Заголовок</string>
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
