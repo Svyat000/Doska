@@ -109,7 +109,7 @@
                     android:paddingTop="5dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="5dp"
-                    android:text="3200р"
+                    android:text="666р"
                     android:textColor="@color/color_red"
                     android:textSize="16sp"
                     android:textStyle="bold" />
