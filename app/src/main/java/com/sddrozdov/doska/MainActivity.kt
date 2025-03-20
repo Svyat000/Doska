@@ -16,16 +16,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.act.EditAdsActivity
-import com.sddrozdov.doska.database.DbManager
 import com.sddrozdov.doska.database.ReadDataCallback
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
-import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, ReadDataCallback {
@@ -39,11 +38,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
 
     private var accountHelperGoogle: AccountHelperGoogleSignIn? = null
 
-    val mAuth = FirebaseAuth.getInstance()
+    val mAuth = Firebase.auth
 
-    val dbManager = DbManager(this)
-
-    val adsAdapter = AdsAdapter()
+    val adsAdapter = AdsAdapter(mAuth)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +48,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         WindowInsetUtil.applyWindowInsets(binding.root)
-
         setupActionBarToggle()
-        dbManager.readDataFromDB()
         initRecyclerView()
-
+        accountHelperGoogle = AccountHelperGoogleSignIn(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -166,10 +160,5 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
                 insets
             }
         }
-    }
-
-    override fun readData(list: List<Ads>) {
-        Log.d("MyTag", " CALLBACK LOG IN MAIN ACT FUN READDATA")
-        adsAdapter.updateAdapter(list)
     }
 }

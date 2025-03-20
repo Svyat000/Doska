@@ -10,4 +10,5 @@ data class Ads(
     val price: String? = null,
     val description: String? = null,
     val key: String? = null,
+    val uid: String? = null,
 )

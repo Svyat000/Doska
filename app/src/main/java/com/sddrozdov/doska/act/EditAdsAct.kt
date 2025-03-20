@@ -61,7 +61,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
                 editTextPhoneNumber.text.toString(), editTextIndex.text.toString(),
                 editAdsActSelectCat.text.toString(), editTitle.text.toString(),
                 editTextPrice.text.toString(), editTextDescription.text.toString(),
-                dbManager.db.push().key
+                dbManager.db.push().key, dbManager.auth.uid
             )
         }
         return ads
