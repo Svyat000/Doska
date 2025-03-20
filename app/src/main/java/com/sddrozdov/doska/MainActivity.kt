@@ -56,30 +56,60 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
         accountHelperGoogle = AccountHelperGoogleSignIn(this)
         initViewModel()
         firebaseViewModel.loadAllAds()
+        bottomMenuOnClick()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.id_new_ads) {
-            val intent = Intent(this, EditAdsActivity::class.java)
-            startActivity(intent)
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onResume() {
+        super.onResume()
+        binding.mainContent.bottomNavigationView.selectedItemId = R.id.id_home
     }
+
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return super.onOptionsItemSelected(item) TODO()
+//    } метод когда пользователь выбирает элемент из меню
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.main_menu, menu)
+//        return super.onCreateOptionsMenu(menu) TODO()
+//    } метод для надувания меню из xml файла menu
 
     override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     private fun initRecyclerView() {
         binding.apply {
             mainContent.rcView.layoutManager = LinearLayoutManager(this@MainActivity)
             mainContent.rcView.adapter = adsAdapter
+        }
+    }
+
+    private fun bottomMenuOnClick() = with(binding) {
+        mainContent.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.id_new_ads -> {
+                    val intent = Intent(this@MainActivity, EditAdsActivity::class.java)
+                    startActivity(intent)
+                }
+
+                R.id.id_my_ads -> Toast.makeText(
+                    this@MainActivity,
+                    "TEST MY ADS",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                R.id.id_favorites -> Toast.makeText(
+                    this@MainActivity,
+                    "TEST MY FAVORITE",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                R.id.id_home -> Toast.makeText(this@MainActivity, "TEST HO HOME", Toast.LENGTH_LONG)
+                    .show()
+            }
+            true
         }
     }
 
