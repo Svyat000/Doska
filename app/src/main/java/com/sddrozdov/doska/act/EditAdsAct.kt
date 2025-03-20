@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
-import com.sddrozdov.doska.database.DbManager
+import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
 import com.sddrozdov.doska.interfaces.FragmentCloseInterface
@@ -21,7 +21,7 @@ import com.sddrozdov.doska.utilites.ImagePicker
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
-    private val dbManager = DbManager(null)
+    private val dbManager = DbManager()
 
     var chooseImageFrag: ImageListFragment? = null
 

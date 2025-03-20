@@ -1,4 +1,4 @@
-package com.sddrozdov.doska.database
+package com.sddrozdov.doska.models
 
 import android.util.Log
 import com.google.firebase.auth.ktx.auth
@@ -7,9 +7,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.sddrozdov.doska.models.Ads
 
-class DbManager(val readDataCallback: ReadDataCallback?) {
+class DbManager {
     val db = Firebase.database.getReference("main")
     val auth = Firebase.auth
 
@@ -19,7 +18,7 @@ class DbManager(val readDataCallback: ReadDataCallback?) {
         }
     }
 
-    fun readDataFromDB() {
+    fun readDataFromDB(readDataCallback: ReadDataCallback?) {
         db.addListenerForSingleValueEvent(object : ValueEventListener {
 
             val adArray = ArrayList<Ads>()
@@ -41,5 +40,9 @@ class DbManager(val readDataCallback: ReadDataCallback?) {
             }
         })
     }
-
+    interface ReadDataCallback {
+        fun readData(list: ArrayList<Ads>){
+            Log.d("MyTag"," CALLBACK LOG IN INTERFACE")
+        }
+    }
 }

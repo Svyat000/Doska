@@ -2,13 +2,13 @@ package com.sddrozdov.doska
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -21,13 +21,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.act.EditAdsActivity
-import com.sddrozdov.doska.database.ReadDataCallback
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
+import com.sddrozdov.doska.viewModel.FirebaseViewModel
 
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, ReadDataCallback {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     private lateinit var accountTextView: TextView
 
@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
 
     val adsAdapter = AdsAdapter(mAuth)
 
+    private val firebaseViewModel: FirebaseViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
         setupActionBarToggle()
         initRecyclerView()
         accountHelperGoogle = AccountHelperGoogleSignIn(this)
+        initViewModel()
+        firebaseViewModel.loadAllAds()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -78,6 +82,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Read
             mainContent.rcView.adapter = adsAdapter
         }
     }
+
+    private fun initViewModel() {
+        firebaseViewModel.liveAdsData.observe(this, {
+            adsAdapter.updateAdapter(it)
+        })
+    }
+
 
     private fun setupActionBarToggle() {
         setSupportActionBar(binding.mainContent.toolbar)
