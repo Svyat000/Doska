@@ -33,6 +33,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     var editImagePos = 0
 
+    private var isEditState = false
+    private var ads: Ads? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,19 +46,30 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
 
         init()
-        clickPublicate()
         checkEditState()
+        clickPublicate()
+
     }
 
     private fun clickPublicate() {
         binding.buttonPublicate.setOnClickListener {
-            dbManager.publicationAd(fillAd())
+            val adTemp = fillAd()
+            if (isEditState) {
+                dbManager.publicationAd(adTemp.copy(key = ads?.key))
+            } else {
+                dbManager.publicationAd(adTemp)
+            }
+            finish()
         }
     }
 
     private fun checkEditState() {
         if (isEditState()) {
-            fillView(intent.getSerializableExtra(MainActivity.ADS_DATA) as Ads)
+            isEditState = true
+            ads = intent.getSerializableExtra(MainActivity.ADS_DATA) as Ads
+            if (ads != null) {
+                fillView(ads!!)
+            }
         }
     }
 
