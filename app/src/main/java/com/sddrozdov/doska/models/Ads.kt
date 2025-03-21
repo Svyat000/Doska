@@ -1,5 +1,7 @@
 package com.sddrozdov.doska.models
 
+import java.io.Serializable
+
 data class Ads(
     val country: String? = null,
     val city: String? = null,
@@ -11,4 +13,4 @@ data class Ads(
     val description: String? = null,
     val key: String? = null,
     val uid: String? = null,
-)
+) : Serializable

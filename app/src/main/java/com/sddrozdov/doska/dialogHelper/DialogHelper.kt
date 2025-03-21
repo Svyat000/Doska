@@ -3,7 +3,7 @@ package com.sddrozdov.doska.dialogHelper
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.sddrozdov.doska.MainActivity
+import com.sddrozdov.doska.act.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.accountHelper.AccountHelperEmailAndPassword
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn

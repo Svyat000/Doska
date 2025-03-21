@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.sddrozdov.doska.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
@@ -45,12 +44,34 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
         init()
         clickPublicate()
+        checkEditState()
     }
 
-    fun clickPublicate() {
+    private fun clickPublicate() {
         binding.buttonPublicate.setOnClickListener {
             dbManager.publicationAd(fillAd())
         }
+    }
+
+    private fun checkEditState() {
+        if (isEditState()) {
+            fillView(intent.getSerializableExtra(MainActivity.ADS_DATA) as Ads)
+        }
+    }
+
+    private fun isEditState(): Boolean {
+        return intent.getBooleanExtra(MainActivity.EDIT_STATE, false)
+    }
+
+    private fun fillView(ads: Ads) = with(binding) {
+        editAdsActSelectCountry.text = ads.country
+        editAdsActSelectCity.text = ads.city
+        editTextPhoneNumber.setText(ads.tel)
+        editTextIndex.setText(ads.index)
+        editAdsActSelectCat.text = ads.category
+        editTitle.setText(ads.title)
+        editTextPrice.setText(ads.price)
+        editTextDescription.setText(ads.description)
     }
 
     private fun fillAd(): Ads {
@@ -66,6 +87,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         }
         return ads
     }
+
 
     fun onClickSelectCountry(view: View) {
         // Получение списка стран из CityHelper

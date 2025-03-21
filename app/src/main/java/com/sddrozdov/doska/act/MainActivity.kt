@@ -1,8 +1,7 @@
-package com.sddrozdov.doska
+package com.sddrozdov.doska.act
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -19,8 +18,8 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.sddrozdov.doska.R
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
-import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
 
     val mAuth = Firebase.auth
 
-    val adsAdapter = AdsAdapter(mAuth)
+    val adsAdapter = AdsAdapter(this)
 
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
@@ -202,5 +201,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                 insets
             }
         }
+    }
+
+    companion object {
+        const val EDIT_STATE = "edit_state"
+        const val ADS_DATA = "ads_data"
     }
 }

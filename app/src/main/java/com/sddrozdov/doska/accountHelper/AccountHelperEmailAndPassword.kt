@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
-import com.sddrozdov.doska.MainActivity
+import com.sddrozdov.doska.act.MainActivity
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.constans.FirebaseAuthConstants
 
