@@ -55,11 +55,10 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         binding.buttonPublicate.setOnClickListener {
             val adTemp = fillAd()
             if (isEditState) {
-                dbManager.publicationAd(adTemp.copy(key = ads?.key))
+                dbManager.publicationAd(adTemp.copy(key = ads?.key), onPublishFinish())
             } else {
-                dbManager.publicationAd(adTemp)
+                dbManager.publicationAd(adTemp, onPublishFinish())
             }
-            finish()
         }
     }
 
@@ -86,6 +85,15 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         editTitle.setText(ads.title)
         editTextPrice.setText(ads.price)
         editTextDescription.setText(ads.description)
+    }
+
+    private fun onPublishFinish(): DbManager.FinishWorkListener {
+        return object : DbManager.FinishWorkListener {
+            override fun onFinish() {
+                finish()
+            }
+
+        }
     }
 
     private fun fillAd(): Ads {
