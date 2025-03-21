@@ -15,10 +15,11 @@ class DbManager {
 
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
-            db.child(ads.key ?: "Empty").child(auth.uid!!).child("AD").setValue(ads).addOnCompleteListener {
-                //if(it.isSuccessful)
-                finishWorkListener.onFinish()
-            }
+            db.child(ads.key ?: "Empty").child(auth.uid!!).child("AD").setValue(ads)
+                .addOnCompleteListener {
+                    //if(it.isSuccessful)
+                    finishWorkListener.onFinish()
+                }
         }
     }
 
@@ -30,6 +31,13 @@ class DbManager {
     fun getAllAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/AD/price")
         readDataFromDB(query, readDataCallback)
+    }
+
+    fun deleteAd(ads: Ads, finishWorkListener: FinishWorkListener) {
+        if (ads.key == null || ads.uid == null) return
+        db.child(ads.key).child(ads.uid).removeValue().addOnCompleteListener {
+            finishWorkListener.onFinish()
+        }
     }
 
     private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
@@ -61,7 +69,7 @@ class DbManager {
         }
     }
 
-    interface FinishWorkListener{
+    interface FinishWorkListener {
         fun onFinish()
     }
 }

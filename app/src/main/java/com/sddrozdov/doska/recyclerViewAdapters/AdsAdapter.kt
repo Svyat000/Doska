@@ -4,11 +4,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.act.MainActivity
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.AdListItemBinding
 import com.sddrozdov.doska.models.Ads
+import com.sddrozdov.doska.utilites.DiffUtilHelper
 
 class AdsAdapter(private val mainActivity: MainActivity) :
     RecyclerView.Adapter<AdsAdapter.AdsViewHolder>() {
@@ -26,6 +28,9 @@ class AdsAdapter(private val mainActivity: MainActivity) :
             }
             showEditPanel(isOwner(ads))
             binding.ibEditAd.setOnClickListener(onClickEdit(ads))
+            binding.ibDeleteAd.setOnClickListener {
+                mainActivity.onDeleteItem(ads)
+            }
         }
 
         private fun isOwner(ads: Ads): Boolean = ads.uid == mainActivity.mAuth.uid
@@ -60,8 +65,13 @@ class AdsAdapter(private val mainActivity: MainActivity) :
     }
 
     fun updateAdapter(newAdsArray: List<Ads>) {
+        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(adsArray, newAdsArray))
+        diffResult.dispatchUpdatesTo(this)
         adsArray.clear()
         adsArray.addAll(newAdsArray)
-        notifyDataSetChanged()
+    }
+
+    interface DeleteItemListener {
+        fun onDeleteItem(ads: Ads)
     }
 }

@@ -23,10 +23,12 @@ import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
+import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
 import com.sddrozdov.doska.viewModel.FirebaseViewModel
 
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
+    AdsAdapter.DeleteItemListener {
 
     private lateinit var accountTextView: TextView
 
@@ -206,5 +208,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
     companion object {
         const val EDIT_STATE = "edit_state"
         const val ADS_DATA = "ads_data"
+    }
+
+    override fun onDeleteItem(ads: Ads) {
+        firebaseViewModel.deleteItem(ads)
     }
 }
