@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -18,8 +19,18 @@ class DbManager {
         }
     }
 
-    fun readDataFromDB(readDataCallback: ReadDataCallback?) {
-        db.addListenerForSingleValueEvent(object : ValueEventListener {
+    fun getMyAds(readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(auth.uid + "/ad/uid").equalTo(auth.uid)
+        readDataFromDB(query, readDataCallback)
+    }
+
+    fun getAllAds(readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(auth.uid + "/ad/price")
+        readDataFromDB(query, readDataCallback)
+    }
+
+    private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
 
             val adArray = ArrayList<Ads>()
 
@@ -40,9 +51,10 @@ class DbManager {
             }
         })
     }
+
     interface ReadDataCallback {
-        fun readData(list: ArrayList<Ads>){
-            Log.d("MyTag"," CALLBACK LOG IN INTERFACE")
+        fun readData(list: ArrayList<Ads>) {
+            Log.d("MyTag", " CALLBACK LOG IN INTERFACE")
         }
     }
 }

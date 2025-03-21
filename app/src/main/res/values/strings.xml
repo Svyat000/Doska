@@ -65,5 +65,6 @@
     <string name="price_desc">Цена</string>
     <string name="Title">Заголовок</string>
     <string name="title_hint">*Заголовок</string>
+    <string name="menu_ads_main_ads">Главная</string>
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>

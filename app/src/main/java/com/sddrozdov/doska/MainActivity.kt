@@ -94,11 +94,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                     startActivity(intent)
                 }
 
-                R.id.id_my_ads -> Toast.makeText(
-                    this@MainActivity,
-                    "TEST MY ADS",
-                    Toast.LENGTH_LONG
-                ).show()
+                R.id.id_my_ads -> {
+                    firebaseViewModel.loadMyAds()
+                    mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
+                }
 
                 R.id.id_favorites -> Toast.makeText(
                     this@MainActivity,
@@ -106,17 +105,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener {
                     Toast.LENGTH_LONG
                 ).show()
 
-                R.id.id_home -> Toast.makeText(this@MainActivity, "TEST HO HOME", Toast.LENGTH_LONG)
-                    .show()
+                R.id.id_home -> {
+                    firebaseViewModel.loadAllAds()
+                    mainContent.toolbar.title = getString(R.string.menu_ads_main_ads)
+                }
             }
             true
         }
     }
 
     private fun initViewModel() {
-        firebaseViewModel.liveAdsData.observe(this, {
+        firebaseViewModel.liveAdsData.observe(this) {
             adsAdapter.updateAdapter(it)
-        })
+        }
     }
 
 
