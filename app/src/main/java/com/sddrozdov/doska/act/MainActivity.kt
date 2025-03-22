@@ -28,7 +28,7 @@ import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
 import com.sddrozdov.doska.viewModel.FirebaseViewModel
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
-    AdsAdapter.DeleteItemListener {
+    AdsAdapter.ItemListener {
 
     private lateinit var accountTextView: TextView
 
@@ -212,5 +212,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun onDeleteItem(ads: Ads) {
         firebaseViewModel.deleteItem(ads)
+    }
+
+    override fun onAdViewed(ads: Ads) {
+        firebaseViewModel.adViewed(ads)
     }
 }

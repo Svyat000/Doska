@@ -36,4 +36,10 @@ class FirebaseViewModel : ViewModel() {
 
         })
     }
+
+    fun adViewed(ads: Ads){
+        dbManager.adViewed(ads)
+    }
+
+
 }

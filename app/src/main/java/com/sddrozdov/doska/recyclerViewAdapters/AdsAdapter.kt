@@ -25,8 +25,12 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 tvDescription.text = ads.description
                 tvPrice.text = ads.price
                 tvTitle.text = ads.title
+                tvViewCounter.text = ads.viewsCounter
             }
             showEditPanel(isOwner(ads))
+            itemView.setOnClickListener {
+                mainActivity.onAdViewed(ads)
+            }
             binding.ibEditAd.setOnClickListener(onClickEdit(ads))
             binding.ibDeleteAd.setOnClickListener {
                 mainActivity.onDeleteItem(ads)
@@ -71,7 +75,10 @@ class AdsAdapter(private val mainActivity: MainActivity) :
         adsArray.addAll(newAdsArray)
     }
 
-    interface DeleteItemListener {
+    interface ItemListener {
         fun onDeleteItem(ads: Ads)
+        fun onAdViewed(ads: Ads)
     }
+
+
 }

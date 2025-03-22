@@ -10,16 +10,25 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class DbManager {
-    val db = Firebase.database.getReference("main")
+    val db = Firebase.database.getReference(MAIN)
     val auth = Firebase.auth
 
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
-            db.child(ads.key ?: "Empty").child(auth.uid!!).child("AD").setValue(ads)
+            db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
                 .addOnCompleteListener {
                     //if(it.isSuccessful)
                     finishWorkListener.onFinish()
                 }
+        }
+    }
+
+    fun adViewed(ads: Ads) {
+        var counter = ads.viewsCounter.toInt()
+        counter++
+        if (auth.uid != null) {
+            db.child(ads.key ?: "Empty").child(INFO_AD)
+                .setValue(InfoItem(counter.toString(), ads.emailsCounter, ads.callsCounter))
         }
     }
 
@@ -46,11 +55,21 @@ class DbManager {
             val adArray = ArrayList<Ads>()
 
             override fun onDataChange(snapshot: DataSnapshot) {
+
                 for (i in snapshot.children) {
-                    val ad = i.children.iterator().next().child("AD").getValue(Ads::class.java)
-                    if (ad != null) {
-                        adArray.add(ad)
+
+                    var ad: Ads? = null
+
+                    i.children.forEach {
+                        if (ad == null) ad = it.child(AD).getValue(Ads::class.java)
                     }
+                    val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
+
+                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
+                    ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
+                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
+                    if (ad != null) adArray.add(ad!!)
+
                 }
                 Log.d("MyTag", " CALLBACK LOG IN DBMANAGER")
                 readDataCallback?.readData(adArray)
@@ -71,5 +90,11 @@ class DbManager {
 
     interface FinishWorkListener {
         fun onFinish()
+    }
+
+    companion object {
+        const val AD = "AD"
+        const val MAIN = "main"
+        const val INFO_AD = "info"
     }
 }
