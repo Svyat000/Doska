@@ -32,6 +32,32 @@ class DbManager {
         }
     }
 
+    private fun addFavoriteAds(ads: Ads, finishWorkListener: FinishWorkListener) {
+        ads.key?.let {
+            auth.uid?.let { it1 ->
+                db.child(it).child(FAFORITE_ADS).child(it1).setValue(it1).addOnCompleteListener {
+                    if (it.isSuccessful) finishWorkListener.onFinish()
+                }
+            }
+        }
+    }
+
+    private fun deleteFavoriteAds(ads: Ads, finishWorkListener: FinishWorkListener) {
+        ads.key?.let {
+            auth.uid?.let { it1 ->
+                db.child(it).child(FAFORITE_ADS).child(it1).removeValue().addOnCompleteListener {
+                    if (it.isSuccessful) finishWorkListener.onFinish()
+                }
+            }
+        }
+    }
+
+    fun onFavoriteClick(ads: Ads, finishWorkListener: FinishWorkListener) {
+        if (ads.isFavorite) deleteFavoriteAds(ads, finishWorkListener)
+        else addFavoriteAds(ads, finishWorkListener)
+    }
+
+
     fun getMyAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/AD/uid").equalTo(auth.uid)
         readDataFromDB(query, readDataCallback)
@@ -96,5 +122,6 @@ class DbManager {
         const val AD = "AD"
         const val MAIN = "main"
         const val INFO_AD = "info"
+        const val FAFORITE_ADS = "favorite"
     }
 }

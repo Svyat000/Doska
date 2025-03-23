@@ -26,20 +26,38 @@ class FirebaseViewModel : ViewModel() {
         })
     }
 
-    fun deleteItem(ad: Ads){
-        dbManager.deleteAd(ad, object : DbManager.FinishWorkListener{
+    fun deleteItem(ads: Ads) {
+        dbManager.deleteAd(ads, object : DbManager.FinishWorkListener {
             override fun onFinish() {
                 val updatedList = liveAdsData.value
-                updatedList?.remove(ad)
+                updatedList?.remove(ads)
                 liveAdsData.postValue(updatedList)
             }
 
         })
     }
 
-    fun adViewed(ads: Ads){
+    fun onFavoriteCLick(ads: Ads) {
+        dbManager.onFavoriteClick(ads, object : DbManager.FinishWorkListener {
+            override fun onFinish() {
+                val updatedList = liveAdsData.value
+                val position = updatedList?.indexOf(ads)
+                if (position != INCORRECT_POSITION_ADS) {
+                    position?.let {
+                        updatedList[position] =
+                            updatedList[position].copy(isFavorite = !ads.isFavorite)
+                    }
+                }
+                liveAdsData.postValue(updatedList)
+            }
+        })
+    }
+
+    fun adViewed(ads: Ads) {
         dbManager.adViewed(ads)
     }
 
-
+    companion object {
+        const val INCORRECT_POSITION_ADS = -1
+    }
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.MainActivity
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.AdListItemBinding
@@ -26,14 +27,21 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 tvPrice.text = ads.price
                 tvTitle.text = ads.title
                 tvViewCounter.text = ads.viewsCounter
-            }
-            showEditPanel(isOwner(ads))
-            itemView.setOnClickListener {
-                mainActivity.onAdViewed(ads)
-            }
-            binding.ibEditAd.setOnClickListener(onClickEdit(ads))
-            binding.ibDeleteAd.setOnClickListener {
-                mainActivity.onDeleteItem(ads)
+                if (ads.isFavorite) ibFav.setImageResource(R.drawable.ic_fav_pressed)
+                else ibFav.setImageResource(R.drawable.ic_fav_normal)
+
+                showEditPanel(isOwner(ads))
+
+                itemView.setOnClickListener {
+                    mainActivity.onAdViewed(ads)
+                }
+                ibFav.setOnClickListener {
+                    mainActivity.onFavoriteCLicked(ads)
+                }
+                ibEditAd.setOnClickListener(onClickEdit(ads))
+                ibDeleteAd.setOnClickListener {
+                    mainActivity.onDeleteItem(ads)
+                }
             }
         }
 
@@ -78,7 +86,6 @@ class AdsAdapter(private val mainActivity: MainActivity) :
     interface ItemListener {
         fun onDeleteItem(ads: Ads)
         fun onAdViewed(ads: Ads)
+        fun onFavoriteCLicked(ads: Ads)
     }
-
-
 }
