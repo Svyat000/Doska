@@ -44,8 +44,13 @@ class FirebaseViewModel : ViewModel() {
                 val position = updatedList?.indexOf(ads)
                 if (position != INCORRECT_POSITION_ADS) {
                     position?.let {
+                        val favoriteCounter =
+                            if (ads.isFavorite) ads.favoriteCounter.toInt() - REMOVE_ONE_TO_THE_FAV_COUNTER else ads.favoriteCounter.toInt() + ADD_ONE_TO_THE_FAV_COUNTER
                         updatedList[position] =
-                            updatedList[position].copy(isFavorite = !ads.isFavorite)
+                            updatedList[position].copy(
+                                isFavorite = !ads.isFavorite,
+                                favoriteCounter = favoriteCounter.toString()
+                            )
                     }
                 }
                 liveAdsData.postValue(updatedList)
@@ -59,5 +64,8 @@ class FirebaseViewModel : ViewModel() {
 
     companion object {
         const val INCORRECT_POSITION_ADS = -1
+        const val ADD_ONE_TO_THE_FAV_COUNTER = 1
+        const val REMOVE_ONE_TO_THE_FAV_COUNTER = 1
+
     }
 }

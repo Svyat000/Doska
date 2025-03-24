@@ -91,6 +91,13 @@ class DbManager {
                     }
                     val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
 
+                    val favoriteCounter = i.child(FAFORITE_ADS).childrenCount
+                    val isFavorite = auth.uid?.let {
+                        i.child(FAFORITE_ADS).child(it).getValue(String::class.java)
+                    }
+                    ad?.isFavorite = isFavorite != null
+                    ad?.favoriteCounter = favoriteCounter.toString()
+
                     ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
                     ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
                     ad?.callsCounter = infoItem?.callsCounter ?: "0"

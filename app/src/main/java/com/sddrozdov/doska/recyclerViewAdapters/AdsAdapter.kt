@@ -27,6 +27,7 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 tvPrice.text = ads.price
                 tvTitle.text = ads.title
                 tvViewCounter.text = ads.viewsCounter
+                tvFavCounter.text = ads.favoriteCounter
                 if (ads.isFavorite) ibFav.setImageResource(R.drawable.ic_fav_pressed)
                 else ibFav.setImageResource(R.drawable.ic_fav_normal)
 

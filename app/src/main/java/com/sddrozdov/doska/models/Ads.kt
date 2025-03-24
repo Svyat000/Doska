@@ -14,7 +14,8 @@ data class Ads(
     val key: String? = null,
     val uid: String? = null,
 
-    val isFavorite: Boolean = false,
+    var isFavorite: Boolean = false,
+    var favoriteCounter: String = "0",
 
     var viewsCounter: String = "0",
     var emailsCounter: String = "0",
