@@ -18,36 +18,36 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
             Toast.makeText(act, R.string.error_empty_fields, Toast.LENGTH_SHORT).show()
             return
         }
-
-        act.mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    task.result.user?.let { user ->
-                        sendEmailVerification(user)
-                        act.uiUpdate(user)
-                    } ?: run {
-                        // Обработка случая, когда user равен null
-                        Toast.makeText(act, R.string.error_user_not_found, Toast.LENGTH_SHORT)
-                            .show()
+        act.mAuth.currentUser?.delete()?.addOnCompleteListener { task1 ->
+            if (task1.isSuccessful) {
+                act.mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            task.result.user?.let { user ->
+                                sendEmailVerification(user)
+                                act.uiUpdate(user)
+                            } ?: run {
+                                // Обработка случая, когда user равен null
+                                Toast.makeText(
+                                    act,
+                                    R.string.error_user_not_found,
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
+                        } else if (task.exception is FirebaseAuthUserCollisionException) {
+                            linkEmailToGmail(email, password)
+                        } else handleSignUpError(task.exception)
                     }
-                } else if (task.exception is FirebaseAuthUserCollisionException) {
-                    linkEmailToGmail(email, password)
-                } else handleSignUpError(task.exception)
             }
+        }
+
     }
 
 
     private fun handleSignUpError(exception: Exception?) {
 
         when (exception) {
-//            is FirebaseAuthUserCollisionException -> {
-//                Log.d("MyLog", "Exception: ${exception.errorCode}")
-//                Toast.makeText(
-//                    act,
-//                    FirebaseAuthConstants.ERROR_EMAIL_ALREADY_IN_USE,
-//                    Toast.LENGTH_LONG
-//                ).show()
-//            }
 
             is FirebaseAuthInvalidCredentialsException -> {
                 Log.d("MyLog", "Exception111: ${exception.errorCode}")
@@ -75,15 +75,19 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
 
     fun signInWithEmailAndPassword(email: String, password: String) {
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            act.mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        act.uiUpdate(task.result.user)
-                    } else {
-                        Log.d("MyLog", "Exception: ${task.exception}")
-                        handleSignUpError(task.exception)
-                    }
+            act.mAuth.currentUser?.delete()?.addOnCompleteListener { task1 ->
+                if (task1.isSuccessful) {
+                    act.mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                act.uiUpdate(task.result.user)
+                            } else {
+                                Log.d("MyLog", "Exception: ${task.exception}")
+                                handleSignUpError(task.exception)
+                            }
+                        }
                 }
+            }
         }
     }
 
