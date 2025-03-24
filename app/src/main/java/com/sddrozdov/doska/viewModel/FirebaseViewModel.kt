@@ -18,6 +18,14 @@ class FirebaseViewModel : ViewModel() {
         })
     }
 
+    fun loadMyFavoriteAds() {
+        dbManager.getMyFavoriteAds(object : DbManager.ReadDataCallback {
+            override fun readData(list: ArrayList<Ads>) {
+                liveAdsData.value = list
+            }
+        })
+    }
+
     fun loadMyAds() {
         dbManager.getMyAds(object : DbManager.ReadDataCallback {
             override fun readData(list: ArrayList<Ads>) {

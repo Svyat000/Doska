@@ -100,11 +100,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
                 }
 
-                R.id.id_favorites -> Toast.makeText(
-                    this@MainActivity,
-                    "TEST MY FAVORITE",
-                    Toast.LENGTH_LONG
-                ).show()
+                R.id.id_favorites -> firebaseViewModel.loadMyFavoriteAds()
 
                 R.id.id_home -> {
                     firebaseViewModel.loadAllAds()
@@ -118,6 +114,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private fun initViewModel() {
         firebaseViewModel.liveAdsData.observe(this) {
             adsAdapter.updateAdapter(it)
+            binding.mainContent.EmptyFavAds.visibility =
+                if (it.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
