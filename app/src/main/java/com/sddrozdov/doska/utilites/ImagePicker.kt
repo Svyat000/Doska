@@ -3,6 +3,7 @@ package com.sddrozdov.doska.utilites
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.act.EditAdsActivity
 import io.ak1.pix.helpers.PixEventCallback
@@ -37,7 +38,7 @@ object ImagePicker {
         return options
     }
 
-    fun launcher(editAdsActivity: EditAdsActivity, imageCounter: Int) {
+    fun getMultiImages(editAdsActivity: EditAdsActivity, imageCounter: Int) {
         editAdsActivity.addPixToActivity(
             R.id.editAdsActPlace_holder, getOption(imageCounter)
         ) { result ->
@@ -51,6 +52,28 @@ object ImagePicker {
                 PixEventCallback.Status.BACK_PRESSED -> TODO()
             }
         }
+    }
+
+    fun getSingleImages(editAdsActivity: EditAdsActivity) {
+        val fragmentTemp = editAdsActivity.chooseImageFrag
+        editAdsActivity.addPixToActivity(
+            R.id.editAdsActPlace_holder, getOption(1)
+        ) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    editAdsActivity.chooseImageFrag = fragmentTemp
+                    openChooseImageFragment(editAdsActivity, fragmentTemp!!)
+                    singleImage(editAdsActivity, result.data[0])
+                }
+
+                PixEventCallback.Status.BACK_PRESSED -> TODO()
+            }
+        }
+    }
+
+    private fun openChooseImageFragment(editAdsActivity: EditAdsActivity, fragment: Fragment) {
+        editAdsActivity.supportFragmentManager.beginTransaction()
+            .replace(R.id.editAdsActPlace_holder, fragment).commit()
     }
 
     private fun closePixFragment(editAdsActivity: EditAdsActivity) {
@@ -69,13 +92,16 @@ object ImagePicker {
             editAdsActivity.chooseImageFrag?.updateAdapter(uris as ArrayList<Uri>)
         } else if (uris.size == 1 && editAdsActivity.chooseImageFrag == null) {
             CoroutineScope(Dispatchers.Main).launch {
-                val bitMapArray = ImageManager.imageResize(uris as ArrayList<Uri>, editAdsActivity) as ArrayList<Bitmap>
+                val bitMapArray = ImageManager.imageResize(
+                    uris as ArrayList<Uri>,
+                    editAdsActivity
+                ) as ArrayList<Bitmap>
                 editAdsActivity.imageAdapter.updateAdapter(bitMapArray)
             }
         }
     }
 
-    fun singleImage(editAdsActivity: EditAdsActivity, uri: Uri) {
+    private fun singleImage(editAdsActivity: EditAdsActivity, uri: Uri) {
         editAdsActivity.chooseImageFrag?.setSingleImage(uri, editAdsActivity.editImagePos)
     }
 }

@@ -27,8 +27,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ImageListFragment(
-    private val onFragmentCloseInterface: FragmentCloseInterface,
-    private val newList: ArrayList<Uri>?
+    private val onFragmentCloseInterface: FragmentCloseInterface
 ) : BaseAdsFragment(), AdapterCallback {
 
     private lateinit var binding: ImageListFragmentBinding
@@ -41,7 +40,11 @@ class ImageListFragment(
 
     private var job: Job? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = ImageListFragmentBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -55,9 +58,7 @@ class ImageListFragment(
             recyclerViewImageItem.layoutManager = LinearLayoutManager(activity)
             recyclerViewImageItem.adapter = adapter
         }
-
-
-        if (newList != null) resizeSelectedImages(newList, true)
+        //if (newList != null) resizeSelectedImages(newList, true)
     }
 
     fun updateAdapterFromEdit(bitmapList: List<Bitmap>) {
@@ -87,7 +88,7 @@ class ImageListFragment(
                 }
             imageListFragmentToolBar.menu.findItem(R.id.add_image).setOnMenuItemClickListener {
                 val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-                ImagePicker.launcher(activity as EditAdsActivity, imageCount)
+                ImagePicker.getMultiImages(activity as EditAdsActivity, imageCount)
                 true
             }
         }
@@ -95,7 +96,7 @@ class ImageListFragment(
     }
 
     fun updateAdapter(newList: ArrayList<Uri>) {
-        resizeSelectedImages(newList, false)
+        resizeSelectedImages(newList, false, activity as Activity)
     }
 
     fun setSingleImage(uri: Uri, position: Int) {
@@ -112,10 +113,10 @@ class ImageListFragment(
         }
     }
 
-    private fun resizeSelectedImages(newList: ArrayList<Uri>, needClear: Boolean) {
+    fun resizeSelectedImages(newList: ArrayList<Uri>, needClear: Boolean, activity: Activity) {
         job = CoroutineScope(Dispatchers.Main).launch {
-            val dialog = ProgressDialog.createProgressDialog(activity as Activity)
-            val bitmapList = ImageManager.imageResize(newList, activity as Activity)
+            val dialog = ProgressDialog.createProgressDialog(activity)
+            val bitmapList = ImageManager.imageResize(newList, activity)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
             if (adapter.mainArray.size > 2) binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible =

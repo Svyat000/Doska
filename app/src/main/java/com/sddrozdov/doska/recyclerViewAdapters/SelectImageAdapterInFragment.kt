@@ -22,7 +22,7 @@ class SelectImageAdapterInFragment(private val adapterCallback: AdapterCallback)
         fun setData(bitmapItem: Bitmap) {
             binding.editImageButton.setOnClickListener {
                 val test = context as EditAdsActivity//
-                ImagePicker.launcher(context, 1)
+                ImagePicker.getSingleImages(context)
                 test.editImagePos = adapterPosition
             }
             binding.imageDelete.setOnClickListener {
