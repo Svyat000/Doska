@@ -37,7 +37,8 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                     mainActivity.onAdViewed(ads)
                 }
                 ibFav.setOnClickListener {
-                    mainActivity.onFavoriteCLicked(ads)
+                    if (mainActivity.mAuth.currentUser?.isAnonymous == false)
+                        mainActivity.onFavoriteCLicked(ads)
                 }
                 ibEditAd.setOnClickListener(onClickEdit(ads))
                 ibDeleteAd.setOnClickListener {

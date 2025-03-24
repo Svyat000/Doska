@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
+import com.sddrozdov.doska.accountHelper.Listener
 import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
@@ -177,8 +178,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
 
             R.id.menu_account_logout -> {
-                uiUpdate(null)
+                if (mAuth.currentUser?.isAnonymous == true) {
+                    binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
+                    return true
+                }
+                //uiUpdate(null)
                 accountHelperGoogle?.signOut()
+
             }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
@@ -186,10 +192,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     fun uiUpdate(user: FirebaseUser?) {
-        accountTextView.text = if (user == null) {
-            resources.getString(R.string.not_reg)
-        } else {
-            user.email
+        //accountTextView.text = resources.getString(R.string.not_reg)
+        if (user == null) {
+            dialogHelper.accountHelperAnonymously.signInAnonymously(object : Listener {
+                override fun onComplete() {
+                    accountTextView.setText(R.string.Guest)
+                }
+            })
+        } else if (user.isAnonymous) {
+            accountTextView.setText(R.string.Guest)
+        } else if (!user.isAnonymous) {
+            accountTextView.text = user.email
         }
     }
 

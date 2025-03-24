@@ -67,5 +67,6 @@
     <string name="title_hint">*Заголовок</string>
     <string name="menu_ads_main_ads">Главная</string>
     <string name="empty_fav_ads">Нет избранных объявлений</string>
+    <string name="Guest">Гость</string>
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>

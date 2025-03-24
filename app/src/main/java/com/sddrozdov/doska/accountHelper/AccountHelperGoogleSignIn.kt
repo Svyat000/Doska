@@ -73,16 +73,20 @@ class AccountHelperGoogleSignIn(private val act: MainActivity) {
     private fun firebaseAuthWithGoogle(idToken: String?) {
         idToken?.let {
             val credential = GoogleAuthProvider.getCredential(it, null)
-            auth.signInWithCredential(credential)
-                .addOnCompleteListener(act) { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "GoogleSignInWithCredential:success")
-                        act.uiUpdate(auth.currentUser)
-                    } else {
-                        Log.w(TAG, "GoogleSignInWithCredential:failure", task.exception)
-                        act.uiUpdate(null)
-                    }
+            auth.currentUser?.delete()?.addOnCompleteListener { task1 ->
+                if (task1.isSuccessful) {
+                    auth.signInWithCredential(credential)
+                        .addOnCompleteListener(act) { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "GoogleSignInWithCredential:success")
+                                act.uiUpdate(auth.currentUser)
+                            } else {
+                                Log.w(TAG, "GoogleSignInWithCredential:failure", task.exception)
+                                act.uiUpdate(null)
+                            }
+                        }
                 }
+            }
         } ?: run {
             Log.w(TAG, "ID Token is null")
             act.uiUpdate(null)
