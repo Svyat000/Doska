@@ -21,7 +21,10 @@ import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
 import com.sddrozdov.doska.utilites.ImagePicker
+import io.appwrite.ID
 import io.appwrite.models.InputFile
+import io.appwrite.services.Storage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -41,6 +44,8 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     var editImagePos = 0
 
+    private var imageIndex = 0
+
     private var isEditState = false
     private var ads: Ads? = null
 
@@ -52,7 +57,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         setContentView(binding.root)
 
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
-        Appwrite.init(this)
+        Appwrite.init(applicationContext)
         init()
         checkEditState()
         clickPublicate()
@@ -195,9 +200,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val byteArray = prepareImageByteArray(imageAdapter.imageArray[0])
 
-        uploadImageToAppwrite(userId, byteArray) { fileId ->
+        uploadImageToAppwrite(userId, byteArray) { fileId, fileUrl ->
             dbManager.publicationAd(
-                adTemp.copy(mainImage = fileId),
+                adTemp.copy(mainImage = fileUrl),
                 onPublishFinish()
             )
         }
@@ -218,33 +223,44 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 //        }.addOnCompleteListener(listener)
 //    }
 
+    private fun nextImage() {
+        imageIndex++
+        // uploadImages()
+    }
+
     private fun uploadImageToAppwrite(
         userId: String,
         byteArray: ByteArray,
-        onComplete: (fileId: String) -> Unit
+        onComplete: (fileId: String, fileUrl: String) -> Unit
     ) {
         val tempFile = File.createTempFile("image_", ".jpg", cacheDir).apply {
             writeBytes(byteArray)
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val response = io.appwrite.services.Storage(Appwrite.appwriteClient).createFile(
+                val storage = Storage(Appwrite.appwriteClient)
+                val response = storage.createFile(
                     bucketId = "67e2a80d003d243b8d8a",
-                    fileId = io.appwrite.ID.unique(),
+                    fileId = ID.unique(),
                     file = InputFile.fromFile(tempFile),
-                    permissions = listOf(
-                        "read(\"any\")",  // Доступно всем
-                        "write(\"any\")"  // Запись доступна всем
-                    )
+                    permissions = listOf("read(\"any\")")
                 )
-                onComplete(response.id)
+
+
+                val fileUrl =
+                    "https://cloud.appwrite.io/v1/storage/buckets/67e2a80d003d243b8d8a/files/${response.id}/view?project=67e2a75600274ddbebaa"
+
+                Log.d("Appwrite", "Generated URL: $fileUrl") // Для отладки
+
+                onComplete(response.id, fileUrl)
+
             } catch (e: Exception) {
-                Log.e("Appwrite", "Ошибка загрузки: ${e.message}", e)
+                Log.e("Appwrite", "Upload error: ${e.message}", e)
                 runOnUiThread {
                     Toast.makeText(
                         this@EditAdsActivity,
-                        "Ошибка загрузки изображения: ${e.message}",
+                        "Ошибка загрузки: ${e.message}",
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -253,4 +269,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             }
         }
     }
+
+
+
 }

@@ -1,6 +1,7 @@
 package com.sddrozdov.doska.recyclerViewAdapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.AdListItemBinding
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.utilites.DiffUtilHelper
+import com.squareup.picasso.Picasso
 
 class AdsAdapter(private val mainActivity: MainActivity) :
     RecyclerView.Adapter<AdsAdapter.AdsViewHolder>() {
@@ -28,23 +30,34 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 tvTitle.text = ads.title
                 tvViewCounter.text = ads.viewsCounter
                 tvFavCounter.text = ads.favoriteCounter
-                if (ads.isFavorite) ibFav.setImageResource(R.drawable.ic_fav_pressed)
-                else ibFav.setImageResource(R.drawable.ic_fav_normal)
+                Log.d("AdsAdapter", "Loading image from URL: ${ads.mainImage}")
 
+                Picasso.get().load(ads.mainImage).into(mainImage)
+
+                isFav(ads)
                 showEditPanel(isOwner(ads))
+                mainOnClick(ads)
 
-                itemView.setOnClickListener {
-                    mainActivity.onAdViewed(ads)
-                }
-                ibFav.setOnClickListener {
-                    if (mainActivity.mAuth.currentUser?.isAnonymous == false)
-                        mainActivity.onFavoriteCLicked(ads)
-                }
-                ibEditAd.setOnClickListener(onClickEdit(ads))
-                ibDeleteAd.setOnClickListener {
-                    mainActivity.onDeleteItem(ads)
-                }
             }
+        }
+
+        private fun mainOnClick(ads: Ads) = with(binding) {
+            itemView.setOnClickListener {
+                mainActivity.onAdViewed(ads)
+            }
+            ibFav.setOnClickListener {
+                if (mainActivity.mAuth.currentUser?.isAnonymous == false)
+                    mainActivity.onFavoriteCLicked(ads)
+            }
+            ibEditAd.setOnClickListener(onClickEdit(ads))
+            ibDeleteAd.setOnClickListener {
+                mainActivity.onDeleteItem(ads)
+            }
+        }
+
+        private fun isFav(ads: Ads) {
+            if (ads.isFavorite) binding.ibFav.setImageResource(R.drawable.ic_fav_pressed)
+            else binding.ibFav.setImageResource(R.drawable.ic_fav_normal)
         }
 
         private fun isOwner(ads: Ads): Boolean = ads.uid == mainActivity.mAuth.uid
