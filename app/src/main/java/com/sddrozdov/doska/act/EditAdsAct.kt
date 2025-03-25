@@ -66,13 +66,14 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
     private fun clickPublicate() {
         binding.buttonPublicate.setOnClickListener {
-            val adTemp = fillAd()
+            ads = fillAd()
             if (isEditState) {
-                dbManager.publicationAd(adTemp.copy(key = ads?.key), onPublishFinish())
+                ads?.copy(key = ads?.key)
+                    ?.let { it1 -> dbManager.publicationAd(it1, onPublishFinish()) }
             } else {
 
-                dbManager.publicationAd(adTemp, onPublishFinish())
-                uploadImages(adTemp)
+                //dbManager.publicationAd(adTemp, onPublishFinish())
+                uploadImages()
             }
         }
     }
@@ -196,15 +197,31 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         fm.commit()
     }
 
-    private fun uploadImages(adTemp: Ads) {
+    private fun uploadImages() {
+        if (imageAdapter.imageArray.size == imageIndex) {
+            dbManager.publicationAd(ads!!, onPublishFinish())
+            return
+        }
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val byteArray = prepareImageByteArray(imageAdapter.imageArray[0])
+        val byteArray = prepareImageByteArray(imageAdapter.imageArray[imageIndex])
 
         uploadImageToAppwrite(userId, byteArray) { fileId, fileUrl ->
-            dbManager.publicationAd(
-                adTemp.copy(mainImage = fileUrl),
-                onPublishFinish()
-            )
+            //dbManager.publicationAd(ads!!, onPublishFinish())//ads?.copy(mainImage = fileUrl
+            nextImage(fileUrl)
+        }
+    }
+
+    private fun nextImage(uri: String) {
+        setImageUriToAd(uri)
+        imageIndex++
+        uploadImages()
+    }
+
+    private fun setImageUriToAd(uri: String) {
+        when (imageIndex) {
+            0 -> ads = ads?.copy(mainImage = uri)
+            1 -> ads = ads?.copy(image2 = uri)
+            2 -> ads = ads?.copy(image3 = uri)
         }
     }
 
@@ -223,17 +240,17 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 //        }.addOnCompleteListener(listener)
 //    }
 
-    private fun nextImage() {
-        imageIndex++
-        // uploadImages()
-    }
 
     private fun uploadImageToAppwrite(
         userId: String,
         byteArray: ByteArray,
         onComplete: (fileId: String, fileUrl: String) -> Unit
     ) {
-        val tempFile = File.createTempFile("image_", ".jpg", cacheDir).apply {
+        val tempFile = File.createTempFile(
+            "${dbManager.auth.uid}_image_${System.currentTimeMillis()}",
+            ".jpg",
+            cacheDir
+        ).apply {
             writeBytes(byteArray)
         }
 
@@ -269,7 +286,5 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             }
         }
     }
-
-
 
 }
