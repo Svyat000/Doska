@@ -75,28 +75,32 @@ class ImageListFragment(
 
         binding.apply {
             imageListFragmentToolBar.inflateMenu(R.menu.menu_choose_image)
-
-            imageListFragmentToolBar.setNavigationOnClickListener {
-                activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)
-                    ?.commit()
-            }
-            imageListFragmentToolBar.menu.findItem(R.id.delete_image)
-                .setOnMenuItemClickListener {
-                    adapter.updateAdapter(ArrayList(), true)
-                    imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
+            imageListFragmentToolBar.apply {
+                setNavigationOnClickListener {
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.remove(this@ImageListFragment)
+                        ?.commit()
+                }
+                menu.findItem(R.id.delete_image)
+                    .setOnMenuItemClickListener {
+                        adapter.updateAdapter(ArrayList(), true)
+                        imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
+                        true
+                    }
+                if (adapter.mainArray.size > 2) binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible =
+                    false
+                menu.findItem(R.id.add_image).setOnMenuItemClickListener {
+                    val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
+                    ImagePicker.addImages(activity as EditAdsActivity, imageCount)
                     true
                 }
-            imageListFragmentToolBar.menu.findItem(R.id.add_image).setOnMenuItemClickListener {
-                val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-                ImagePicker.getMultiImages(activity as EditAdsActivity, imageCount)
-                true
             }
         }
 
     }
 
-    fun updateAdapter(newList: ArrayList<Uri>) {
-        resizeSelectedImages(newList, false, activity as Activity)
+    fun updateAdapter(newList: ArrayList<Uri>, activity: Activity) {
+        resizeSelectedImages(newList, false, activity)
     }
 
     fun setSingleImage(uri: Uri, position: Int) {

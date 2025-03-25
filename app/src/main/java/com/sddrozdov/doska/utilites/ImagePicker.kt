@@ -45,8 +45,28 @@ object ImagePicker {
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
                     getMultiSelectedImages(editAdsActivity, result.data)
-                    closePixFragment(editAdsActivity)
+                    //closePixFragment(editAdsActivity)
                     Log.d("MyLog", "Фрагмент открыт")
+                }
+
+                PixEventCallback.Status.BACK_PRESSED -> TODO()
+            }
+        }
+    }
+
+    fun addImages(editAdsActivity: EditAdsActivity, imageCounter: Int) {
+        val tempFragment = editAdsActivity.chooseImageFrag
+        editAdsActivity.addPixToActivity(
+            R.id.editAdsActPlace_holder, getOption(imageCounter)
+        ) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    editAdsActivity.chooseImageFrag = tempFragment
+                    openChooseImageFragment(editAdsActivity, tempFragment!!)
+                    editAdsActivity.chooseImageFrag?.updateAdapter(
+                        result.data as ArrayList<Uri>,
+                        editAdsActivity
+                    )
                 }
 
                 PixEventCallback.Status.BACK_PRESSED -> TODO()
@@ -88,8 +108,6 @@ object ImagePicker {
 
         if (uris.size > 1 && editAdsActivity.chooseImageFrag == null) {
             editAdsActivity.openChooseImageFragment(uris as ArrayList<Uri>)
-        } else if (editAdsActivity.chooseImageFrag != null) {
-            editAdsActivity.chooseImageFrag?.updateAdapter(uris as ArrayList<Uri>)
         } else if (uris.size == 1 && editAdsActivity.chooseImageFrag == null) {
             CoroutineScope(Dispatchers.Main).launch {
                 val bitMapArray = ImageManager.imageResize(
@@ -97,6 +115,7 @@ object ImagePicker {
                     editAdsActivity
                 ) as ArrayList<Bitmap>
                 editAdsActivity.imageAdapter.updateAdapter(bitMapArray)
+                closePixFragment(editAdsActivity)
             }
         }
     }

@@ -151,9 +151,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         } else {
             openChooseImageFragment(null)
             chooseImageFrag?.updateAdapterFromEdit(imageAdapter.imageArray)
-
         }
-
 //        binding.editAdsActScrollView.visibility = View.GONE
 //        val fragmentManager = supportFragmentManager.beginTransaction()
 //        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()
