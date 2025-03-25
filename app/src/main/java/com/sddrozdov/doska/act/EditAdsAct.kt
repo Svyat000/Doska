@@ -3,15 +3,12 @@ package com.sddrozdov.doska.act
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.gms.tasks.OnCompleteListener
 import com.sddrozdov.doska.R
-import com.sddrozdov.doska.appwrite.Appwrite
 import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
@@ -21,11 +18,7 @@ import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
 import com.sddrozdov.doska.utilites.ImagePicker
-import io.appwrite.ID
-import io.appwrite.models.InputFile
-import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
@@ -53,7 +46,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         setContentView(binding.root)
 
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
-        Appwrite.init(this)
+
         init()
         checkEditState()
         clickPublicate()
@@ -68,7 +61,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             } else {
 
                 dbManager.publicationAd(adTemp, onPublishFinish())
-                uploadImages(adTemp)
+                //uploadImages(adTemp)
             }
         }
     }
@@ -193,12 +186,10 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun uploadImages(adTemp: Ads) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val byteArray = prepareImageByteArray(imageAdapter.imageArray[0])
-
-        uploadImageToAppwrite(userId, byteArray) { fileId ->
+        uploadImage(byteArray) {
             dbManager.publicationAd(
-                adTemp.copy(mainImage = fileId),
+                adTemp.copy(mainImage = it.result.toString()),
                 onPublishFinish()
             )
         }
@@ -210,46 +201,14 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         return outStream.toByteArray()
     }
 
-//    private fun uploadImage(byteArray: ByteArray, listener: OnCompleteListener<Uri>) {
-//        val imStorageRef = dbManager.dbStorage.child(dbManager.auth.uid!!)
-//            .child("image_${System.currentTimeMillis()}")
-//        val uploadTask = imStorageRef.putBytes(byteArray)
-//        uploadTask.continueWithTask { task ->
-//            imStorageRef.downloadUrl
-//        }.addOnCompleteListener(listener)
-//    }
-
-    private fun uploadImageToAppwrite(
-        userId: String,
-        byteArray: ByteArray,
-        onComplete: (fileId: String) -> Unit
-    ) {
-        val tempFile = File.createTempFile("image_", ".jpg", cacheDir).apply {
-            writeBytes(byteArray)
-        }
-
-        lifecycleScope.launch {
-            try {
-                val response = io.appwrite.services.Storage(Appwrite.appwriteClient).createFile(
-                    bucketId = "67e2a80d003d243b8d8a",
-                    fileId = ID.unique(),
-                    file = InputFile.fromFile(tempFile),
-                    permissions = listOf(
-                        "read(\"any\")",  // Доступно всем
-                        "write(\"any\")"  // Запись доступна всем
-                    )
-                )
-                onComplete(response.id)
-            } catch (e: Exception) {
-                Log.e("Appwrite", "Ошибка загрузки: ${e.message}", e)
-                runOnUiThread {
-                    Toast.makeText(this@EditAdsActivity,
-                        "Ошибка загрузки изображения: ${e.message}",
-                        Toast.LENGTH_LONG).show()
-                }
-            } finally {
-                tempFile.delete()
-            }
-        }
+    private fun uploadImage(byteArray: ByteArray, listener: OnCompleteListener<Uri>) {
+        val imStorageRef = dbManager.dbStorage.child(dbManager.auth.uid!!)
+            .child("image_${System.currentTimeMillis()}")
+        val uploadTask = imStorageRef.putBytes(byteArray)
+        uploadTask.continueWithTask { task ->
+            imStorageRef.downloadUrl
+        }.addOnCompleteListener(listener)
     }
+
+
 }
