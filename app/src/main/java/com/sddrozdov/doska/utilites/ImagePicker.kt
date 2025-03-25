@@ -55,14 +55,14 @@ object ImagePicker {
     }
 
     fun addImages(editAdsActivity: EditAdsActivity, imageCounter: Int) {
-        val tempFragment = editAdsActivity.chooseImageFrag
+        //val tempFragment = editAdsActivity.chooseImageFrag
         editAdsActivity.addPixToActivity(
             R.id.editAdsActPlace_holder, getOption(imageCounter)
         ) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
-                    editAdsActivity.chooseImageFrag = tempFragment
-                    openChooseImageFragment(editAdsActivity, tempFragment!!)
+                    //editAdsActivity.chooseImageFrag = tempFragment
+                    openChooseImageFragment(editAdsActivity)
                     editAdsActivity.chooseImageFrag?.updateAdapter(
                         result.data as ArrayList<Uri>,
                         editAdsActivity
@@ -75,14 +75,14 @@ object ImagePicker {
     }
 
     fun getSingleImages(editAdsActivity: EditAdsActivity) {
-        val fragmentTemp = editAdsActivity.chooseImageFrag
+        //val fragmentTemp = editAdsActivity.chooseImageFrag
         editAdsActivity.addPixToActivity(
             R.id.editAdsActPlace_holder, getOption(1)
         ) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
-                    editAdsActivity.chooseImageFrag = fragmentTemp
-                    openChooseImageFragment(editAdsActivity, fragmentTemp!!)
+                    //editAdsActivity.chooseImageFrag = fragmentTemp
+                    openChooseImageFragment(editAdsActivity)
                     singleImage(editAdsActivity, result.data[0])
                 }
 
@@ -91,9 +91,9 @@ object ImagePicker {
         }
     }
 
-    private fun openChooseImageFragment(editAdsActivity: EditAdsActivity, fragment: Fragment) {
+    private fun openChooseImageFragment(editAdsActivity: EditAdsActivity) {
         editAdsActivity.supportFragmentManager.beginTransaction()
-            .replace(R.id.editAdsActPlace_holder, fragment).commit()
+            .replace(R.id.editAdsActPlace_holder, editAdsActivity.chooseImageFrag!!).commit()
     }
 
     private fun closePixFragment(editAdsActivity: EditAdsActivity) {

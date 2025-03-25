@@ -49,6 +49,7 @@ class ImageListFragment(
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
@@ -65,11 +66,12 @@ class ImageListFragment(
         adapter.updateAdapter(bitmapList, true)
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        onFragmentCloseInterface.onFragClose(adapter.mainArray)
-        job?.cancel()
-    }
+//    override fun onDetach() {
+//        super.onDetach()
+//
+//    }
+
+
 
     private fun setUpToolbar() {
 
@@ -80,6 +82,8 @@ class ImageListFragment(
                     activity?.supportFragmentManager?.beginTransaction()
                         ?.remove(this@ImageListFragment)
                         ?.commit()
+                    onFragmentCloseInterface.onFragClose(adapter.mainArray)
+                    job?.cancel()
                 }
                 menu.findItem(R.id.delete_image)
                     .setOnMenuItemClickListener {
@@ -131,4 +135,6 @@ class ImageListFragment(
     override fun onItemDelete() {
         binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
     }
+
+
 }
