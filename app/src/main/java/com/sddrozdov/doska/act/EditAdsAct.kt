@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
@@ -17,6 +18,7 @@ import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
 import com.sddrozdov.doska.utilites.ImagePicker
+import java.io.ByteArrayOutputStream
 
 class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
@@ -57,7 +59,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             if (isEditState) {
                 dbManager.publicationAd(adTemp.copy(key = ads?.key), onPublishFinish())
             } else {
+
                 dbManager.publicationAd(adTemp, onPublishFinish())
+                //uploadImages(adTemp)
             }
         }
     }
@@ -100,11 +104,18 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         val ads: Ads
         binding.apply {
             ads = Ads(
-                editAdsActSelectCountry.text.toString(), editAdsActSelectCity.text.toString(),
-                editTextPhoneNumber.text.toString(), editTextIndex.text.toString(),
-                editAdsActSelectCat.text.toString(), editTitle.text.toString(),
-                editTextPrice.text.toString(), editTextDescription.text.toString(),
-                dbManager.db.push().key, dbManager.auth.uid, favoriteCounter = "0"
+                editAdsActSelectCountry.text.toString(),
+                editAdsActSelectCity.text.toString(),
+                editTextPhoneNumber.text.toString(),
+                editTextIndex.text.toString(),
+                editAdsActSelectCat.text.toString(),
+                editTitle.text.toString(),
+                editTextPrice.text.toString(),
+                editTextDescription.text.toString(),
+                dbManager.db.push().key,
+                dbManager.auth.uid,
+                favoriteCounter = "0",
+                mainImage = "emptyImage"
             )
         }
         return ads
@@ -172,6 +183,32 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.editAdsActPlace_holder, chooseImageFrag!!)
         fm.commit()
-
     }
+
+    private fun uploadImages(adTemp: Ads) {
+        val byteArray = prepareImageByteArray(imageAdapter.imageArray[0])
+        uploadImage(byteArray) {
+            dbManager.publicationAd(
+                adTemp.copy(mainImage = it.result.toString()),
+                onPublishFinish()
+            )
+        }
+    }
+
+    private fun prepareImageByteArray(bitmap: Bitmap): ByteArray {
+        val outStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, outStream)
+        return outStream.toByteArray()
+    }
+
+    private fun uploadImage(byteArray: ByteArray, listener: OnCompleteListener<Uri>) {
+        val imStorageRef = dbManager.dbStorage.child(dbManager.auth.uid!!)
+            .child("image_${System.currentTimeMillis()}")
+        val uploadTask = imStorageRef.putBytes(byteArray)
+        uploadTask.continueWithTask { task ->
+            imStorageRef.downloadUrl
+        }.addOnCompleteListener(listener)
+    }
+
+
 }

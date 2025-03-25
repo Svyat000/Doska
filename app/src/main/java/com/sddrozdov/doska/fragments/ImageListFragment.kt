@@ -71,8 +71,6 @@ class ImageListFragment(
 //
 //    }
 
-
-
     private fun setUpToolbar() {
 
         binding.apply {
@@ -135,6 +133,4 @@ class ImageListFragment(
     override fun onItemDelete() {
         binding.imageListFragmentToolBar.menu.findItem(R.id.add_image).isVisible = true
     }
-
-
 }

@@ -17,6 +17,8 @@ data class Ads(
     var isFavorite: Boolean = false,
     var favoriteCounter: String = "0",
 
+    val mainImage: String? = null,
+
     var viewsCounter: String = "0",
     var emailsCounter: String = "0",
     var callsCounter: String = "0",
