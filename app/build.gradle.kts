@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -87,5 +87,7 @@ dependencies {
 
     //Test advertising vk
     // implementation(libs.mytarget.sdk)
+
+    implementation("io.appwrite:sdk-for-android:7.0.0")
 
 }

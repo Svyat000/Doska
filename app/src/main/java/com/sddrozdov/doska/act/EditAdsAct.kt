@@ -21,7 +21,6 @@ import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
 import com.sddrozdov.doska.utilites.ImagePicker
-import io.appwrite.ID
 import io.appwrite.models.InputFile
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -232,7 +231,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             try {
                 val response = io.appwrite.services.Storage(Appwrite.appwriteClient).createFile(
                     bucketId = "67e2a80d003d243b8d8a",
-                    fileId = ID.unique(),
+                    fileId = io.appwrite.ID.unique(),
                     file = InputFile.fromFile(tempFile),
                     permissions = listOf(
                         "read(\"any\")",  // Доступно всем
@@ -243,9 +242,11 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             } catch (e: Exception) {
                 Log.e("Appwrite", "Ошибка загрузки: ${e.message}", e)
                 runOnUiThread {
-                    Toast.makeText(this@EditAdsActivity,
+                    Toast.makeText(
+                        this@EditAdsActivity,
                         "Ошибка загрузки изображения: ${e.message}",
-                        Toast.LENGTH_LONG).show()
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } finally {
                 tempFile.delete()
