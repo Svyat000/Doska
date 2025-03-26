@@ -101,4 +101,17 @@ object ImageManager {
             }
             return@withContext bitmapList
         }
+
+    suspend fun getBitmapFromUri(uris: List<String?>): List<Bitmap> =
+        withContext(Dispatchers.IO) {
+            val bitmapList = ArrayList<Bitmap>()
+
+            for (i in uris.indices) {
+                val exception = runCatching {
+                    bitmapList.add(Picasso.get().load(uris[i]).get())
+                }
+                Log.d("Loggg", "bitmap ${exception.isSuccess}")
+            }
+            return@withContext bitmapList
+        }
 }
