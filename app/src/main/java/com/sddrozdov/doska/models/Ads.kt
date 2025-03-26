@@ -5,6 +5,7 @@ import java.io.Serializable
 data class Ads(
     val country: String? = null,
     val city: String? = null,
+    val email: String? = null,
     val tel: String? = null,
     val index: String? = null,
     val category: String? = null,

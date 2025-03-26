@@ -1,9 +1,13 @@
 package com.sddrozdov.doska.act
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityDescAdsBinding
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
@@ -20,6 +24,8 @@ class DescAdsActivity : AppCompatActivity() {
 
     lateinit var imageAdapterForViewPager: ImageAdapterForViewPager
 
+    private var ads: Ads? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,6 +33,15 @@ class DescAdsActivity : AppCompatActivity() {
         setContentView(binding.root)
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
         init()
+        binding.apply {
+            fbTel.setOnClickListener {
+                callToNumber()
+            }
+            fbEmail.setOnClickListener {
+                sendEmail()
+            }
+        }
+
     }
 
     private fun init() {
@@ -38,12 +53,35 @@ class DescAdsActivity : AppCompatActivity() {
         getIntentFromMainActivity()
     }
 
-    private fun getIntentFromMainActivity() {
-        val ad = intent.getSerializableExtra("AD") as Ads
-        updateUI(ad)
+    private fun callToNumber() {
+        val callUri = "tel:${ads?.tel}"
+        val intentCall = Intent(Intent.ACTION_DIAL)
+        intentCall.data = callUri.toUri()
+        startActivity(intentCall)
     }
 
-    private fun updateUI(ads: Ads){
+    private fun sendEmail() {
+        val intentForSendEmail = Intent(Intent.ACTION_SEND)
+        intentForSendEmail.type = "message/rfc822"
+        intentForSendEmail.apply {
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(ads?.email))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.AD))
+            putExtra(Intent.EXTRA_TEXT, "TODO()") //TODO("Доделать заполнение объявления")
+        }
+        try {
+            startActivity(Intent.createChooser(intentForSendEmail, getString(R.string.OPEN_WITH)))
+        } catch (exeption: ActivityNotFoundException) {
+
+        }
+    }
+
+
+    private fun getIntentFromMainActivity() {
+        ads = intent.getSerializableExtra("AD") as Ads
+        if (ads != null) updateUI(ads!!)
+    }
+
+    private fun updateUI(ads: Ads) {
         fillImageArray(ads)
         fillTextView(ads)
     }
@@ -56,11 +94,12 @@ class DescAdsActivity : AppCompatActivity() {
         }
     }
 
-    private fun fillTextView(ads: Ads){
+    private fun fillTextView(ads: Ads) {
         binding.apply {
             tvTitle.text = ads.title
             tvDescription.text = ads.description
             tvPrice.text = ads.price
+            tvEmail.text = ads.email
             tvTel.text = ads.tel
             tvEmail.text
             tvCountry.text = ads.tel
@@ -68,8 +107,6 @@ class DescAdsActivity : AppCompatActivity() {
             tvIndex.text = ads.index
         }
     }
-
-
 
 
 }

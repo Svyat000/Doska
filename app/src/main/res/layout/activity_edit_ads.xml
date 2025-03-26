@@ -129,6 +129,34 @@
                         android:textColor="@color/telegram_on_surface"
                         android:textSize="16sp"/>
 
+                    <!-- Email -->
+                    <TextView
+                        android:id="@+id/titleEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email"
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                     <!-- Телефон -->
                     <TextView
                         android:id="@+id/titlePhone"

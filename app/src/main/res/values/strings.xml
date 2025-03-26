@@ -3,6 +3,7 @@
     <string name="account_email_placeholder">sddrozdov000@gmail.com</string>
 
     <!-- Menu Drawer: Ads Section -->
+    <string name="AD">Объявление</string>
     <string name="menu_ads_category">Объявления</string>
     <string name="menu_ads_my_items">Мои объявления</string>
     <string name="menu_ads_cars">Машины</string>
@@ -68,5 +69,8 @@
     <string name="menu_ads_main_ads">Главная</string>
     <string name="empty_fav_ads">Нет избранных объявлений</string>
     <string name="Guest">Гость</string>
+    <string name="email">Email</string>
+    <string name="OPEN_WITH">Открыть с помощью</string>
+
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>

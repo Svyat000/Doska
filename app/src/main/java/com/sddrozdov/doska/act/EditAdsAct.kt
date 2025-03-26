@@ -117,6 +117,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             ads = Ads(
                 editAdsActSelectCountry.text.toString(),
                 editAdsActSelectCity.text.toString(),
+                editTextEmail.text.toString(),
                 editTextPhoneNumber.text.toString(),
                 editTextIndex.text.toString(),
                 editAdsActSelectCat.text.toString(),
