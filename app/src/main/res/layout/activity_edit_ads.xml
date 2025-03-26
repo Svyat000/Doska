@@ -41,7 +41,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:clipToPadding="false"
-                        android:paddingHorizontal="8dp"/>
+                        android:paddingHorizontal="8dp">
+
+                    </androidx.viewpager2.widget.ViewPager2>
+
+                    <TextView
+                        android:id="@+id/textViewImageCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/editActAdsImages"
+                        android:layout_alignBottom="@+id/editActAdsImages"
+                        android:layout_marginEnd="297dp"
+                        android:layout_marginBottom="181dp"
+                        android:text="TextView" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/editAdsActGetImages"

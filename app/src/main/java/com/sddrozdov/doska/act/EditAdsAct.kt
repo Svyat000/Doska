@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.appwrite.Appwrite
 import com.sddrozdov.doska.models.DbManager
@@ -61,6 +62,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         init()
         checkEditState()
         clickPublicate()
+        viewPagerImageChangeCounter()
 
     }
 
@@ -182,6 +184,16 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 //        val fragmentManager = supportFragmentManager.beginTransaction()
 //        fragmentManager.replace(R.id.editAdsActPlace_holder, ImageListFragment(this, TODO()
 //        fragmentManager.commit()
+    }
+
+    private fun viewPagerImageChangeCounter(){
+        binding.editActAdsImages.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val imageCounter = "${position+1}/${binding.editActAdsImages.adapter?.itemCount}"
+                binding.textViewImageCounter.text = imageCounter
+            }
+        })
     }
 
 
