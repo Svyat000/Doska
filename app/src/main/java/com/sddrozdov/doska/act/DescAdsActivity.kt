@@ -2,19 +2,17 @@ package com.sddrozdov.doska.act
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.viewpager2.widget.ViewPager2
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityDescAdsBinding
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.ImageManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 
 class DescAdsActivity : AppCompatActivity() {
@@ -51,6 +49,7 @@ class DescAdsActivity : AppCompatActivity() {
 
         }
         getIntentFromMainActivity()
+        viewPagerImageChangeCounter()
     }
 
     private fun callToNumber() {
@@ -82,16 +81,8 @@ class DescAdsActivity : AppCompatActivity() {
     }
 
     private fun updateUI(ads: Ads) {
-        fillImageArray(ads)
+        ImageManager.fillImageArray(ads,imageAdapterForViewPager)
         fillTextView(ads)
-    }
-
-    private fun fillImageArray(ads: Ads) {
-        val listUris = listOf(ads.mainImage, ads.image2, ads.image3)
-        CoroutineScope(Dispatchers.Main).launch {
-            val bitmapList = ImageManager.getBitmapFromUri(listUris)
-            imageAdapterForViewPager.updateAdapter(bitmapList as ArrayList<Bitmap>)
-        }
     }
 
     private fun fillTextView(ads: Ads) {
@@ -108,5 +99,14 @@ class DescAdsActivity : AppCompatActivity() {
         }
     }
 
+    private fun viewPagerImageChangeCounter(){
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val imageCounter = "${position+1}/${binding.viewPager.adapter?.itemCount}"
+                binding.tvImageCounter.text = imageCounter
+            }
+        })
+    }
 
 }

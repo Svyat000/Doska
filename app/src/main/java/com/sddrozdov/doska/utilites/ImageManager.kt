@@ -6,12 +6,13 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
-import androidx.exifinterface.media.ExifInterface
+import com.sddrozdov.doska.models.Ads
+import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.InputStream
 
 object ImageManager {
 
@@ -102,7 +103,7 @@ object ImageManager {
             return@withContext bitmapList
         }
 
-    suspend fun getBitmapFromUri(uris: List<String?>): List<Bitmap> =
+    private suspend fun getBitmapFromUri(uris: List<String?>): List<Bitmap> =
         withContext(Dispatchers.IO) {
             val bitmapList = ArrayList<Bitmap>()
 
@@ -114,4 +115,12 @@ object ImageManager {
             }
             return@withContext bitmapList
         }
+
+    fun fillImageArray(ads: Ads, adapter: ImageAdapterForViewPager) {
+        val listUris = listOf(ads.mainImage, ads.image2, ads.image3)
+        CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = getBitmapFromUri(listUris)
+            adapter.updateAdapter(bitmapList as ArrayList<Bitmap>)
+        }
+    }
 }

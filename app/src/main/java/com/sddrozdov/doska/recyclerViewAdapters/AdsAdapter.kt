@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.R
-import com.sddrozdov.doska.act.DescAdsActivity
 import com.sddrozdov.doska.act.MainActivity
 import com.sddrozdov.doska.act.EditAdsActivity
 import com.sddrozdov.doska.databinding.AdListItemBinding
@@ -45,9 +44,6 @@ class AdsAdapter(private val mainActivity: MainActivity) :
         private fun mainOnClick(ads: Ads) = with(binding) {
             itemView.setOnClickListener {
                 mainActivity.onAdViewed(ads)
-                val intent = Intent(binding.root.context, DescAdsActivity::class.java)
-                intent.putExtra("AD", ads)
-                binding.root.context.startActivity(intent)
             }
             ibFav.setOnClickListener {
                 if (mainActivity.mAuth.currentUser?.isAnonymous == false)

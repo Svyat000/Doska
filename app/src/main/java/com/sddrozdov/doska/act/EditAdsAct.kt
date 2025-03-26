@@ -19,6 +19,7 @@ import com.sddrozdov.doska.fragments.ImageListFragment
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.CityHelper
+import com.sddrozdov.doska.utilites.ImageManager
 import com.sddrozdov.doska.utilites.ImagePicker
 import io.appwrite.ID
 import io.appwrite.models.InputFile
@@ -100,6 +101,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         editTitle.setText(ads.title)
         editTextPrice.setText(ads.price)
         editTextDescription.setText(ads.description)
+        ImageManager.fillImageArray(ads,imageAdapter)
     }
 
     private fun onPublishFinish(): DbManager.FinishWorkListener {

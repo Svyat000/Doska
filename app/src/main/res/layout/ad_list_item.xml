@@ -67,7 +67,7 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-condensed"
                 android:gravity="center_horizontal"
-                android:maxLines="4"
+                android:maxLines="3"
                 android:text="TextView"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
