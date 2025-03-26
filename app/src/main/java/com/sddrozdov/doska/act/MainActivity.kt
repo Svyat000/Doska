@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,11 +28,13 @@ import com.sddrozdov.doska.dialogHelper.DialogHelper
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
 import com.sddrozdov.doska.viewModel.FirebaseViewModel
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     AdsAdapter.ItemListener {
 
     private lateinit var accountTextView: TextView
+    private lateinit var imageViewAccount: ImageView
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
@@ -136,6 +139,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         accountTextView =
             binding.mainNavigationView.getHeaderView(0).findViewById(R.id.account_email)
+        imageViewAccount =
+            binding.mainNavigationView.getHeaderView(0).findViewById(R.id.account_image)
     }
 
     override fun onDestroy() {
@@ -197,12 +202,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             dialogHelper.accountHelperAnonymously.signInAnonymously(object : Listener {
                 override fun onComplete() {
                     accountTextView.setText(R.string.Guest)
+                    imageViewAccount.setImageResource(R.drawable.ic_profile_placeholder)
                 }
             })
         } else if (user.isAnonymous) {
             accountTextView.setText(R.string.Guest)
+            imageViewAccount.setImageResource(R.drawable.ic_profile_placeholder)
         } else if (!user.isAnonymous) {
             accountTextView.text = user.email
+            Picasso.get().load(user.photoUrl).into(imageViewAccount)
         }
     }
 

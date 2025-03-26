@@ -1,41 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <!-- Ads Section -->
-    <item android:title="@string/menu_ads_category">
+    <!-- Раздел объявлений -->
+    <item
+        android:id="@+id/adCategory"
+        android:title="@string/menu_ads_category"
+        android:icon="@drawable/ic_ads_category">
         <menu>
             <item
+                android:id="@+id/menu_ads_favorite"
+                android:title="@string/Favorite"
+                android:icon="@drawable/ic_favorite_material_design"
+                app:iconTint="?attr/colorPrimary"/>
+            <item
                 android:id="@+id/menu_ads_my_items"
-                android:title="@string/menu_ads_my_items" />
+                android:title="@string/menu_ads_my_items"
+                android:icon="@drawable/ic_my_items"/>
             <item
                 android:id="@+id/menu_ads_cars"
-                android:title="@string/menu_ads_cars" />
+                android:title="@string/menu_ads_cars"
+                android:icon="@drawable/ic_car"/>
             <item
                 android:id="@+id/menu_ads_computers"
-                android:title="@string/menu_ads_computers" />
+                android:title="@string/menu_ads_computers"
+                android:icon="@drawable/ic_computer"/>
             <item
                 android:id="@+id/menu_ads_phones"
-                android:title="@string/menu_ads_phones" />
+                android:title="@string/menu_ads_phones"
+                android:icon="@drawable/ic_phone"/>
             <item
                 android:id="@+id/menu_ads_appliances"
-                android:title="@string/menu_ads_appliances" />
+                android:title="@string/menu_ads_appliances"
+                android:icon="@drawable/ic_appliance"/>
         </menu>
     </item>
 
-    <!-- Account Section -->
-    <item android:title="@string/menu_account_category">
+    <!-- Раздел аккаунта -->
+    <item
+        android:id="@+id/accountCategory"
+        android:title="@string/menu_account_category"
+        android:icon="@drawable/ic_account_avatar">
         <menu>
             <item
                 android:id="@+id/menu_account_register"
-                android:title="@string/account_register" />
+                android:title="@string/account_register"
+                android:icon="@drawable/ic_register"/>
             <item
                 android:id="@+id/menu_account_login"
-                android:title="@string/account_login" />
+                android:title="@string/account_login"
+                android:icon="@drawable/ic_login"/>
             <item
                 android:id="@+id/menu_account_logout"
-                android:title="@string/account_logout" />
+                android:title="@string/account_logout"
+                android:icon="@drawable/ic_logout"
+                android:visible="true"/>
+        </menu>
+    </item>
+
+    <!-- Дополнительные пункты в стиле Telegram -->
+    <item android:title="@string/menu_settings_category">
+        <menu>
+            <item
+                android:id="@+id/menu_settings"
+                android:title="@string/settings"
+                android:icon="@drawable/ic_settings"/>
+            <item
+                android:id="@+id/menu_help"
+                android:title="@string/help"
+                android:icon="@drawable/ic_help"/>
         </menu>
     </item>
 </menu>

@@ -38,4 +38,10 @@
         <item name="cornerSize">8dp</item>
     </style>
 
+    <style name="TelegramMenuStyle" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemIconTint">@color/telegram_menu_icon_tint</item>
+        <item name="itemTextColor">@color/telegram_menu_text_color</item>
+        <item name="itemBackground">@drawable/menu_item_background</item>
+    </style>
+
 </resources>

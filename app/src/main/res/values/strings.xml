@@ -71,6 +71,11 @@
     <string name="Guest">Гость</string>
     <string name="email">Email</string>
     <string name="OPEN_WITH">Открыть с помощью</string>
+    <string name="Favorite">Избранные</string>
+
+    <string name="menu_settings_category">Настройки</string>
+    <string name="settings">Настройки</string>
+    <string name="help">Помощь</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
