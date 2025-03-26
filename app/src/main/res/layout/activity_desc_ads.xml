@@ -233,7 +233,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="С отправкой:"
+                        android:text="TЕСТ:"
                         android:textColor="@color/color_red"
                         android:textStyle="bold" />
 

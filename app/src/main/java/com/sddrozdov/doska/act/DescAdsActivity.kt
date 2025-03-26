@@ -40,7 +40,12 @@ class DescAdsActivity : AppCompatActivity() {
 
     private fun getIntentFromMainActivity() {
         val ad = intent.getSerializableExtra("AD") as Ads
-        fillImageArray(ad)
+        updateUI(ad)
+    }
+
+    private fun updateUI(ads: Ads){
+        fillImageArray(ads)
+        fillTextView(ads)
     }
 
     private fun fillImageArray(ads: Ads) {
@@ -50,6 +55,21 @@ class DescAdsActivity : AppCompatActivity() {
             imageAdapterForViewPager.updateAdapter(bitmapList as ArrayList<Bitmap>)
         }
     }
+
+    private fun fillTextView(ads: Ads){
+        binding.apply {
+            tvTitle.text = ads.title
+            tvDescription.text = ads.description
+            tvPrice.text = ads.price
+            tvTel.text = ads.tel
+            tvEmail.text
+            tvCountry.text = ads.tel
+            tvCity.text = ads.city
+            tvIndex.text = ads.index
+        }
+    }
+
+
 
 
 }
