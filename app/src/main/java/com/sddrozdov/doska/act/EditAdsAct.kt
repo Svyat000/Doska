@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.appwrite.Appwrite
 import com.sddrozdov.doska.models.DbManager
@@ -127,12 +126,13 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
                 dbManager.db.push().key,
                 dbManager.auth.uid,
                 favoriteCounter = "0",
-                mainImage = "emptyImage"
+                mainImage = "emptyImage",
+                image2 = "emptyImage",
+                image3 = "emptyImage"
             )
         }
         return ads
     }
-
 
     fun onClickSelectCountry(view: View) {
         // Получение списка стран из CityHelper
@@ -202,10 +202,10 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             dbManager.publicationAd(ads!!, onPublishFinish())
             return
         }
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        //val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val byteArray = prepareImageByteArray(imageAdapter.imageArray[imageIndex])
 
-        uploadImageToAppwrite(userId, byteArray) { fileId, fileUrl ->
+        uploadImageToAppwrite(byteArray) { fileId, fileUrl ->
             //dbManager.publicationAd(ads!!, onPublishFinish())//ads?.copy(mainImage = fileUrl
             nextImage(fileUrl)
         }
@@ -242,7 +242,6 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
 
 
     private fun uploadImageToAppwrite(
-        userId: String,
         byteArray: ByteArray,
         onComplete: (fileId: String, fileUrl: String) -> Unit
     ) {

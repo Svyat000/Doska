@@ -4,31 +4,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/account_header_height"
-    android:background="@color/account_header_background">
+    android:layout_height="160dp"
+    android:background="@color/telegram_primary"
+    android:padding="16dp">
 
-    <!-- Profile Image -->
-    <ImageView
+    <!-- Profile Avatar with Telegram-style circular shape -->
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/account_image"
-        android:layout_width="@dimen/account_image_size"
-        android:layout_height="@dimen/account_image_size"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginTop="@dimen/spacing_medium"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_account_avatar" />
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        app:strokeColor="@android:color/white"
+        app:strokeWidth="1dp"
+        tools:src="@drawable/ic_profile_placeholder" />
 
-    <!-- User Info -->
+    <!-- User Name -->
+    <TextView
+        android:id="@+id/account_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/account_image"
+        app:layout_constraintTop_toTopOf="@id/account_image"
+        tools:text="User Name" />
+
+    <!-- User Email/Phone -->
     <TextView
         android:id="@+id/account_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:textAppearance="@style/TextAppearance.Account.Email"
-        android:textColor="@color/account_text_primary"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#A8FFFFFF"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/account_image"
+        app:layout_constraintStart_toEndOf="@id/account_image"
+        app:layout_constraintTop_toBottomOf="@id/account_name"
+        tools:text="+1 234 567 8900" />
+
+    <!-- Online Status -->
+    <TextView
+        android:id="@+id/account_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="#A8FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/account_image"
+        app:layout_constraintTop_toBottomOf="@id/account_email"
+        tools:text="online" />
+
+    <!-- Telegram-style Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#1AFFFFFF"
         app:layout_constraintTop_toBottomOf="@id/account_image"
-        tools:text="@string/account_email_placeholder" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

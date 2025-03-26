@@ -1,267 +1,331 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/editAdsActPlace_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral90"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
+    android:background="@color/telegram_background"
     tools:context=".act.EditAdsActivity">
 
     <ScrollView
         android:id="@+id/editAdsActScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <androidx.cardview.widget.CardView
+            <!-- Блок с изображениями -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardImage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/telegram_surface"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="16dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp">
+                    android:layout_height="wrap_content"
+                    android:padding="12dp">
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/editActAdsImages"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:padding="10dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:clipToPadding="false"
+                        android:paddingHorizontal="8dp"/>
 
-                    <ImageButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/editAdsActGetImages"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/edit_image_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="16dp"
                         android:onClick="onClickGetImages"
-                        android:padding="3dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/editActAdsImages"
-                        app:srcCompat="@drawable/ic_edit" />
+                        app:backgroundTint="@color/telegram_primary"
+                        app:srcCompat="@drawable/ic_add_photo"
+                        app:tint="@android:color/white"/>
 
                     <ProgressBar
                         android:id="@+id/progressBarLoad"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/editActAdsImages"
-                        app:layout_constraintStart_toStartOf="@+id/editActAdsImages"
-                        app:layout_constraintTop_toTopOf="@+id/editActAdsImages" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <!-- Блок с адресом -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardAdress"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/telegram_surface"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <!-- Страна -->
                     <TextView
                         android:id="@+id/titleCountry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/Country"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/editAdsActSelectCountry"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
                         android:onClick="onClickSelectCountry"
-                        android:padding="10dp"
+                        android:paddingHorizontal="8dp"
                         android:text="@string/select_country"
-                        android:textColor="#1B1111"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/telegram_on_surface"
+                        android:textSize="16sp"/>
 
+                    <!-- Город -->
                     <TextView
                         android:id="@+id/titleCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/City"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/editAdsActSelectCity"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
                         android:onClick="onClickSelectCity"
-                        android:padding="10dp"
+                        android:paddingHorizontal="8dp"
                         android:text="@string/select_city"
-                        android:textColor="#1B1111"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/telegram_on_surface"
+                        android:textSize="16sp"/>
 
+                    <!-- Телефон -->
                     <TextView
                         android:id="@+id/titlePhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/Phone"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/editTextPhoneNumber"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:autofillHints="phone"
-                        android:ems="10"
-                        android:hint="@string/PhoneNumber"
-                        android:inputType="number"
-                        tools:ignore="TextFields" />
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextPhoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/PhoneNumber"
+                            android:inputType="phone"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Индекс -->
                     <TextView
                         android:id="@+id/titleIndex"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="@string/Index"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/editTextIndex"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:autofillHints="phone"
-                        android:ems="10"
-                        android:hint="@string/Index"
-                        android:inputType="number" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
 
-            <androidx.cardview.widget.CardView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextIndex"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/Index"
+                            android:inputType="number"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Блок с категориями -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCategory"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="5dp">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/telegram_surface"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <!-- Заголовок -->
                     <TextView
                         android:id="@+id/titleTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/Title"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/editTitle"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_margin="5dp"
-                        android:hint="@string/title_hint"
-                        android:inputType="textPersonName"
-                        android:padding="10dp"
-                        android:textColor="#1B1111"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/title_hint"
+                            android:inputType="textCapSentences"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Категория -->
                     <TextView
                         android:id="@+id/titleCat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="@string/category"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/editAdsActSelectCat"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:layout_margin="5dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
                         android:onClick="onClickSelectCategory"
-                        android:padding="10dp"
+                        android:paddingHorizontal="8dp"
                         android:text="@string/select_category"
-                        android:textColor="#1B1111"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/telegram_on_surface"
+                        android:textSize="16sp"/>
 
+                    <!-- Цена -->
                     <TextView
                         android:id="@+id/titlePrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/price"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/editTextPrice"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:autofillHints="phone"
-                        android:ems="10"
-                        android:hint="@string/price_hint"
-                        android:inputType="numberDecimal"
-                        tools:ignore="TextFields" />
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
 
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/price_hint"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Описание -->
                     <TextView
                         android:id="@+id/titleDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
                         android:text="@string/description"
-                        android:textSize="16sp" />
+                        android:textColor="@color/telegram_secondary_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold"/>
 
-                    <EditText
-                        android:id="@+id/editTextDescription"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:autofillHints="phone"
-                        android:ems="10"
-                        android:hint="@string/description_hint" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        android:layout_marginTop="4dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:boxStrokeColor="@color/telegram_primary"
+                        app:hintTextColor="@color/telegram_hint_text">
 
-            <Button
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/description_hint"
+                            android:inputType="textMultiLine"
+                            android:minLines="3"
+                            android:textColor="@color/telegram_on_surface"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Кнопка публикации -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonPublicate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/Publicate" />
-
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/Publicate"
+                app:backgroundTint="@color/telegram_primary"
+                app:cornerRadius="24dp"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button"/>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
