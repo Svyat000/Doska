@@ -22,6 +22,8 @@ data class Ads(
     val image2: String = "empty",
     val image3: String = "empty",
 
+    val time: String = "0",
+
 
     var viewsCounter: String = "0",
     var emailsCounter: String = "0",

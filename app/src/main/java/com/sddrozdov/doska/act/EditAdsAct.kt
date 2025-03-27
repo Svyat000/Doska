@@ -133,7 +133,8 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
                 favoriteCounter = "0",
                 mainImage = "emptyImage",
                 image2 = "emptyImage",
-                image3 = "emptyImage"
+                image3 = "emptyImage",
+                time = System.currentTimeMillis().toString(),
             )
         }
         return ads

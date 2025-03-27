@@ -92,10 +92,13 @@ class AdsAdapter(private val mainActivity: MainActivity) :
     }
 
     fun updateAdapter(newAdsArray: List<Ads>) {
-        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(adsArray, newAdsArray))
+        val tempArray = ArrayList<Ads>()
+        tempArray.addAll(adsArray)
+        tempArray.addAll(newAdsArray)
+        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(adsArray, tempArray))
         diffResult.dispatchUpdatesTo(this)
         adsArray.clear()
-        adsArray.addAll(newAdsArray)
+        adsArray.addAll(tempArray)
     }
 
     interface ItemListener {

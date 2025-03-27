@@ -64,13 +64,15 @@ class DbManager {
         val query = db.orderByChild(auth.uid + "/AD/uid").equalTo(auth.uid)
         readDataFromDB(query, readDataCallback)
     }
+
     fun getMyFavoriteAds(readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild( "/favorite/${auth.uid}").equalTo(auth.uid)
+        val query = db.orderByChild("/favorite/${auth.uid}").equalTo(auth.uid)
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAds(readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(auth.uid + "/AD/price")
+    fun getAllAds(lastTime: String, readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(auth.uid + "/AD/time").startAfter(lastTime).limitToFirst(
+            ADS_LIMIT)//фильтрация по времени
         readDataFromDB(query, readDataCallback)
     }
 
@@ -136,5 +138,6 @@ class DbManager {
         const val MAIN = "main"
         const val INFO_AD = "info"
         const val FAFORITE_ADS = "favorite"
+        const val ADS_LIMIT = 2
     }
 }

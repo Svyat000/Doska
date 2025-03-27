@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         initRecyclerView()
         accountHelperGoogle = AccountHelperGoogleSignIn(this)
         initViewModel()
-        firebaseViewModel.loadAllAds()
+        //firebaseViewModel.loadAllAds("0")
         bottomMenuOnClick()
         scrollListener()
     }
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 R.id.id_favorites -> firebaseViewModel.loadMyFavoriteAds()
 
                 R.id.id_home -> {
-                    firebaseViewModel.loadAllAds()
+                    firebaseViewModel.loadAllAds("0")
                     mainContent.toolbar.title = getString(R.string.menu_ads_main_ads)
                 }
             }
@@ -252,7 +252,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(SCROLL_DOWN) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-
+                    val adsList = firebaseViewModel.liveAdsData.value
+                    if (adsList != null) {
+                        if (adsList.isNotEmpty()) {
+                            adsList[adsList.size - 1].let { firebaseViewModel.loadAllAds(it.time) }
+                        }
+                    }
                 }
             }
         })
