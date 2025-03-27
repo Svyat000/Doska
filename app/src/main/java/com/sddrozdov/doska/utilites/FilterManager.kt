@@ -21,4 +21,14 @@ object FilterManager {
 
         )
     }
+
+    fun getFilter(filter: String): String {
+        val stringBuilder = StringBuilder()
+        val tempArray = filter.split("_")
+        if (tempArray[0] != "EMPTY") stringBuilder.append("country_")
+        if (tempArray[1] != "EMPTY") stringBuilder.append("city_")
+        if (tempArray[2] != "EMPTY") stringBuilder.append("index_")
+        stringBuilder.append("time")
+        return stringBuilder.toString()
+    }
 }

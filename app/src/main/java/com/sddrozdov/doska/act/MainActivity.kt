@@ -32,6 +32,7 @@ import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
+import com.sddrozdov.doska.utilites.FilterManager
 import com.sddrozdov.doska.viewModel.FirebaseViewModel
 import com.squareup.picasso.Picasso
 
@@ -326,6 +327,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             if (it.resultCode == RESULT_OK) {
                 filter = it.data?.getStringExtra(SearchActivity.FILTER_KEY)!!
                 Log.d("MAIN", "filter $filter")
+                Log.d("MAIN", "filter ${FilterManager.getFilter(filter)}")
             }
         }
     }
