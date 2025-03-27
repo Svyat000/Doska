@@ -101,6 +101,13 @@ class AdsAdapter(private val mainActivity: MainActivity) :
         adsArray.addAll(tempArray)
     }
 
+    fun updateAdapterWithClear(newAdsArray: List<Ads>) {
+        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(adsArray, newAdsArray))
+        diffResult.dispatchUpdatesTo(this)
+        adsArray.clear()
+        adsArray.addAll(newAdsArray)
+    }
+
     interface ItemListener {
         fun onDeleteItem(ads: Ads)
         fun onAdViewed(ads: Ads)
