@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.act
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -32,6 +33,7 @@ class SearchActivity : AppCompatActivity() {
         onClickSelectCountry()
         onClickSelectCity()
         onClickSearch()
+        getFilter()
 
     }
 
@@ -73,25 +75,43 @@ class SearchActivity : AppCompatActivity() {
 
     private fun onClickSearch() = with(binding) {
         btDone.setOnClickListener {
-            Log.d("MAIN","text : ${createFilter()}")
+            val intent = Intent().apply {
+                putExtra(FILTER_KEY,createFilter())
+            }
+            setResult(RESULT_OK,intent)
+            finish()
+            Log.d("MAIN", "text : ${createFilter()}")
+        }
+    }
+
+
+    private fun getFilter() = with(binding) {
+        val filter = intent.getStringExtra(FILTER_KEY)
+        if (filter != null && filter != "EMPTY") {
+            val filterArray = filter.split("_")
+            if (filterArray[0] != getString(R.string.select_country)) tvCountry.text = filterArray[0]
+            if (filterArray[1] != getString(R.string.select_city)) tvCity.text = filterArray[1]
+            if (filterArray[2] != "EMPTY") edIndex.setText(filterArray[2])
         }
     }
 
     private fun createFilter(): String = with(binding) {
-        val selectCountry = getString(R.string.select_country)
-        val selectCity = getString(R.string.select_city)
-
-        val tempArrayFilter = listOf(
-            tvCountry.text?.toString().orEmpty(),
-            tvCity.text?.toString().orEmpty(),
-            edIndex.text?.toString().orEmpty()
-        )
-
-        val nonDefaultValues = tempArrayFilter.filter {
-            it != selectCountry && it != selectCity && it.isNotEmpty()
+        val stringBuilder = StringBuilder()
+        val tempArrayFilter = listOf(tvCountry.text, tvCity.text, edIndex.text)
+        for ((i, s) in tempArrayFilter.withIndex()) {
+            if (s != getString(R.string.select_country) && s != getString(R.string.select_city) && s.isNotEmpty()) {
+                stringBuilder.append(s)
+                if (i != tempArrayFilter.size - 1) stringBuilder.append("_")
+            } else {
+                stringBuilder.append("EMPTY")
+                if (i != tempArrayFilter.size - 1) stringBuilder.append("_")
+            }
         }
-
-        return nonDefaultValues.joinToString("_")
+        return stringBuilder.toString()
     }
 
+
+    companion object {
+        const val FILTER_KEY = "FILTER_KEY"
+    }
 }

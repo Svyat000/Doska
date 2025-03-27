@@ -2,6 +2,7 @@ package com.sddrozdov.doska.act
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +55,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private var cleadUpdate: Boolean = true
     private var currentCategory: String? = null
 
+    private var filter: String = "EMPTY"
+    lateinit var filterLauncher: ActivityResultLauncher<Intent>
+
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +74,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         //firebaseViewModel.loadAllAds("0")
         bottomMenuOnClick()
         scrollListener()
+        onActivityResultFilter()
     }
 
     override fun onResume() {
@@ -77,8 +84,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.id_search)
-            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+        if (item.itemId == R.id.id_search) {
+            val intent = Intent(this@MainActivity, SearchActivity::class.java).apply {
+                putExtra(SearchActivity.FILTER_KEY, filter)
+            }
+            filterLauncher.launch(intent)
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -304,6 +315,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             } else {
                 val catTime = "${it.category}_${it.time}"
                 firebaseViewModel.loadAllAdsFromCategoryNextPage(catTime)
+            }
+        }
+    }
+
+    private fun onActivityResultFilter() {
+        filterLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == RESULT_OK) {
+                filter = it.data?.getStringExtra(SearchActivity.FILTER_KEY)!!
+                Log.d("MAIN", "filter $filter")
             }
         }
     }
