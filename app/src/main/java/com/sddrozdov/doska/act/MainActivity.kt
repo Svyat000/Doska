@@ -2,6 +2,7 @@ package com.sddrozdov.doska.act
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -75,14 +76,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return super.onOptionsItemSelected(item) TODO()
-//    } метод когда пользователь выбирает элемент из меню
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.id_search)
+            startActivity(Intent(this@MainActivity, SearchActivity::class.java))
+        return super.onOptionsItemSelected(item)
+    }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.main_menu, menu)
-//        return super.onCreateOptionsMenu(menu) TODO()
-//    } метод для надувания меню из xml файла menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -223,7 +226,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
 
-
     fun uiUpdate(user: FirebaseUser?) {
         //accountTextView.text = resources.getString(R.string.not_reg)
         if (user == null) {
@@ -289,6 +291,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
         })
     }
+
     private fun getAdsFromCategory(category: String) {
         currentCategory = category
         firebaseViewModel.loadAllAdsFromCategory(category)

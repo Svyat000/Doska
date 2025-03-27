@@ -1,14 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+
     <style name="Base.Theme.Doska" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/t_primary</item>
+        <item name="colorSurface">@color/t_surface</item>
+        <item name="android:textColorPrimary">@color/t_on_surface</item>
+
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSurface">@color/t_on_surface</item>
+
+
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="toolbarStyle">@style/ActionBarCustom</item>
+
+        <item name="android:windowBackground">@color/t_background</item>
+
+
     </style>
 
-    <style name="Theme.Doska" parent="Base.Theme.Doska" />
-    <style name = "ActionBarCustom">
+    <style name="ActionBarCustom" parent="Widget.Material3.Toolbar">
         <item name="android:textColorSecondary">@color/color_blue</item>
+        <item name="titleTextColor">@color/t_on_surface</item>
     </style>
 
 </resources>

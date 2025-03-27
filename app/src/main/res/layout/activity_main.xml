@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/telegram_background"
+    android:background="@color/t_background"
     tools:context=".act.MainActivity"
     tools:openDrawer="start">
 
@@ -18,38 +18,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <!-- Боковое меню в стиле Telegram -->
+    <!-- Боковое меню -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/mainNavigationView"
         android:layout_width="@dimen/nav_drawer_width"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:fitsSystemWindows="true"
-    android:background="@color/telegram_surface"
-    app:headerLayout="@layout/nav_header_main"
-    app:menu="@menu/drawer_main_menu"
-    app:elevation="8dp"
-    app:itemShapeAppearance="@style/NavItemShapeAppearance"
-    app:itemShapeFillColor="@color/telegram_surface"
-    app:itemShapeInsetStart="8dp"
-    app:itemShapeInsetEnd="8dp"
-    app:itemHorizontalPadding="16dp"
-    app:itemIconPadding="12dp"
-    app:itemIconSize="24dp"
-    app:itemIconTint="@color/telegram_nav_icon_tint"
-    app:itemTextColor="@color/telegram_nav_text_color"
-    app:itemRippleColor="@color/telegram_ripple_color"
-    android:clipToPadding="false"
-    android:outlineAmbientShadowColor="@color/telegram_shadow"
-    android:outlineSpotShadowColor="@color/telegram_shadow">
-
-    <!-- Дополнительные элементы дизайна -->
-    <View
-        android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:background="?android:attr/dividerVertical"/>
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        android:background="@color/t_surface"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/drawer_main_menu"
+        app:elevation="8dp"
+        app:itemShapeAppearance="@style/NavItemShapeAppearance"
+        app:itemShapeFillColor="@color/t_surface"
+        app:itemShapeInsetStart="8dp"
+        app:itemShapeInsetEnd="8dp"
+        app:itemHorizontalPadding="16dp"
+        app:itemIconPadding="12dp"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/t_nav_icon_tint"
+        app:itemTextColor="@color/t_nav_text_color"
+        app:itemRippleColor="@color/t_ripple_color"
+        android:clipToPadding="false"
+        android:outlineAmbientShadowColor="@color/t_shadow"
+        android:outlineSpotShadowColor="@color/t_shadow">
 
-</com.google.android.material.navigation.NavigationView>
+        <!-- Дополнительные элементы дизайна -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="?android:attr/dividerVertical"/>
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

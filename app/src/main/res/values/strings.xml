@@ -76,6 +76,7 @@
     <string name="menu_settings_category">Настройки</string>
     <string name="settings">Настройки</string>
     <string name="help">Помощь</string>
+    <string name="search">Поиск</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>

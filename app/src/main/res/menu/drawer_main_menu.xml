@@ -60,7 +60,7 @@
         </menu>
     </item>
 
-    <!-- Дополнительные пункты в стиле Telegram -->
+    <!-- Дополнительные пункты  -->
     <item android:title="@string/menu_settings_category">
         <menu>
             <item

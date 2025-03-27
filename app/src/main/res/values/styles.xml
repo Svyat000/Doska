@@ -6,24 +6,24 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="colorPrimary">@color/telegram_primary</item>
-        <item name="colorPrimaryDark">@color/telegram_primary_dark</item>
-        <item name="android:windowBackground">@color/telegram_background</item>
-        <item name="colorSurface">@color/telegram_surface</item>
-        <item name="android:textColorPrimary">@color/telegram_on_surface</item>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/t_primary</item>
+        <item name="colorPrimaryDark">@color/t_primary_dark</item>
+        <item name="android:windowBackground">@color/t_background</item>
+        <item name="colorSurface">@color/t_surface</item>
+        <item name="android:textColorPrimary">@color/t_on_surface</item>
     </style>
 
-    <style name="TelegramNavigationView" parent="Widget.MaterialComponents.NavigationView">
+    <style name="TNavigationView" parent="Widget.Material3.NavigationView">
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
-        <item name="itemIconTint">@color/telegram_on_surface</item>
-        <item name="itemTextColor">@color/telegram_on_surface</item>
-        <item name="android:background">@color/telegram_surface</item>
-        <item name="itemRippleColor">@color/telegram_primary</item>
-        <item name="itemShapeFillColor">@color/telegram_surface</item>
+        <item name="itemIconTint">@color/t_on_surface</item>
+        <item name="itemTextColor">@color/t_on_surface</item>
+        <item name="android:background">@color/t_surface</item>
+        <item name="itemRippleColor">@color/t_primary</item>
+        <item name="shapeAppearanceOverlay">@style/NavItemShapeAppearance</item>
     </style>
 
-    <style name="CircleImageView" parent="">
+    <style name="CircleImageView" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
@@ -33,15 +33,16 @@
         <item name="cornerSize">8dp</item>
     </style>
 
-    <style name="NavItemShapeAppearance" parent="">
+    <style name="NavItemShapeAppearance" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
 
-    <style name="TelegramMenuStyle" parent="Widget.MaterialComponents.NavigationView">
-        <item name="itemIconTint">@color/telegram_menu_icon_tint</item>
-        <item name="itemTextColor">@color/telegram_menu_text_color</item>
-        <item name="itemBackground">@drawable/menu_item_background</item>
+    <style name="TMenuStyle" parent="Widget.Material3.NavigationView">
+        <item name="itemIconTint">@color/t_menu_icon_tint</item>
+        <item name="itemTextColor">@color/t_menu_text_color</item>
+        <item name="itemShapeAppearanceOverlay">@style/NavItemShapeAppearance</item>
+        <item name="itemRippleColor">@color/t_ripple_color</item>
     </style>
 
 </resources>

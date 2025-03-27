@@ -10,21 +10,23 @@
 
     <color name="color_blue">#144256</color>
 
-    <color name="telegram_primary">#0088CC</color> <!-- Основной синий Telegram -->
-    <color name="telegram_primary_dark">#0072A3</color>
-    <color name="telegram_background">#F5F5F5</color> <!-- Светлый фон вместо темного -->
-    <color name="telegram_surface">#FFFFFF</color> <!-- Белый для карточек -->
-    <color name="telegram_on_surface">#212121</color> <!-- Темный текст на светлом фоне -->
-    <color name="telegram_secondary_text">#757575</color> <!-- Вторичный текст -->
-    <color name="telegram_hint_text">#BDBDBD</color> <!-- Подсказки в полях ввода -->
+    <color name="t_primary">#0088CC</color> <!-- Основной синий -->
+    <color name="t_primary_dark">#0072A3</color>
+    <color name="t_background">#F5F5F5</color> <!-- Светлый фон вместо темного -->
+    <color name="t_surface">#FFFFFF</color> <!-- Белый для карточек -->
+    <color name="t_on_surface">#212121</color> <!-- Темный текст на светлом фоне -->
+    <color name="t_secondary_text">#757575</color> <!-- Вторичный текст -->
+    <color name="t_hint_text">#BDBDBD</color> <!-- Подсказки в полях ввода -->
 
-    <color name="telegram_nav_icon_tint">#757575</color>
-    <color name="telegram_nav_text_color">#212121</color>
-    <color name="telegram_ripple_color">#1A0088CC</color>
-    <color name="telegram_shadow">#33000000</color>
+    <color name="t_nav_icon_tint">#757575</color>
+    <color name="t_nav_text_color">#212121</color>
+    <color name="t_ripple_color">#1A0088CC</color>
+    <color name="t_shadow">#33000000</color>
 
-    <color name="telegram_menu_icon_tint">#757575</color>
-    <color name="telegram_menu_text_color">#212121</color>
+    <color name="t_menu_icon_tint">#757575</color>
+    <color name="t_menu_text_color">#212121</color>
+
+
 
 
 </resources>

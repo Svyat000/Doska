@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@color/telegram_primary"
+    android:background="@color/t_primary"
     android:padding="16dp">
 
-    <!-- Profile Avatar with Telegram-style circular shape -->
+    <!-- Profile Avatar circular shape -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/account_image"
         android:layout_width="64dp"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/account_email"
         tools:text="online" />
 
-    <!-- Telegram-style Divider -->
+    <!--style Divider -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
