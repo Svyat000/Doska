@@ -15,6 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         initViewModel()
         firebaseViewModel.loadAllAds()
         bottomMenuOnClick()
+        scrollListener()
     }
 
     override fun onResume() {
@@ -227,6 +229,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     companion object {
         const val EDIT_STATE = "edit_state"
         const val ADS_DATA = "ads_data"
+        const val SCROLL_DOWN = 1
     }
 
     override fun onDeleteItem(ads: Ads) {
@@ -242,5 +245,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun onFavoriteCLicked(ads: Ads) {
         firebaseViewModel.onFavoriteCLick(ads)
+    }
+
+    private fun scrollListener() = with(binding.mainContent) {
+        rcView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(SCROLL_DOWN) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+
+                }
+            }
+        })
     }
 }
