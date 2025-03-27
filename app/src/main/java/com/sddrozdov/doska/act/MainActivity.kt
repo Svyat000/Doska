@@ -165,21 +165,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
 
             R.id.menu_ads_cars -> {
-                Toast.makeText(this, "Нажали на объявления по машинам", Toast.LENGTH_LONG).show()
+                getAdsFromCategory(getString(R.string.menu_ads_cars))
             }
 
             R.id.menu_ads_computers -> {
-                Toast.makeText(this, "Нажали на объявления по компьютерам", Toast.LENGTH_LONG)
-                    .show()
+                getAdsFromCategory(getString(R.string.menu_ads_computers))
             }
 
             R.id.menu_ads_phones -> {
-                Toast.makeText(this, "Нажали на объявления по телефонам", Toast.LENGTH_LONG).show()
+                getAdsFromCategory(getString(R.string.menu_ads_phones))
             }
 
             R.id.menu_ads_appliances -> {
-                Toast.makeText(this, "Нажали на объявления по бытовой технике", Toast.LENGTH_LONG)
-                    .show()
+                getAdsFromCategory(getString(R.string.menu_ads_appliances))
             }
 
             R.id.menu_account_register -> {
@@ -204,6 +202,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    private fun getAdsFromCategory(category: String) {
+        val categoryTime = "${category}_0"
+        firebaseViewModel.loadAllAdsFromCategory(categoryTime)
+    }
+
 
     fun uiUpdate(user: FirebaseUser?) {
         //accountTextView.text = resources.getString(R.string.not_reg)
@@ -263,11 +267,24 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     val adsList = firebaseViewModel.liveAdsData.value
                     if (adsList != null) {
                         if (adsList.isNotEmpty()) {
-                            adsList[adsList.size - 1].let { firebaseViewModel.loadAllAds(it.time) }
+                            getAdsFromCategory(adsList)
                         }
                     }
                 }
             }
         })
     }
+
+    private fun getAdsFromCategory(adsList: ArrayList<Ads>) {
+        adsList[adsList.size - 1].let {
+            if (it.category == getString(R.string.menu_ads_main_ads)) {
+                firebaseViewModel.loadAllAds(it.time)
+            } else {
+                val catTime = "${it.category}_${it.time}"
+                firebaseViewModel.loadAllAdsFromCategory(catTime)
+            }
+        }
+    }
+
+
 }

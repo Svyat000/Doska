@@ -13,14 +13,17 @@ import com.google.firebase.storage.ktx.storage
 class DbManager {
     val db = Firebase.database.getReference(MAIN)
     val auth = Firebase.auth
-    val dbStorage = Firebase.storage.getReference(MAIN)
+    //val dbStorage = Firebase.storage.getReference(MAIN)
 
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
             db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
                 .addOnCompleteListener {
-                    //if(it.isSuccessful)
-                    finishWorkListener.onFinish()
+                    val adsFilter = AdsFilter(ads.time, "${ads.category}_${ads.time}")
+                    db.child(ads.key ?: "Empty").child(AD_FILTER).setValue(adsFilter)
+                        .addOnCompleteListener {
+                            finishWorkListener.onFinish()
+                        }
                 }
         }
     }
@@ -71,8 +74,15 @@ class DbManager {
     }
 
     fun getAllAds(lastTime: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(auth.uid + "/AD/time").startAfter(lastTime).limitToFirst(
-            ADS_LIMIT)//фильтрация по времени
+        val query = db.orderByChild(AD_FILTER_TIME).startAfter(lastTime).limitToFirst(
+            ADS_LIMIT
+        )//фильтрация по времени
+        readDataFromDB(query, readDataCallback)
+    }
+    fun getAllAdsFromCategory(lastCatTime: String, readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAfter(lastCatTime).limitToFirst(
+            ADS_LIMIT
+        )//фильтрация по времени
         readDataFromDB(query, readDataCallback)
     }
 
@@ -139,5 +149,8 @@ class DbManager {
         const val INFO_AD = "info"
         const val FAFORITE_ADS = "favorite"
         const val ADS_LIMIT = 2
+        const val AD_FILTER = "AdFilter"
+        const val AD_FILTER_TIME = "/AdFilter/time"
+        const val AD_FILTER_CATEGORY_TIME = "/AdFilter/catTime"
     }
 }

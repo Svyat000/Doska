@@ -18,6 +18,14 @@ class FirebaseViewModel : ViewModel() {
         })
     }
 
+    fun loadAllAdsFromCategory(lastCatTime: String) {
+        dbManager.getAllAdsFromCategory(lastCatTime, object : DbManager.ReadDataCallback {
+            override fun readData(list: ArrayList<Ads>) {
+                liveAdsData.value = list
+            }
+        })
+    }
+
     fun loadMyFavoriteAds() {
         dbManager.getMyFavoriteAds(object : DbManager.ReadDataCallback {
             override fun readData(list: ArrayList<Ads>) {
