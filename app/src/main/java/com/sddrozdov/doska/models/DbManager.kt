@@ -8,6 +8,7 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.sddrozdov.doska.utilites.FilterManager
 
 class DbManager {
     val db = Firebase.database.getReference(MAIN)
@@ -18,7 +19,7 @@ class DbManager {
         if (auth.uid != null) {
             db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
                 .addOnCompleteListener {
-                    val adsFilter = AdsFilter(ads.time, "${ads.category}_${ads.time}")
+                    val adsFilter = FilterManager.createFilter(ads)//AdsFilter(ads.time, "${ads.category}_${ads.time}")
                     db.child(ads.key ?: "Empty").child(AD_FILTER).setValue(adsFilter)
                         .addOnCompleteListener {
                             finishWorkListener.onFinish()
