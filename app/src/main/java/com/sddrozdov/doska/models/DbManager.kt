@@ -8,7 +8,6 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 class DbManager {
     val db = Firebase.database.getReference(MAIN)
@@ -73,16 +72,27 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAds(lastTime: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_TIME).startAfter(lastTime).limitToFirst(
+    fun getAllAdsFirstPage(readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(AD_FILTER_TIME).limitToLast(
             ADS_LIMIT
-        )//фильтрация по времени
+        )
         readDataFromDB(query, readDataCallback)
     }
-    fun getAllAdsFromCategory(lastCatTime: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAfter(lastCatTime).limitToFirst(
+
+    fun getAllAdsNextPage(time: String, readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(AD_FILTER_TIME).endBefore(time).limitToLast(
             ADS_LIMIT
-        )//фильтрация по времени
+        )
+        readDataFromDB(query, readDataCallback)
+    }
+
+    fun getAllAdsFromCategoryFirstPage(category: String, readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category+"\uf8ff").limitToLast(ADS_LIMIT)
+        readDataFromDB(query, readDataCallback)
+    }
+
+    fun getAllAdsFromCategoryNextPage(categoryTime: String, readDataCallback: ReadDataCallback?) {
+        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).endBefore(categoryTime).limitToLast(ADS_LIMIT)
         readDataFromDB(query, readDataCallback)
     }
 

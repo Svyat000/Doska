@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     val adsAdapter = AdsAdapter(this)
 
     private var cleadUpdate: Boolean = true
+    private var currentCategory: String? = null
 
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
@@ -112,7 +113,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 R.id.id_favorites -> firebaseViewModel.loadMyFavoriteAds()
 
                 R.id.id_home -> {
-                    firebaseViewModel.loadAllAds("0")
+                    currentCategory = getString(R.string.menu_ads_main_ads)
+                    firebaseViewModel.loadAllAdsFirstPage()
                     mainContent.toolbar.title = getString(R.string.menu_ads_main_ads)
                 }
             }
@@ -122,18 +124,35 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     private fun initViewModel() {
         firebaseViewModel.liveAdsData.observe(this) {
+            val list = getAdsByCategory(it)
             if (!cleadUpdate) {
-                adsAdapter.updateAdapter(it)
+                adsAdapter.updateAdapter(list)
             } else {
-                adsAdapter.updateAdapterWithClear(it)
+                adsAdapter.updateAdapterWithClear(list)
             }
             binding.mainContent.EmptyFavAds.visibility =
                 if (adsAdapter.itemCount == 0) View.VISIBLE else View.GONE
         }
     }
 
+    private fun getAdsByCategory(list: ArrayList<Ads>): ArrayList<Ads> {
+        val tempList = ArrayList<Ads>()
+        tempList.addAll(list)
+        if (currentCategory != getString(R.string.menu_ads_main_ads)) {
+            tempList.clear()
+            list.forEach {
+                if (currentCategory == it.category) {
+                    tempList.add(it)
+                }
+            }
+        }
+        tempList.reverse()
+        return tempList
+    }
+
 
     private fun setupActionBarToggle() {
+        currentCategory = getString(R.string.menu_ads_main_ads)
         setSupportActionBar(binding.mainContent.toolbar)
         val toggle = ActionBarDrawerToggle(
             this,
@@ -203,10 +222,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         return true
     }
 
-    private fun getAdsFromCategory(category: String) {
-        val categoryTime = "${category}_0"
-        firebaseViewModel.loadAllAdsFromCategory(categoryTime)
-    }
 
 
     fun uiUpdate(user: FirebaseUser?) {
@@ -274,14 +289,18 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
         })
     }
+    private fun getAdsFromCategory(category: String) {
+        currentCategory = category
+        firebaseViewModel.loadAllAdsFromCategory(category)
+    }
 
     private fun getAdsFromCategory(adsList: ArrayList<Ads>) {
-        adsList[adsList.size - 1].let {
-            if (it.category == getString(R.string.menu_ads_main_ads)) {
-                firebaseViewModel.loadAllAds(it.time)
+        adsList[0].let {
+            if (currentCategory == getString(R.string.menu_ads_main_ads)) {
+                firebaseViewModel.loadAllAdsNextPage(it.time)
             } else {
                 val catTime = "${it.category}_${it.time}"
-                firebaseViewModel.loadAllAdsFromCategory(catTime)
+                firebaseViewModel.loadAllAdsFromCategoryNextPage(catTime)
             }
         }
     }
