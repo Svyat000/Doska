@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +16,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var _binding: ActivitySearchBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
-
     private val dialogSpinnerHelper = DialogSpinnerHelper()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +31,6 @@ class SearchActivity : AppCompatActivity() {
         onClickSelectCity()
         onClickSearch()
         getFilter()
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,7 +68,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
     private fun onClickSearch() = with(binding) {
         btDone.setOnClickListener {
             val intent = Intent().apply {
@@ -84,14 +79,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
     private fun getFilter() = with(binding) {
         val filter = intent.getStringExtra(FILTER_KEY)
-        if (filter != null && filter != "EMPTY") {
+        if (filter != null && filter != EMPTY) {
             val filterArray = filter.split("_")
-            if (filterArray[0] != getString(R.string.select_country)) tvCountry.text = filterArray[0]
-            if (filterArray[1] != getString(R.string.select_city)) tvCity.text = filterArray[1]
-            if (filterArray[2] != "EMPTY") edIndex.setText(filterArray[2])
+            if (filterArray[0] != EMPTY) tvCountry.text = filterArray[0]
+            if (filterArray[1] != EMPTY) tvCity.text = filterArray[1]
+            if (filterArray[2] != EMPTY) edIndex.setText(filterArray[2])
         }
     }
 
@@ -103,7 +97,7 @@ class SearchActivity : AppCompatActivity() {
                 stringBuilder.append(s)
                 if (i != tempArrayFilter.size - 1) stringBuilder.append("_")
             } else {
-                stringBuilder.append("EMPTY")
+                stringBuilder.append(EMPTY)
                 if (i != tempArrayFilter.size - 1) stringBuilder.append("_")
             }
         }
@@ -113,5 +107,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val FILTER_KEY = "FILTER_KEY"
+        const val EMPTY = "EMPTY"
     }
 }

@@ -41,24 +41,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     private lateinit var accountTextView: TextView
     private lateinit var imageViewAccount: ImageView
-
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
-
     private val dialogHelper = DialogHelper(this)
-
     private var accountHelperGoogle: AccountHelperGoogleSignIn? = null
-
     val mAuth = Firebase.auth
-
     val adsAdapter = AdsAdapter(this)
-
     private var cleadUpdate: Boolean = true
     private var currentCategory: String? = null
-
     private var filter: String = "EMPTY"
-    lateinit var filterLauncher: ActivityResultLauncher<Intent>
-
+    private var filterDB: String = ""
+    private lateinit var filterLauncher: ActivityResultLauncher<Intent>
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +75,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         super.onResume()
         binding.mainContent.bottomNavigationView.selectedItemId = R.id.id_home
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.id_search) {
@@ -129,7 +121,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
                 R.id.id_home -> {
                     currentCategory = getString(R.string.menu_ads_main_ads)
-                    firebaseViewModel.loadAllAdsFirstPage()
+                    firebaseViewModel.loadAllAdsFirstPage(filterDB)
                     mainContent.toolbar.title = getString(R.string.menu_ads_main_ads)
                 }
             }
@@ -164,7 +156,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         tempList.reverse()
         return tempList
     }
-
 
     private fun setupActionBarToggle() {
         currentCategory = getString(R.string.menu_ads_main_ads)
@@ -236,7 +227,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 
     fun uiUpdate(user: FirebaseUser?) {
         //accountTextView.text = resources.getString(R.string.not_reg)
@@ -321,15 +311,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     private fun onActivityResultFilter() {
-        filterLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                filter = it.data?.getStringExtra(SearchActivity.FILTER_KEY)!!
-                Log.d("MAIN", "filter $filter")
-                Log.d("MAIN", "filter ${FilterManager.getFilter(filter)}")
+        filterLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    filter = it.data?.getStringExtra(SearchActivity.FILTER_KEY)!!
+                    Log.d("MAIN", "filter $filter")
+                    Log.d("MAIN", "filter ${FilterManager.getFilter(filter)}")
+                    filterDB = FilterManager.getFilter(filter)
+                }
             }
-        }
     }
 
 

@@ -14,14 +14,11 @@ import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.ImageManager
 
 
-
 class DescAdsActivity : AppCompatActivity() {
 
     private var _binding: ActivityDescAdsBinding? = null
     val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
-
     lateinit var imageAdapterForViewPager: ImageAdapterForViewPager
-
     private var ads: Ads? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,14 +36,12 @@ class DescAdsActivity : AppCompatActivity() {
                 sendEmail()
             }
         }
-
     }
 
     private fun init() {
         imageAdapterForViewPager = ImageAdapterForViewPager()
         binding.apply {
             viewPager.adapter = imageAdapterForViewPager
-
         }
         getIntentFromMainActivity()
         viewPagerImageChangeCounter()
@@ -74,14 +69,13 @@ class DescAdsActivity : AppCompatActivity() {
         }
     }
 
-
     private fun getIntentFromMainActivity() {
         ads = intent.getSerializableExtra("AD") as Ads
         if (ads != null) updateUI(ads!!)
     }
 
     private fun updateUI(ads: Ads) {
-        ImageManager.fillImageArray(ads,imageAdapterForViewPager)
+        ImageManager.fillImageArray(ads, imageAdapterForViewPager)
         fillTextView(ads)
     }
 
@@ -93,20 +87,19 @@ class DescAdsActivity : AppCompatActivity() {
             tvEmail.text = ads.email
             tvTel.text = ads.tel
             tvEmail.text
-            tvCountry.text = ads.tel
+            tvCountry.text = ads.country
             tvCity.text = ads.city
             tvIndex.text = ads.index
         }
     }
 
-    private fun viewPagerImageChangeCounter(){
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+    private fun viewPagerImageChangeCounter() {
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val imageCounter = "${position+1}/${binding.viewPager.adapter?.itemCount}"
+                val imageCounter = "${position + 1}/${binding.viewPager.adapter?.itemCount}"
                 binding.tvImageCounter.text = imageCounter
             }
         })
     }
-
 }

@@ -2,16 +2,16 @@ package com.sddrozdov.doska.models
 
 data class AdsFilter(
     val time: String? = null,
-    val catTime: String? = null,
+    val cat_time: String? = null,
 
-    val categoryCountryTime: String? = null,
-    val categoryCountryCityTime: String? = null,
-    val categoryCountryCityIndexTime: String? = null,
-    val categoryIndexTime: String? = null,
+    val category_country_time: String? = null,
+    val category_country_city_time: String? = null,
+    val category_country_city_index_time: String? = null,
+    val category_index_time: String? = null,
 
-    val countryTime: String? = null,
-    val countryCityTime: String? = null,
-    val countryCityIndexTime: String? = null,
-    val indexTime: String? = null,
+    val country_time: String? = null,
+    val country_city_time: String? = null,
+    val country_city_index_time: String? = null,
+    val index_time: String? = null,
 
 )

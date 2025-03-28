@@ -40,7 +40,7 @@ class DbManager {
     private fun addFavoriteAds(ads: Ads, finishWorkListener: FinishWorkListener) {
         ads.key?.let {
             auth.uid?.let { it1 ->
-                db.child(it).child(FAFORITE_ADS).child(it1).setValue(it1).addOnCompleteListener {
+                db.child(it).child(FAVORITE_ADS).child(it1).setValue(it1).addOnCompleteListener {
                     if (it.isSuccessful) finishWorkListener.onFinish()
                 }
             }
@@ -50,7 +50,7 @@ class DbManager {
     private fun deleteFavoriteAds(ads: Ads, finishWorkListener: FinishWorkListener) {
         ads.key?.let {
             auth.uid?.let { it1 ->
-                db.child(it).child(FAFORITE_ADS).child(it1).removeValue().addOnCompleteListener {
+                db.child(it).child(FAVORITE_ADS).child(it1).removeValue().addOnCompleteListener {
                     if (it.isSuccessful) finishWorkListener.onFinish()
                 }
             }
@@ -73,11 +73,20 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAdsFirstPage(readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_TIME).limitToLast(
-            ADS_LIMIT
-        )
+    fun getAllAdsFirstPage(filter: String, readDataCallback: ReadDataCallback?) {
+        val query = if(filter.isEmpty()){
+            db.orderByChild(AD_FILTER_TIME).limitToLast(ADS_LIMIT)
+        }else{
+            getAllAdsWithFilterCategoryFirstPage(filter)
+        }
         readDataFromDB(query, readDataCallback)
+    }
+
+    private fun getAllAdsWithFilterCategoryFirstPage(globalFilter: String): Query {
+        val orderBy = globalFilter.split("|")[0]
+        val filter = globalFilter.split("|")[1]
+        return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
+            .limitToLast(ADS_LIMIT)
     }
 
     fun getAllAdsNextPage(time: String, readDataCallback: ReadDataCallback?) {
@@ -88,7 +97,7 @@ class DbManager {
     }
 
     fun getAllAdsFromCategoryFirstPage(category: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category+"\uf8ff").limitToLast(ADS_LIMIT)
+        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category + "\uf8ff").limitToLast(ADS_LIMIT)
         readDataFromDB(query, readDataCallback)
     }
 
@@ -106,23 +115,17 @@ class DbManager {
 
     private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
-
             val adArray = ArrayList<Ads>()
-
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 for (i in snapshot.children) {
-
                     var ad: Ads? = null
-
                     i.children.forEach {
                         if (ad == null) ad = it.child(AD).getValue(Ads::class.java)
                     }
                     val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
-
-                    val favoriteCounter = i.child(FAFORITE_ADS).childrenCount
+                    val favoriteCounter = i.child(FAVORITE_ADS).childrenCount
                     val isFavorite = auth.uid?.let {
-                        i.child(FAFORITE_ADS).child(it).getValue(String::class.java)
+                        i.child(FAVORITE_ADS).child(it).getValue(String::class.java)
                     }
                     ad?.isFavorite = isFavorite != null
                     ad?.favoriteCounter = favoriteCounter.toString()
@@ -158,10 +161,10 @@ class DbManager {
         const val AD = "AD"
         const val MAIN = "main"
         const val INFO_AD = "info"
-        const val FAFORITE_ADS = "favorite"
+        const val FAVORITE_ADS = "favorite"
         const val ADS_LIMIT = 2
         const val AD_FILTER = "AdFilter"
         const val AD_FILTER_TIME = "/AdFilter/time"
-        const val AD_FILTER_CATEGORY_TIME = "/AdFilter/catTime"
+        const val AD_FILTER_CATEGORY_TIME = "/AdFilter/cat_time"
     }
 }
