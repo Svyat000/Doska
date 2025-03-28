@@ -15,11 +15,46 @@ class DbManager {
     val auth = Firebase.auth
     //val dbStorage = Firebase.storage.getReference(MAIN)
 
+    private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            val adArray = ArrayList<Ads>()
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children) {
+                    var ad: Ads? = null
+                    i.children.forEach {
+                        if (ad == null) ad = it.child(AD).getValue(Ads::class.java)
+                    }
+                    val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
+                    val favoriteCounter = i.child(FAVORITE_ADS).childrenCount
+                    val isFavorite = auth.uid?.let {
+                        i.child(FAVORITE_ADS).child(it).getValue(String::class.java)
+                    }
+                    ad?.isFavorite = isFavorite != null
+                    ad?.favoriteCounter = favoriteCounter.toString()
+
+                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
+                    ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
+                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
+                    if (ad != null) adArray.add(ad!!)
+
+                }
+                Log.d("MyTag", " CALLBACK LOG IN DBMANAGER")
+                readDataCallback?.readData(adArray)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+
+            }
+        })
+    }
+
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
             db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
                 .addOnCompleteListener {
-                    val adsFilter = FilterManager.createFilter(ads)//AdsFilter(ads.time, "${ads.category}_${ads.time}")
+                    val adsFilter =
+                        FilterManager.createFilter(ads)//AdsFilter(ads.time, "${ads.category}_${ads.time}")
                     db.child(ads.key ?: "Empty").child(AD_FILTER).setValue(adsFilter)
                         .addOnCompleteListener {
                             finishWorkListener.onFinish()
@@ -28,7 +63,14 @@ class DbManager {
         }
     }
 
-    fun adViewed(ads: Ads) {
+    fun deleteAd(ads: Ads, finishWorkListener: FinishWorkListener) {
+        if (ads.key == null || ads.uid == null) return
+        db.child(ads.key).child(ads.uid).removeValue().addOnCompleteListener {
+            finishWorkListener.onFinish()
+        }
+    }
+
+    fun addViewsToAd(ads: Ads) {
         var counter = ads.viewsCounter.toInt()
         counter++
         if (auth.uid != null) {
@@ -62,7 +104,6 @@ class DbManager {
         else addFavoriteAds(ads, finishWorkListener)
     }
 
-
     fun getMyAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/AD/uid").equalTo(auth.uid)
         readDataFromDB(query, readDataCallback)
@@ -74,19 +115,12 @@ class DbManager {
     }
 
     fun getAllAdsFirstPage(filter: String, readDataCallback: ReadDataCallback?) {
-        val query = if(filter.isEmpty()){
+        val query = if (filter.isEmpty()) {
             db.orderByChild(AD_FILTER_TIME).limitToLast(ADS_LIMIT)
-        }else{
-            getAllAdsWithFilterCategoryFirstPage(filter)
+        } else {
+            getAllAdsWithFilterMainCategoryFirstPage(filter)
         }
         readDataFromDB(query, readDataCallback)
-    }
-
-    private fun getAllAdsWithFilterCategoryFirstPage(globalFilter: String): Query {
-        val orderBy = globalFilter.split("|")[0]
-        val filter = globalFilter.split("|")[1]
-        return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
-            .limitToLast(ADS_LIMIT)
     }
 
     fun getAllAdsNextPage(time: String, readDataCallback: ReadDataCallback?) {
@@ -96,55 +130,34 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAdsFromCategoryFirstPage(category: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category + "\uf8ff").limitToLast(ADS_LIMIT)
+    private fun getAllAdsWithFilterMainCategoryFirstPage(globalFilter: String): Query {
+        val orderBy = globalFilter.split("|")[0]
+        val filter = globalFilter.split("|")[1]
+        return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
+            .limitToLast(ADS_LIMIT)
+    }
+
+    fun getAllAdsFromCategoryFirstPage(category: String, filter: String, readDataCallback: ReadDataCallback?) {
+        val query = if(filter.isEmpty()){
+            db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category + "\uf8ff")
+                .limitToLast(ADS_LIMIT)
+        }else{
+            getAllAdsWithFilterAndCategoryFirstPage(category,filter)
+        }
         readDataFromDB(query, readDataCallback)
     }
 
     fun getAllAdsFromCategoryNextPage(categoryTime: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_CATEGORY_TIME).endBefore(categoryTime).limitToLast(ADS_LIMIT)
+        val query =
+            db.orderByChild(AD_FILTER_CATEGORY_TIME).endBefore(categoryTime).limitToLast(ADS_LIMIT)
         readDataFromDB(query, readDataCallback)
     }
 
-    fun deleteAd(ads: Ads, finishWorkListener: FinishWorkListener) {
-        if (ads.key == null || ads.uid == null) return
-        db.child(ads.key).child(ads.uid).removeValue().addOnCompleteListener {
-            finishWorkListener.onFinish()
-        }
-    }
-
-    private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            val adArray = ArrayList<Ads>()
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (i in snapshot.children) {
-                    var ad: Ads? = null
-                    i.children.forEach {
-                        if (ad == null) ad = it.child(AD).getValue(Ads::class.java)
-                    }
-                    val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
-                    val favoriteCounter = i.child(FAVORITE_ADS).childrenCount
-                    val isFavorite = auth.uid?.let {
-                        i.child(FAVORITE_ADS).child(it).getValue(String::class.java)
-                    }
-                    ad?.isFavorite = isFavorite != null
-                    ad?.favoriteCounter = favoriteCounter.toString()
-
-                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
-                    ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
-                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
-                    if (ad != null) adArray.add(ad!!)
-
-                }
-                Log.d("MyTag", " CALLBACK LOG IN DBMANAGER")
-                readDataCallback?.readData(adArray)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-
-            }
-        })
+    private fun getAllAdsWithFilterAndCategoryFirstPage(category: String, globalFilter: String): Query {
+        val orderBy = category + "_" + globalFilter.split("|")[0]
+        val filter = category + "_" + globalFilter.split("|")[1]
+        return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
+            .limitToLast(ADS_LIMIT)
     }
 
     interface ReadDataCallback {

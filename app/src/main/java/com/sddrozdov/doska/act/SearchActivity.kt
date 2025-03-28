@@ -30,6 +30,7 @@ class SearchActivity : AppCompatActivity() {
         onClickSelectCountry()
         onClickSelectCity()
         onClickSearch()
+        onClickClearSearch()
         getFilter()
     }
 
@@ -71,11 +72,20 @@ class SearchActivity : AppCompatActivity() {
     private fun onClickSearch() = with(binding) {
         btDone.setOnClickListener {
             val intent = Intent().apply {
-                putExtra(FILTER_KEY,createFilter())
+                putExtra(FILTER_KEY, createFilter())
             }
-            setResult(RESULT_OK,intent)
+            setResult(RESULT_OK, intent)
             finish()
             Log.d("MAIN", "text : ${createFilter()}")
+            setResult(RESULT_CANCELED)
+        }
+    }
+
+    private fun onClickClearSearch() = with(binding) {
+        btClear.setOnClickListener {
+            tvCountry.text = getString(R.string.select_country)
+            tvCity.text = getString(R.string.select_city)
+            edIndex.setText("")
         }
     }
 

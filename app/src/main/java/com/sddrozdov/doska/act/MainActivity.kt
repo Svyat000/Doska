@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     val adsAdapter = AdsAdapter(this)
     private var cleadUpdate: Boolean = true
     private var currentCategory: String? = null
-    private var filter: String = "EMPTY"
+    private var filter: String = SearchActivity.EMPTY
     private var filterDB: String = ""
     private lateinit var filterLauncher: ActivityResultLauncher<Intent>
     private val firebaseViewModel: FirebaseViewModel by viewModels()
@@ -296,7 +296,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     private fun getAdsFromCategory(category: String) {
         currentCategory = category
-        firebaseViewModel.loadAllAdsFromCategory(category)
+        firebaseViewModel.loadAllAdsFromCategory(category, filterDB)
     }
 
     private fun getAdsFromCategory(adsList: ArrayList<Ads>) {
@@ -318,6 +318,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     Log.d("MAIN", "filter $filter")
                     Log.d("MAIN", "filter ${FilterManager.getFilter(filter)}")
                     filterDB = FilterManager.getFilter(filter)
+                } else if(it.resultCode == RESULT_CANCELED){
+                    filterDB = ""
+                    filter = SearchActivity.EMPTY
                 }
             }
     }
