@@ -49,6 +49,42 @@ class DbManager {
         })
     }
 
+    private fun readNextPageDataFromDB(query: Query, filter: String, orderBy: String, readDataCallback: ReadDataCallback?) {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            val adArray = ArrayList<Ads>()
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (i in snapshot.children) {
+                    var ad: Ads? = null
+                    i.children.forEach {
+                        if (ad == null) ad = it.child(AD).getValue(Ads::class.java)
+                    }
+                    val infoItem = i.child(INFO_AD).getValue(InfoItem::class.java)
+                    val filterValue = i.child(INFO_AD).child(orderBy).value.toString()
+
+                    val favoriteCounter = i.child(FAVORITE_ADS).childrenCount
+                    val isFavorite = auth.uid?.let {
+                        i.child(FAVORITE_ADS).child(it).getValue(String::class.java)
+                    }
+                    ad?.isFavorite = isFavorite != null
+                    ad?.favoriteCounter = favoriteCounter.toString()
+
+                    ad?.viewsCounter = infoItem?.viewsCounter ?: "0"
+                    ad?.emailsCounter = infoItem?.emailsCounter ?: "0"
+                    ad?.callsCounter = infoItem?.callsCounter ?: "0"
+                    if (ad != null && filterValue.startsWith(filter)) adArray.add(ad!!)
+
+                }
+                Log.d("MyTag", " CALLBACK LOG IN DBMANAGER")
+                readDataCallback?.readData(adArray)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+
+            }
+        })
+    }
+
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
             db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
@@ -114,35 +150,55 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
+
     fun getAllAdsFirstPage(filter: String, readDataCallback: ReadDataCallback?) {
         val query = if (filter.isEmpty()) {
             db.orderByChild(AD_FILTER_TIME).limitToLast(ADS_LIMIT)
         } else {
-            getAllAdsWithFilterMainCategoryFirstPage(filter)
+            getAllAdsByFilterFirstPage(filter)
         }
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAdsNextPage(time: String, readDataCallback: ReadDataCallback?) {
-        val query = db.orderByChild(AD_FILTER_TIME).endBefore(time).limitToLast(
-            ADS_LIMIT
-        )
-        readDataFromDB(query, readDataCallback)
+    fun getAllAdsNextPage(time: String, filter: String, readDataCallback: ReadDataCallback?) {
+        if (filter.isEmpty()) {
+            val query = db.orderByChild(AD_FILTER_TIME).endBefore(time).limitToLast(ADS_LIMIT)
+            readDataFromDB(query, readDataCallback)
+        } else {
+            getAllAdsByFilterNextPage(filter, time, readDataCallback)
+        }
     }
 
-    private fun getAllAdsWithFilterMainCategoryFirstPage(globalFilter: String): Query {
+
+    private fun getAllAdsByFilterFirstPage(globalFilter: String): Query {
         val orderBy = globalFilter.split("|")[0]
         val filter = globalFilter.split("|")[1]
         return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
             .limitToLast(ADS_LIMIT)
     }
 
-    fun getAllAdsFromCategoryFirstPage(category: String, filter: String, readDataCallback: ReadDataCallback?) {
-        val query = if(filter.isEmpty()){
+    private fun getAllAdsByFilterNextPage(
+        globalFilter: String,
+        time: String,
+        readDataCallback: ReadDataCallback?
+    ) {
+        val orderBy = globalFilter.split("|")[0]
+        val filter = globalFilter.split("|")[1]
+        val query = db.orderByChild("/AdFilter/$orderBy").endBefore(filter + "_$time")
+            .limitToLast(ADS_LIMIT)
+        readNextPageDataFromDB(query, filter, orderBy, readDataCallback)
+    }
+
+    fun getAllAdsFromCategoryFirstPage(
+        category: String,
+        filter: String,
+        readDataCallback: ReadDataCallback?
+    ) {
+        val query = if (filter.isEmpty()) {
             db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category + "\uf8ff")
                 .limitToLast(ADS_LIMIT)
-        }else{
-            getAllAdsWithFilterAndCategoryFirstPage(category,filter)
+        } else {
+            getAllAdsWithFilterAndCategoryFirstPage(category, filter)
         }
         readDataFromDB(query, readDataCallback)
     }
@@ -153,7 +209,10 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    private fun getAllAdsWithFilterAndCategoryFirstPage(category: String, globalFilter: String): Query {
+    private fun getAllAdsWithFilterAndCategoryFirstPage(
+        category: String,
+        globalFilter: String
+    ): Query {
         val orderBy = category + "_" + globalFilter.split("|")[0]
         val filter = category + "_" + globalFilter.split("|")[1]
         return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
@@ -175,7 +234,7 @@ class DbManager {
         const val MAIN = "main"
         const val INFO_AD = "info"
         const val FAVORITE_ADS = "favorite"
-        const val ADS_LIMIT = 2
+        const val ADS_LIMIT = 3
         const val AD_FILTER = "AdFilter"
         const val AD_FILTER_TIME = "/AdFilter/time"
         const val AD_FILTER_CATEGORY_TIME = "/AdFilter/cat_time"
