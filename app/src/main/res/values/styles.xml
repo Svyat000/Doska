@@ -45,4 +45,9 @@
         <item name="itemRippleColor">@color/t_ripple_color</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColor">@color/t_on_surface</item>
+        <item name="android:textColorHint">@color/t_hint_text</item>
+    </style>
+
 </resources>

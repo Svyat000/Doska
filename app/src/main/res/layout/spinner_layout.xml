@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/searchSpinner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp"
+    android:background="@color/t_surface"
+    android:elevation="4dp">
 
+    <!-- Поисковая строка -->
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/search_view_background"
         android:iconifiedByDefault="false"
-        android:queryHint="Поиск..." />
+        android:queryHint="Поиск..."
+        app:searchHintIcon="@null"
+        app:closeIcon="@drawable/ic_close"
+        app:searchIcon="@drawable/ic_search"
+        app:queryBackground="@android:color/transparent"/>
 
+    <!-- Список результатов -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSpinnerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="4dp"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingVertical="4dp"
+        android:background="@color/t_surface"/>
 </LinearLayout>
