@@ -256,12 +256,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         }
     }
 
-    companion object {
-        const val EDIT_STATE = "edit_state"
-        const val ADS_DATA = "ads_data"
-        const val SCROLL_DOWN = 1
-    }
-
     override fun onDeleteItem(ads: Ads) {
         firebaseViewModel.deleteItem(ads)
     }
@@ -302,10 +296,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private fun getAdsFromCategory(adsList: ArrayList<Ads>) {
         adsList[0].let {
             if (currentCategory == getString(R.string.menu_ads_main_ads)) {
-                firebaseViewModel.loadAllAdsNextPage(it.time,filterDB)
+                firebaseViewModel.loadAllAdsNextPage(it.time, filterDB)
             } else {
-                val catTime = "${it.category}_${it.time}"
-                firebaseViewModel.loadAllAdsFromCategoryNextPage(catTime)
+                firebaseViewModel.loadAllAdsFromCategoryNextPage(it.category!!, it.time, filterDB)
             }
         }
     }
@@ -318,12 +311,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     Log.d("MAIN", "filter $filter")
                     Log.d("MAIN", "filter ${FilterManager.getFilter(filter)}")
                     filterDB = FilterManager.getFilter(filter)
-                } else if(it.resultCode == RESULT_CANCELED){
+                } else if (it.resultCode == RESULT_CANCELED) {
                     filterDB = ""
                     filter = SearchActivity.EMPTY
                 }
             }
     }
 
+    companion object {
+        const val EDIT_STATE = "edit_state"
+        const val ADS_DATA = "ads_data"
+        const val SCROLL_DOWN = 1
+    }
 
 }
