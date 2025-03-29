@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
-        app:strokeColor="#E0E0E0"
+        app:strokeColor="@color/t_hint_text"
         app:strokeWidth="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
-                android:background="#F5F5F5"
+                android:background="@color/t_hint_text"
                 app:layout_constraintDimensionRatio="16:9"
                 tools:src="@drawable/ic_def_image" />
 
@@ -61,7 +61,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="TextView"
-                android:textColor="#212121"
+                android:textColor="@color/t_on_surface"
                 android:textSize="14sp" />
 
             <!-- Цена -->
@@ -77,24 +77,26 @@
                     android:id="@+id/tvPriceDes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/price_bg"
+                    android:background="@color/t_primary"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="6dp"
                     android:text="@string/price_desc"
-                    android:textColor="#212121"
-                    android:textSize="14sp" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:shapeAppearanceOverlay="@style/NavItemShapeAppearance"/>
 
                 <TextView
                     android:id="@+id/tvPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/price_bg"
+                    android:background="@color/t_primary"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="6dp"
                     android:text="666р"
-                    android:textColor="#E53935"
+                    android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:shapeAppearanceOverlay="@style/NavItemShapeAppearance"/>
             </LinearLayout>
 
             <!-- Разделитель -->
@@ -102,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="8dp"
-                android:background="#EEEEEE"/>
+                android:background="@color/t_hint_text"/>
 
             <!-- Футер -->
             <LinearLayout
@@ -122,7 +124,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_marginEnd="4dp"
-                        app:tint="#757575"
+                        app:tint="@color/t_secondary_text"
                         app:srcCompat="@drawable/ic_eye" />
 
                     <TextView
@@ -131,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:text="0"
-                        android:textColor="#757575"
+                        android:textColor="@color/t_secondary_text"
                         android:textSize="12sp" />
 
                     <ImageView
@@ -139,7 +141,7 @@
                         android:layout_width="16dp"
                         android:layout_height="16dp"
                         android:layout_marginEnd="4dp"
-                        app:tint="#757575"
+                        app:tint="@color/t_secondary_text"
                         app:srcCompat="@drawable/ic_fav_normal" />
 
                     <TextView
@@ -147,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
-                        android:textColor="#757575"
+                        android:textColor="@color/t_secondary_text"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -162,7 +164,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:textColor="#757575"
+                        android:textColor="@color/t_secondary_text"
                         android:textSize="12sp"
                         tools:text="12:30" />
 
@@ -179,7 +181,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="8dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            app:tint="#757575"
+                            app:tint="@color/t_secondary_text"
                             app:srcCompat="@drawable/ic_edit" />
 
                         <ImageButton
@@ -187,7 +189,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            app:tint="#757575"
+                            app:tint="@color/t_secondary_text"
                             app:srcCompat="@drawable/ic_delete_image" />
                     </LinearLayout>
                 </LinearLayout>
