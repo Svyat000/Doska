@@ -28,3 +28,14 @@ This project is a mobile application developed using Kotlin and XML that impleme
 - Kotlin SDK
 - Firebase project set up with Authentication and Realtime Database enabled
 - Appwrite server running to handle image uploads
+
+### Installation
+
+- Open the project in Android Studio.
+- Configure Firebase and Appwrite by following the setup instructions in their respective documentation.
+- Sync the project with Gradle files.
+  
+### Usage
+- Run the app on an Android device or emulator.
+- Create a new account or log in using existing credentials.
+- Start posting and managing advertisements!
