@@ -14,13 +14,22 @@ import com.sddrozdov.doska.databinding.AdListItemBinding
 import com.sddrozdov.doska.models.Ads
 import com.sddrozdov.doska.utilites.DiffUtilHelper
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class AdsAdapter(private val mainActivity: MainActivity) :
     RecyclerView.Adapter<AdsAdapter.AdsViewHolder>() {
 
     val adsArray = ArrayList<Ads>()
 
-    class AdsViewHolder(private val binding: AdListItemBinding, val mainActivity: MainActivity) :
+    private var timeFormatter: SimpleDateFormat ? = null
+
+    init{
+        timeFormatter = SimpleDateFormat("dd/MM/yyyy - hh:mm", Locale.getDefault())
+    }
+
+    class AdsViewHolder(private val binding: AdListItemBinding, val mainActivity: MainActivity,val formatter: SimpleDateFormat) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun setData(ads: Ads) {
@@ -30,6 +39,8 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 tvTitle.text = ads.title
                 tvViewCounter.text = ads.viewsCounter
                 tvFavCounter.text = ads.favoriteCounter
+                val publishTime = "Опубликовано:${getTimeFromMillis(ads.time)}"
+                tvPublishTime.text = publishTime
                 Log.d("AdsAdapter", "Loading image from URL: ${ads.mainImage}")
 
                 Picasso.get().load(ads.mainImage).into(mainImage)
@@ -39,6 +50,12 @@ class AdsAdapter(private val mainActivity: MainActivity) :
                 mainOnClick(ads)
 
             }
+        }
+
+        private fun getTimeFromMillis(timeMillis: String) : String{
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = timeMillis.toLong()
+            return formatter.format(calendar.time)
         }
 
         private fun mainOnClick(ads: Ads) = with(binding) {
@@ -80,7 +97,7 @@ class AdsAdapter(private val mainActivity: MainActivity) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdsViewHolder {
         val binding = AdListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AdsViewHolder(binding, mainActivity)
+        return AdsViewHolder(binding, mainActivity,timeFormatter!!)
     }
 
     override fun onBindViewHolder(holder: AdsViewHolder, position: Int) {
