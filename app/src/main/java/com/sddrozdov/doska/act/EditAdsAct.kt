@@ -129,7 +129,6 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
                 editTextDescription.text.toString(),
                 ads?.key ?: dbManager.db.push().key,
                 dbManager.auth.uid,
-                ads!!.isFavorite,
                 "0",
                 ads?.mainImage ?: "emptyImage",
                 ads?.image2 ?: "emptyImage",

@@ -15,13 +15,13 @@ data class Ads(
     val key: String? = null,
     val uid: String? = null,
 
-    var isFavorite: Boolean = false,
+
     var favoriteCounter: String = "0",
 
     val mainImage: String = "empty",
     val image2: String = "empty",
     val image3: String = "empty",
-
+    var isFavorite: Boolean = false,
     val time: String = "0",
 
 
