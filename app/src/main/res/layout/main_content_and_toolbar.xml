@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_neutral70">
+    android:background="@color/t_background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:background="@color/white"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/t_surface"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.Material3.ActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Cars" />
+        app:title="Cars"
+        app:titleTextColor="@color/t_on_surface"/>
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/t_surface"
+        android:elevation="8dp"
         app:itemIconTint="@drawable/bottom_nav_selector"
-        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@drawable/bottom_nav_selector"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_main_menu" >
+        app:menu="@menu/bottom_main_menu"/>
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
+    <!-- Текст для пустого списка -->
     <TextView
         android:id="@+id/EmptyFavAds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_fav_ads"
-        android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textColor="@color/t_secondary_text"
+        android:textSize="18sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/rcView"
         app:layout_constraintEnd_toEndOf="@+id/rcView"
         app:layout_constraintStart_toStartOf="@+id/rcView"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="@+id/rcView"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
