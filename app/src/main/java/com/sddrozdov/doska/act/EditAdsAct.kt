@@ -70,8 +70,7 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         binding.buttonPublicate.setOnClickListener {
             ads = fillAd()
             if (isEditState) {
-                ads?.copy(key = ads?.key)
-                    ?.let { it1 -> dbManager.publicationAd(it1, onPublishFinish()) }
+                 dbManager.publicationAd(ads!!, onPublishFinish())
             } else {
 
                 //dbManager.publicationAd(adTemp, onPublishFinish())
@@ -116,9 +115,9 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun fillAd(): Ads {
-        val ads: Ads
+        val adsTemp: Ads
         binding.apply {
-            ads = Ads(
+            adsTemp = Ads(
                 editAdsActSelectCountry.text.toString(),
                 editAdsActSelectCity.text.toString(),
                 editTextEmail.text.toString(),
@@ -128,16 +127,17 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
                 editTitle.text.toString(),
                 editTextPrice.text.toString(),
                 editTextDescription.text.toString(),
-                dbManager.db.push().key,
+                ads?.key ?: dbManager.db.push().key,
                 dbManager.auth.uid,
-                favoriteCounter = "0",
-                mainImage = "emptyImage",
-                image2 = "emptyImage",
-                image3 = "emptyImage",
+                ads!!.isFavorite,
+                "0",
+                ads?.mainImage ?: "emptyImage",
+                ads?.image2 ?: "emptyImage",
+                ads?.image3 ?: "emptyImage",
                 time = System.currentTimeMillis().toString(),
             )
         }
-        return ads
+        return adsTemp
     }
 
     fun onClickSelectCountry(view: View) {
