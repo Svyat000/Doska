@@ -79,6 +79,7 @@
     <string name="search">Поиск</string>
     <string name="apply_filter">Применить фильтр</string>
     <string name="clear_filter">Очистить фильтр</string>
+    <string name="sign_in_with_google">"Войти с Google "</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>

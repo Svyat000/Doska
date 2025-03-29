@@ -1,92 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signDialog_SingUpAndInGoogleButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Button"
-        app:buttonSize="wide"
-        app:layout_constraintEnd_toEndOf="@+id/signDialog_SingUpAndInButton"
-        app:layout_constraintStart_toStartOf="@+id/signDialog_SingUpAndInButton"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_enter_Password" />
-
+    <!-- Title -->
     <TextView
         android:id="@+id/sign_Dialog_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/account_register"
-        android:textColor="#000000"
-        android:textSize="18sp"
+        android:textColor="@color/t_on_surface"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/signDialog_enter_Email"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/sign_dialog_email_hint"
-        android:inputType="text|textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_PleaseEnterEmail" />
-
-    <EditText
-        android:id="@+id/signDialog_enter_Password"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/sign_dialog_password_hint"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
-        app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_enter_Email" />
-
-    <Button
-        android:id="@+id/signDialog_SingUpAndInButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/sign_dialog_sign_up_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
-        app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_SingUpAndInGoogleButton" />
-
-    <Button
-        android:id="@+id/signDialog_forgetPasswordButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_dialog_forget_password_button"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
-        app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
-        app:layout_constraintTop_toBottomOf="@+id/signDialog_SingUpAndInButton" />
-
+    <!-- Email Instruction (hidden by default) -->
     <TextView
         android:id="@+id/signDialog_PleaseEnterEmail"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/sign_dialog_enter_your_Email"
-        android:textColor="@color/color_red"
+        android:textColor="@color/t_primary"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/signDialog_enter_Email"
-        app:layout_constraintStart_toStartOf="@+id/signDialog_enter_Email"
-        app:layout_constraintTop_toBottomOf="@+id/sign_Dialog_Title" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sign_Dialog_Title" />
+
+    <!-- Email Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/sign_dialog_email_hint"
+        app:boxStrokeColor="@color/t_primary"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signDialog_PleaseEnterEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signDialog_enter_Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/t_on_surface"
+            android:textColorHint="@color/t_hint_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/sign_dialog_password_hint"
+        app:boxStrokeColor="@color/t_primary"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signDialog_enter_Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/t_on_surface"
+            android:textColorHint="@color/t_hint_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Google Sign-In Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signDialog_SingUpAndInGoogleButton"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/sign_in_with_google"
+        app:icon="@drawable/ic_google_logo"
+        app:iconTint="@null"
+        app:strokeColor="@color/t_secondary_text"
+        app:strokeWidth="1dp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@id/passwordInputLayout"
+        app:layout_constraintStart_toStartOf="@id/passwordInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"/>
+
+    <!-- Primary Action Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signDialog_SingUpAndInButton"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/sign_dialog_sign_up_button"
+        app:backgroundTint="@color/t_primary"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@id/signDialog_SingUpAndInGoogleButton"
+        app:layout_constraintStart_toStartOf="@id/signDialog_SingUpAndInGoogleButton"
+        app:layout_constraintTop_toBottomOf="@id/signDialog_SingUpAndInGoogleButton"/>
+
+    <!-- Forgot Password (hidden by default) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signDialog_forgetPasswordButton"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_dialog_forget_password_button"
+        android:textColor="@color/t_primary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/signDialog_SingUpAndInButton"
+        app:layout_constraintStart_toStartOf="@id/signDialog_SingUpAndInButton"
+        app:layout_constraintTop_toBottomOf="@id/signDialog_SingUpAndInButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

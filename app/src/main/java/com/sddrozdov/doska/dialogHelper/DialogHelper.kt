@@ -42,7 +42,7 @@ class DialogHelper(private val mainActivity: MainActivity) {
     }
 
     private fun setOnClickResetPassword(binding: SignDialogBinding, dialog: AlertDialog) {
-        if (binding.signDialogEnterEmail.text.isNotEmpty()) {
+        if (binding.signDialogEnterEmail.text!!.isNotEmpty()) {
             mainActivity.mAuth.sendPasswordResetEmail(binding.signDialogEnterEmail.text.toString())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
