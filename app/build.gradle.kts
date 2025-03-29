@@ -73,6 +73,15 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
 
+
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.inline)
+    // Для работы с Android-контекстом в тестах
+    androidTestImplementation (libs.androidx.core)
+
+
+
+
     // Coroutine
     //implementation(libs.androidx.lifecycle.viewmodel.ktx)
     //implementation(libs.androidx.lifecycle.runtime.ktx)
