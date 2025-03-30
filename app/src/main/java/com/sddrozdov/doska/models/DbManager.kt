@@ -43,8 +43,6 @@ class DbManager {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-
             }
         })
     }
@@ -87,13 +85,20 @@ class DbManager {
 
     fun publicationAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (auth.uid != null) {
-            db.child(ads.key ?: "Empty").child(auth.uid!!).child(AD).setValue(ads)
+            val adKey = ads.key ?: db.push().key ?: "Empty"
+            val updatedAd = ads.copy(
+                key = adKey,
+                uid = auth.uid // UID создателя
+            )
+
+            db.child(adKey).child(auth.uid!!).child(AD)
+                .setValue(updatedAd)
                 .addOnCompleteListener {
-                    val adsFilter =
-                        FilterManager.createFilter(ads)//AdsFilter(ads.time, "${ads.category}_${ads.time}")
-                    db.child(ads.key ?: "Empty").child(AD_FILTER).setValue(adsFilter)
+                    val adsFilter = FilterManager.createFilter(updatedAd)
+                    db.child(adKey).child(AD_FILTER)
+                        .setValue(adsFilter)
                         .addOnCompleteListener {
-                            finishWorkListener.onFinish()
+                            finishWorkListener.onFinish(null)
                         }
                 }
         }
@@ -102,7 +107,7 @@ class DbManager {
     fun deleteAd(ads: Ads, finishWorkListener: FinishWorkListener) {
         if (ads.key == null || ads.uid == null) return
         db.child(ads.key).child(ads.uid).removeValue().addOnCompleteListener {
-            finishWorkListener.onFinish()
+            finishWorkListener.onFinish(null)
         }
     }
 
@@ -119,7 +124,7 @@ class DbManager {
         ads.key?.let {
             auth.uid?.let { it1 ->
                 db.child(it).child(FAVORITE_ADS).child(it1).setValue(it1).addOnCompleteListener {
-                    if (it.isSuccessful) finishWorkListener.onFinish()
+                    if (it.isSuccessful) finishWorkListener.onFinish(null)
                 }
             }
         }
@@ -129,7 +134,7 @@ class DbManager {
         ads.key?.let {
             auth.uid?.let { it1 ->
                 db.child(it).child(FAVORITE_ADS).child(it1).removeValue().addOnCompleteListener {
-                    if (it.isSuccessful) finishWorkListener.onFinish()
+                    if (it.isSuccessful) finishWorkListener.onFinish(null)
                 }
             }
         }
@@ -159,7 +164,7 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    fun getAllAdsWithFilterFirstPage(globalFilter: String): Query {
+    private fun getAllAdsWithFilterFirstPage(globalFilter: String): Query {
         val orderBy = globalFilter.split("|")[0]
         val filter = globalFilter.split("|")[1]
         return db.orderByChild("/AdFilter/$orderBy").startAt(filter).endAt(filter + "\uf8ff")
@@ -219,6 +224,88 @@ class DbManager {
         readNextPageDataFromDB(query,filter,orderBy,readDataCallback)
     }
 
+    fun placeBid(
+        adKey: String,
+        ownerUid: String,
+        bid: Bid,
+        finishWorkListener: FinishWorkListener
+    ) {
+        Log.d("MyTagDB_DEBUG", "Attempting to place bid for ad: $adKey")
+
+        // Формируем путь с использованием UID владельца
+        val ref = db.child(adKey).child(ownerUid).child(AD)
+        Log.d("MyTagDB_DEBUG", "Correct database path: ${ref.path}")
+
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    Log.e("MyTagDB_ERROR", "Ad not found at path: ${ref.path}")
+                    finishWorkListener.onFinish(false)
+                    return
+                }
+
+                try {
+                    val updates = hashMapOf<String, Any>(
+                        "auctionCurrentPrice" to bid.amount,
+                        "auctionBids/${bid.userId}" to bid.amount
+                    )
+
+                    ref.updateChildren(updates)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                saveBidHistory(adKey, bid)
+                                finishWorkListener.onFinish(true)
+                            } else {
+                                Log.e("MyTagDB_ERROR", "Update failed: ${task.exception?.message}")
+                                finishWorkListener.onFinish(false)
+                            }
+                        }
+                } catch (e: Exception) {
+                    Log.e("MyTagDB_ERROR", "Exception: ${e.message}")
+                    finishWorkListener.onFinish(false)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("MyTagDB_ERROR", "Database error: ${error.message}")
+                finishWorkListener.onFinish(false)
+            }
+        })
+    }
+
+
+
+    private fun saveBidHistory(adKey: String, bid: Bid) {
+        db.child(adKey).child("auctionHistory").push().setValue(bid)
+    }
+
+    fun checkAuctionEnd(adKey: String) {
+        db.child(adKey).child(AD).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val ad = snapshot.getValue(Ads::class.java)
+                if (ad != null && ad.isAuction && System.currentTimeMillis() >= ad.auctionEndTime) {
+                    determineWinner(adKey, ad)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun determineWinner(adKey: String, ad: Ads) {
+        val winnerEntry = ad.auctionBids.maxByOrNull { it.value.toFloat() }
+        winnerEntry?.let {
+            db.child(adKey).child(AD).child("auctionWinner").setValue(it.key)
+                .addOnSuccessListener {
+                    //sendNotifications(adKey, it.key)
+                }
+        }
+    }
+
+    private fun sendNotifications(adKey: String, winnerId: String) {
+        TODO("Реализация отправки уведомлений")
+    }
+
     interface ReadDataCallback {
         fun readData(list: ArrayList<Ads>) {
             Log.d("MyTag", " CALLBACK LOG IN INTERFACE")
@@ -226,7 +313,7 @@ class DbManager {
     }
 
     interface FinishWorkListener {
-        fun onFinish()
+        fun onFinish(boolean: Boolean?)
     }
 
     companion object {

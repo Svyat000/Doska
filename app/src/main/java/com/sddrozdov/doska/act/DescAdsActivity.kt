@@ -3,103 +3,272 @@ package com.sddrozdov.doska.act
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityDescAdsBinding
 import com.sddrozdov.doska.models.Ads
+import com.sddrozdov.doska.models.Bid
+import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.recyclerViewAdapters.ImageAdapterForViewPager
 import com.sddrozdov.doska.utilites.ImageManager
-
 
 class DescAdsActivity : AppCompatActivity() {
 
     private var _binding: ActivityDescAdsBinding? = null
-    val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
-    lateinit var imageAdapterForViewPager: ImageAdapterForViewPager
-    private var ads: Ads? = null
+    private val binding get() = _binding ?: throw IllegalStateException("Binding must not be null")
+    private lateinit var imageAdapter: ImageAdapterForViewPager
+    private var adDetails: Ads? = null
+    private var ownerUid: String? = null
+    private val auth = Firebase.auth
+    private var auctionTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         _binding = ActivityDescAdsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.descActToolbar)
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
-        init()
-        binding.apply {
-            fbTel.setOnClickListener {
-                callToNumber()
-            }
-            fbEmail.setOnClickListener {
-                sendEmail()
-            }
-        }
+
+        initialize()
+        setupClickListeners()
+        setupAuctionUI()
     }
 
-    private fun init() {
-        imageAdapterForViewPager = ImageAdapterForViewPager()
-        binding.apply {
-            viewPager.adapter = imageAdapterForViewPager
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == android.R.id.home){
+            Toast.makeText(this, "НАЖАЛИ НАЗАД ", Toast.LENGTH_LONG).show()
+            finish()
         }
-        getIntentFromMainActivity()
-        viewPagerImageChangeCounter()
+        return super.onOptionsItemSelected(item)
     }
 
-    private fun callToNumber() {
-        val callUri = "tel:${ads?.tel}"
-        val intentCall = Intent(Intent.ACTION_DIAL)
-        intentCall.data = callUri.toUri()
+    private fun initialize() {
+        imageAdapter = ImageAdapterForViewPager()
+        binding.viewPager.adapter = imageAdapter
+        retrieveAdDetailsFromIntent()
+        setupViewPagerImageChangeListener()
+    }
+
+    private fun setupClickListeners() {
+        binding.fbTel.setOnClickListener { initiatePhoneCall() }
+        binding.fbEmail.setOnClickListener { initiateEmailSending() }
+    }
+
+    private fun initiatePhoneCall() {
+        val callUri = "tel:${adDetails?.tel}"
+        val intentCall = Intent(Intent.ACTION_DIAL).apply {
+            data = callUri.toUri()
+        }
         startActivity(intentCall)
     }
 
-    private fun sendEmail() {
-        val intentForSendEmail = Intent(Intent.ACTION_SEND)
-        intentForSendEmail.type = "message/rfc822"
-        intentForSendEmail.apply {
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(ads?.email))
+    private fun initiateEmailSending() {
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "message/rfc822"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(adDetails?.email))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.AD))
-            putExtra(Intent.EXTRA_TEXT, "TODO()") //TODO("Доделать заполнение объявления")
+            putExtra(Intent.EXTRA_TEXT, "TODO()") // TODO: Complete email body
         }
         try {
-            startActivity(Intent.createChooser(intentForSendEmail, getString(R.string.OPEN_WITH)))
-        } catch (exeption: ActivityNotFoundException) {
-
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.OPEN_WITH)))
+        } catch (exception: ActivityNotFoundException) {
+            showToast("Нет приложения для отправки почты")
         }
     }
 
-    private fun getIntentFromMainActivity() {
-        ads = intent.getSerializableExtra("AD") as Ads
-        if (ads != null) updateUI(ads!!)
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun updateUI(ads: Ads) {
-        ImageManager.fillImageArray(ads, imageAdapterForViewPager)
-        fillTextView(ads)
+    private fun retrieveAdDetailsFromIntent() {
+        adDetails = intent.getSerializableExtra("AD") as Ads
+        ownerUid = adDetails?.uid
+        adDetails?.let { updateUI(it) }
     }
 
-    private fun fillTextView(ads: Ads) {
+    private fun updateUI(ad: Ads) {
+        ImageManager.fillImageArray(ad, imageAdapter)
+        populateTextViews(ad)
+    }
+
+    private fun populateTextViews(ad: Ads) {
         binding.apply {
-            tvTitle.text = ads.title
-            tvDescription.text = ads.description
-            tvPrice.text = ads.price
-            tvEmail.text = ads.email
-            tvTel.text = ads.tel
-            tvEmail.text
-            tvCountry.text = ads.country
-            tvCity.text = ads.city
-            tvIndex.text = ads.index
+            tvTitle.text = ad.title
+            tvDescription.text = ad.description
+            tvPrice.text = ad.price
+            tvEmail.text = ad.email
+            tvTel.text = ad.tel
+            tvCountry.text = ad.country
+            tvCity.text = ad.city
+            tvIndex.text = ad.index
         }
     }
 
-    private fun viewPagerImageChangeCounter() {
+    private fun setupViewPagerImageChangeListener() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                val imageCounter = "${position + 1}/${binding.viewPager.adapter?.itemCount}"
+                val imageCounter = "${position + 1}/${binding.viewPager.adapter?.itemCount ?: 0}"
                 binding.tvImageCounter.text = imageCounter
             }
         })
+    }
+
+    private fun setupAuctionUI() {
+        adDetails?.let { ad ->
+            if (ad.isAuction) {
+                binding.auctionLayout.visibility = View.VISIBLE
+                updateAuctionUI(ad)
+                setupBidButton(ad)
+                startAuctionTimer(ad.auctionEndTime)
+
+                binding.tvCurrentBid.text = ad.auctionCurrentPrice?.let {
+                    "Текущая ставка: $it"
+                } ?: "Начальная цена: ${ad.auctionStartPrice}"
+            }
+        }
+    }
+
+    private fun updateAuctionUI(ad: Ads) {
+        val currentPrice = ad.auctionCurrentPrice ?: ad.auctionStartPrice
+        binding.tvCurrentBid.text = getString(R.string.current_price, currentPrice)
+        startAuctionTimer(ad.auctionEndTime)
+    }
+
+    private fun setupBidButton(ad: Ads) {
+        binding.btnPlaceBid.setOnClickListener {
+            if (ownerUid.isNullOrEmpty()) {
+                showError("Ошибка: невозможно определить владельца объявления")
+                return@setOnClickListener
+            }
+
+            if (ad.key.isNullOrBlank()) {
+                showError("Ошибка: отсутствует идентификатор объявления")
+                return@setOnClickListener
+            }
+
+            val bidInput = binding.etNewBid.text.toString()
+            if (bidInput.isBlank()) {
+                showError("Введите сумму ставки")
+                return@setOnClickListener
+            }
+
+            val bidAmount = bidInput.toFloatOrNull()
+            if (bidAmount == null || bidAmount <= 0) {
+                showError("Некорректный формат суммы или сумма должна быть больше нуля")
+                return@setOnClickListener
+            }
+
+            val currentPrice = ad.auctionCurrentPrice?.toFloatOrNull() ?: ad.auctionStartPrice?.toFloatOrNull() ?: 0f
+            if (bidAmount <= currentPrice) {
+                showError("Ставка должна быть выше текущей")
+                return@setOnClickListener
+            }
+
+            val bid = Bid(
+                userId = auth.currentUser !!.uid,
+                amount = "%.2f".format(bidAmount),
+                timestamp = System.currentTimeMillis()
+            )
+
+            DbManager().placeBid(
+                adKey = ad.key,
+                ownerUid = ownerUid!!,
+                bid = bid,
+                finishWorkListener = object : DbManager.FinishWorkListener {
+                    override fun onFinish(boolean: Boolean?) {
+                        onFinishBid(boolean,bid)
+                    }
+                }
+            )
+        }
+    }
+
+    private fun onFinishBid(boolean: Boolean?,bid: Bid){
+        when (boolean) {
+            true -> {
+                // Успешное размещение ставки
+                runOnUiThread {
+                    Toast.makeText(
+                        this@DescAdsActivity,
+                        "Ставка успешно размещена!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // Обновляем UI
+                    binding.etNewBid.text?.clear()
+                    adDetails?.auctionCurrentPrice = bid.amount
+                    updateAuctionUI(adDetails!!)
+                }
+            }
+            false -> {
+                // Ошибка при размещении ставки
+                runOnUiThread {
+                    Toast.makeText(
+                        this@DescAdsActivity,
+                        "Ошибка при размещении ставки",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            else -> {
+                // Неизвестная ошибка
+                runOnUiThread {
+                    Toast.makeText(
+                        this@DescAdsActivity,
+                        "Неизвестная ошибка при размещении ставки",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        binding.etNewBid.requestFocus()
+    }
+
+    private fun startAuctionTimer(endTime: Long) {
+        val remainingTime = endTime - System.currentTimeMillis()
+        auctionTimer = object : CountDownTimer(remainingTime, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (!isDestroyed) {
+                    binding.tvAuctionTime.text = formatTime(millisUntilFinished)
+                }
+            }
+
+            override fun onFinish() {
+                if (!isDestroyed && adDetails?.key != null) {
+                    binding.tvAuctionTime.text = "Аукцион завершен"
+                    DbManager().checkAuctionEnd(adDetails!!.key!!)
+                }
+            }
+        }.start()
+    }
+
+    private fun formatTime(millis: Long): String {
+        val seconds = millis / 1000
+        val days = seconds / 86400
+        val hours = (seconds % 86400) / 3600
+        val minutes = (seconds % 3600) / 60
+        return String.format("%dд %02d:%02d", days, hours, minutes)
+    }
+
+    override fun onDestroy() {
+
+        auctionTimer?.cancel()
+        super.onDestroy()
+        _binding = null
     }
 }
