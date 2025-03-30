@@ -80,6 +80,18 @@
     <string name="apply_filter">Применить фильтр</string>
     <string name="clear_filter">Очистить фильтр</string>
     <string name="sign_in_with_google">"Войти с Google "</string>
+    <string name="city">TextView</string>
+    <string name="index">Index:</string>
+    Детали объявления
+    <string name="ads_detail">Детали объявления</string>
+    <string name="start_price">Начальная цена</string>
+    <string name="start_price_hint">Стартовая цена</string>
+    <string name="auction_time">Длительность аукциона</string>
+    <string name="days">Дней</string>
+    <string name="auction">Аукцион</string>
+    <string name="simple">Обычное</string>
+    <string name="current_price">Текущая ставка: %1$s</string>
+    <string name="refresh">Обновить</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
