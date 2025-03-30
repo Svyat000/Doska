@@ -15,7 +15,6 @@ data class Ads(
     val key: String? = null,
     val uid: String? = null,
 
-
     var favoriteCounter: String = "0",
 
     val mainImage: String = "empty",
@@ -24,9 +23,17 @@ data class Ads(
     var isFavorite: Boolean = false,
     val time: String = "0",
 
-
     var viewsCounter: String = "0",
     var emailsCounter: String = "0",
     var callsCounter: String = "0",
 
-    ) : Serializable
+    var isAuction: Boolean = false,
+    val auctionStartPrice: String? = null,
+    var auctionCurrentPrice: String? = null,
+    var auctionEndTime: Long = 0,
+    val auctionBids: MutableMap<String, String> = mutableMapOf(),
+    var auctionWinner: String? = null
+
+) : Serializable
+
+

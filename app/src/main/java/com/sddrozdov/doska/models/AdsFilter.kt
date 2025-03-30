@@ -13,5 +13,4 @@ data class AdsFilter(
     val country_city_time: String? = null,
     val country_city_index_time: String? = null,
     val index_time: String? = null,
-
 )
