@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Блок с изображениями -->
+            <!-- images -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardImage"
                 android:layout_width="match_parent"
@@ -76,7 +76,7 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Блок с адресом -->
+            <!-- adress -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardAdress"
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Страна -->
+                    <!-- country -->
                     <TextView
                         android:id="@+id/titleCountry"
                         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                         android:textColor="@color/t_on_surface"
                         android:textSize="16sp"/>
 
-                    <!-- Город -->
+                    <!-- city -->
                     <TextView
                         android:id="@+id/titleCity"
                         android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                         android:textColor="@color/t_on_surface"
                         android:textSize="16sp"/>
 
-                    <!-- Email -->
+                    <!-- email -->
                     <TextView
                         android:id="@+id/titleEmail"
                         android:layout_width="match_parent"
@@ -169,7 +169,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <!-- Телефон -->
+                    <!-- phone -->
                     <TextView
                         android:id="@+id/titlePhone"
                         android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                             android:textColor="@color/t_on_surface"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Индекс -->
+                    <!-- index -->
                     <TextView
                         android:id="@+id/titleIndex"
                         android:layout_width="match_parent"
@@ -226,7 +226,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Блок с категориями -->
+            <!-- category -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCategory"
                 android:layout_width="match_parent"
@@ -242,7 +242,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Заголовок -->
+                    <!-- title -->
                     <TextView
                         android:id="@+id/titleTitle"
                         android:layout_width="match_parent"
@@ -269,7 +269,7 @@
                             android:textColor="@color/t_on_surface"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Категория -->
+                    <!-- category -->
                     <TextView
                         android:id="@+id/titleCat"
                         android:layout_width="match_parent"
@@ -294,7 +294,90 @@
                         android:textColor="@color/t_on_surface"
                         android:textSize="16sp"/>
 
-                    <!-- Цена -->
+                    <!-- type -->
+                    <RadioGroup
+                        android:id="@+id/radioGroupAdType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                        <RadioButton
+                            android:id="@+id/radioNormal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/simple"
+                            android:checked="true"/>
+
+                        <RadioButton
+                            android:id="@+id/radioAuction"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/auction"/>
+                    </RadioGroup>
+
+                    <!-- auction fields -->
+                    <LinearLayout
+                        android:id="@+id/auctionFields"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_price"
+                            android:textColor="@color/t_secondary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/t_primary"
+                            app:hintTextColor="@color/t_hint_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editAuctionStartPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/start_price_hint"
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/t_on_surface"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/auction_time"
+                            android:textColor="@color/t_secondary_text"
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxStrokeColor="@color/t_primary"
+                            app:hintTextColor="@color/t_hint_text">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editAuctionDuration"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/days"
+                                android:inputType="number"
+                                android:textColor="@color/t_on_surface"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- price -->
                     <TextView
                         android:id="@+id/titlePrice"
                         android:layout_width="match_parent"
@@ -321,7 +404,7 @@
                             android:textColor="@color/t_on_surface"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Описание -->
+                    <!-- description -->
                     <TextView
                         android:id="@+id/titleDescription"
                         android:layout_width="match_parent"
@@ -352,7 +435,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Кнопка публикации -->
+            <!-- button publication -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonPublicate"
                 android:layout_width="match_parent"
