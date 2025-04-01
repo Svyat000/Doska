@@ -224,12 +224,7 @@ class DbManager {
         readNextPageDataFromDB(query,filter,orderBy,readDataCallback)
     }
 
-    fun placeBid(
-        adKey: String,
-        ownerUid: String,
-        bid: Bid,
-        finishWorkListener: FinishWorkListener
-    ) {
+    fun placeBid(adKey: String, ownerUid: String, bid: Bid, finishWorkListener: FinishWorkListener) {
         Log.d("MyTagDB_DEBUG", "Attempting to place bid for ad: $adKey")
 
         // Формируем путь с использованием UID владельца
