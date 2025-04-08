@@ -27,7 +27,6 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
                                 sendEmailVerification(user)
                                 act.uiUpdate(user)
                             } ?: run {
-                                // Обработка случая, когда user равен null
                                 Toast.makeText(
                                     act,
                                     R.string.error_user_not_found,
@@ -41,14 +40,10 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
                     }
             }
         }
-
     }
 
-
     private fun handleSignUpError(exception: Exception?) {
-
         when (exception) {
-
             is FirebaseAuthInvalidCredentialsException -> {
                 Log.d("MyLog", "Exception111: ${exception.errorCode}")
                 if (exception.errorCode == FirebaseAuthConstants.ERROR_INVALID_CREDENTIAL) {
@@ -57,16 +52,13 @@ class AccountHelperEmailAndPassword(private val act: MainActivity) {
                         act.getString(R.string.wrong_email_or_password),
                         Toast.LENGTH_LONG
                     ).show()
-
                 }
             }
-
             is FirebaseAuthWeakPasswordException -> {
                 Log.d("MyLog", "Exception: ${exception.errorCode}")
                 Toast.makeText(act, FirebaseAuthConstants.ERROR_WEAK_PASSWORD, Toast.LENGTH_LONG)
                     .show()
             }
-
             else -> {
                 Toast.makeText(act, R.string.sign_dialog_sign_up_error, Toast.LENGTH_SHORT).show()
             }

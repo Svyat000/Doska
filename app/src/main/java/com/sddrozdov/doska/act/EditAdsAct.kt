@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.appwrite.Appwrite
+import com.sddrozdov.doska.appwrite.Appwrt
 import com.sddrozdov.doska.models.DbManager
 import com.sddrozdov.doska.databinding.ActivityEditAdsBinding
 import com.sddrozdov.doska.dialogs.DialogSpinnerHelper
@@ -181,16 +182,6 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
-    fun onClickSelectCategory(view: View) {
-        val listCategory = ArrayList(resources.getStringArray(R.array.category).toList())
-        dialogSpinnerHelper.showSpinnerDialog(this, listCategory , binding.editAdsActSelectCat)
-    }
-
-    private fun init() {
-        imageAdapter = ImageAdapterForViewPager()
-        binding.editActAdsImages.adapter = imageAdapter
-    }
-
     fun onClickSelectCity(view: View) {
         val selectedCountry = binding.editAdsActSelectCountry.text.toString()
         if (selectedCountry != getString(R.string.select_country)) {
@@ -200,6 +191,16 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             Toast.makeText(this, getString(R.string.first_select_your_country), Toast.LENGTH_LONG)
                 .show()
         }
+    }
+
+    fun onClickSelectCategory(view: View) {
+        val listCategory = ArrayList(resources.getStringArray(R.array.category).toList())
+        dialogSpinnerHelper.showSpinnerDialog(this, listCategory , binding.editAdsActSelectCat)
+    }
+
+    private fun init() {
+        imageAdapter = ImageAdapterForViewPager()
+        binding.editActAdsImages.adapter = imageAdapter
     }
 
     fun onClickGetImages(view: View) {
@@ -285,13 +286,13 @@ class EditAdsActivity : AppCompatActivity(), FragmentCloseInterface {
             try {
                 val storage = Storage(Appwrite.appwriteClient)
                 val response = storage.createFile(
-                    bucketId = "67e2a80d003d243b8d8a",
+                    bucketId = Appwrt.BUCKET_ID,
                     fileId = ID.unique(),
                     file = InputFile.fromFile(tempFile),
                     permissions = listOf("read(\"any\")")
                 )
 
-                val fileUrl = "https://cloud.appwrite.io/v1/storage/buckets/67e2a80d003d243b8d8a/files/${response.id}/view?project=67e2a75600274ddbebaa"
+                val fileUrl = "${Appwrt.START_URL}${response.id}${Appwrt.END_URL}"
                 Log.d("Appwrite", "Generated URL: $fileUrl") // Для отладки
 
                 onComplete(response.id, fileUrl)

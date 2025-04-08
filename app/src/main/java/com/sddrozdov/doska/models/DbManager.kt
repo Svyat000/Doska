@@ -47,7 +47,12 @@ class DbManager {
         })
     }
 
-    private fun readNextPageDataFromDB(query: Query, filter: String, orderBy: String, readDataCallback: ReadDataCallback?) {
+    private fun readNextPageDataFromDB(
+        query: Query,
+        filter: String,
+        orderBy: String,
+        readDataCallback: ReadDataCallback?
+    ) {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             val adArray = ArrayList<Ads>()
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -180,7 +185,11 @@ class DbManager {
         }
     }
 
-    private fun getAllAdsByFilterNextPage(globalFilter: String, time: String, readDataCallback: ReadDataCallback?) {
+    private fun getAllAdsByFilterNextPage(
+        globalFilter: String,
+        time: String,
+        readDataCallback: ReadDataCallback?
+    ) {
         val orderBy = globalFilter.split("|")[0]
         val filter = globalFilter.split("|")[1]
         val query = db.orderByChild("/AdFilter/$orderBy").endBefore(filter + "_$time")
@@ -188,7 +197,11 @@ class DbManager {
         readNextPageDataFromDB(query, filter, orderBy, readDataCallback)
     }
 
-    fun getAllAdsFromCategoryFirstPage(category: String, filter: String, readDataCallback: ReadDataCallback?) {
+    fun getAllAdsFromCategoryFirstPage(
+        category: String,
+        filter: String,
+        readDataCallback: ReadDataCallback?
+    ) {
         val query = if (filter.isEmpty()) {
             db.orderByChild(AD_FILTER_CATEGORY_TIME).startAt(category).endAt(category + "_\uf8ff")
                 .limitToLast(ADS_LIMIT)
@@ -198,7 +211,10 @@ class DbManager {
         readDataFromDB(query, readDataCallback)
     }
 
-    private fun getAllAdsFromCategoryWithFilterFirstPage(category: String, globalFilter: String): Query {
+    private fun getAllAdsFromCategoryWithFilterFirstPage(
+        category: String,
+        globalFilter: String
+    ): Query {
         val orderBy = category + "_" + globalFilter.split("|")[0]
         val filter = category + "_" + globalFilter.split("|")[1]
 
@@ -206,25 +222,42 @@ class DbManager {
             .limitToLast(ADS_LIMIT)
     }
 
-    fun getAllAdsFromCategoryNextPage(category: String, time: String,filter: String, readDataCallback: ReadDataCallback?) {
-        if(filter.isEmpty()){
+    fun getAllAdsFromCategoryNextPage(
+        category: String,
+        time: String,
+        filter: String,
+        readDataCallback: ReadDataCallback?
+    ) {
+        if (filter.isEmpty()) {
             val query =
-                db.orderByChild(AD_FILTER_CATEGORY_TIME).endBefore(category + "_" +  time).limitToLast(ADS_LIMIT)
+                db.orderByChild(AD_FILTER_CATEGORY_TIME).endBefore(category + "_" + time)
+                    .limitToLast(ADS_LIMIT)
             readDataFromDB(query, readDataCallback)
-        } else{
-            getAllAdsFromCategoryWithFilterNextPage(category,time,filter,readDataCallback)
+        } else {
+            getAllAdsFromCategoryWithFilterNextPage(category, time, filter, readDataCallback)
         }
     }
 
-    private fun getAllAdsFromCategoryWithFilterNextPage(category: String, time: String, globalFilter: String, readDataCallback: ReadDataCallback?) {
+    private fun getAllAdsFromCategoryWithFilterNextPage(
+        category: String,
+        time: String,
+        globalFilter: String,
+        readDataCallback: ReadDataCallback?
+    ) {
         val orderBy = category + "_" + globalFilter.split("|")[0]
         val filter = category + "_" + globalFilter.split("|")[1]
         val query =
-            db.orderByChild("AdFilter/$orderBy").endBefore(filter + "_" + time).limitToLast(ADS_LIMIT)
-        readNextPageDataFromDB(query,filter,orderBy,readDataCallback)
+            db.orderByChild("AdFilter/$orderBy").endBefore(filter + "_" + time)
+                .limitToLast(ADS_LIMIT)
+        readNextPageDataFromDB(query, filter, orderBy, readDataCallback)
     }
 
-    fun placeBid(adKey: String, ownerUid: String, bid: Bid, finishWorkListener: FinishWorkListener) {
+    fun placeBid(
+        adKey: String,
+        ownerUid: String,
+        bid: Bid,
+        finishWorkListener: FinishWorkListener
+    ) {
         Log.d("MyTagDB_DEBUG", "Attempting to place bid for ad: $adKey")
 
         // Формируем путь с использованием UID владельца
@@ -267,7 +300,6 @@ class DbManager {
             }
         })
     }
-
 
 
     private fun saveBidHistory(adKey: String, bid: Bid) {
