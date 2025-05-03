@@ -208,6 +208,7 @@ class DescAdsActivity : AppCompatActivity() {
                     // Обновляем UI
                     binding.etNewBid.text?.clear()
                     adDetails?.auctionCurrentPrice = bid.amount
+                    adDetails?.price = bid.amount
                     updateAuctionUI(adDetails!!)
                 }
             }

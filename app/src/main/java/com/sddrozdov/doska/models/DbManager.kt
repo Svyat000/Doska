@@ -274,6 +274,7 @@ class DbManager {
 
                 try {
                     val updates = hashMapOf<String, Any>(
+                        "price" to bid.amount,
                         "auctionCurrentPrice" to bid.amount,
                         "auctionBids/${bid.userId}" to bid.amount
                     )
@@ -332,6 +333,7 @@ class DbManager {
     private fun sendNotifications(adKey: String, winnerId: String) {
         TODO("Реализация отправки уведомлений")
     }
+
 
     interface ReadDataCallback {
         fun readData(list: ArrayList<Ads>) {

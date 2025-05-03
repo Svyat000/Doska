@@ -53,7 +53,7 @@
                         android:layout_alignBottom="@+id/editActAdsImages"
                         android:layout_marginEnd="297dp"
                         android:layout_marginBottom="181dp"
-                        android:text="TextView" />
+                        android:text="" />
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/editAdsActGetImages"
