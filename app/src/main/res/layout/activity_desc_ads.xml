@@ -345,6 +345,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/fbTel"
+                    android:layout_marginEnd="8dp"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -353,6 +354,18 @@
                     app:strokeColor="@color/t_primary"
                     app:cornerRadius="16dp"
                     android:textColor="@color/t_primary"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fbMessage"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_chat"
+                    app:iconTint="@color/t_primary"
+                    app:strokeColor="@color/t_primary"
+                    app:cornerRadius="16dp"
+                    android:textColor="@color/t_primary"/>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
