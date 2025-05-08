@@ -42,6 +42,7 @@ class DescAdsActivity : AppCompatActivity() {
         initialize()
         setupClickListeners()
         setupAuctionUI()
+        openChatActivity()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -136,6 +137,17 @@ class DescAdsActivity : AppCompatActivity() {
                     "Текущая ставка: $it"
                 } ?: "Начальная цена: ${ad.auctionStartPrice}"
             }
+        }
+    }
+
+    private fun openChatActivity() {
+        binding.fbMessage.setOnClickListener {
+            val intent = Intent(this@DescAdsActivity, ChatActivity::class.java).apply {
+                putExtra("AD_ID", adDetails?.key) // идентификатор объявления
+                putExtra("USER_ID", auth.currentUser?.uid) // UID текущего пользователя
+                putExtra("OWNER_ID", ownerUid) // UID владельца объявления
+            }
+            startActivity(intent)
         }
     }
 
