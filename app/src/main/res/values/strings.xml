@@ -92,6 +92,8 @@
     <string name="simple">Обычное</string>
     <string name="current_price">Текущая ставка: %1$s</string>
     <string name="refresh">Обновить</string>
+    <string name="send">Отправить</string>
+    <string name="message">Сообщение</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
