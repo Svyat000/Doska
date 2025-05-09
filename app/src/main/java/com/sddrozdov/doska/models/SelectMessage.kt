@@ -1,6 +1,5 @@
 package com.sddrozdov.doska.models
 
-data class User(
+data class SelectMessage(
     val name: String? = null,
-    val message: String? = null,
 )

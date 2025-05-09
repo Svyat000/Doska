@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sddrozdov.doska.databinding.ChatItemBinding
-import com.sddrozdov.doska.models.User
+import com.sddrozdov.doska.models.Message
 
-class MessageAdapter : androidx.recyclerview.widget.ListAdapter<User, MessageAdapter.ItemHolder>(ItemComparator()) {
+class MessageAdapter : androidx.recyclerview.widget.ListAdapter<Message, MessageAdapter.ItemHolder>(ItemComparator()) {
 
     class ItemHolder(private val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User) = binding.apply {
-            userMessage.text = user.message
-            userName.text = user.name
+        fun bind(message: Message) = binding.apply {
+            userMessage.text = message.text
+            userName.text = message.sender
         }
 
         companion object {
@@ -28,12 +28,12 @@ class MessageAdapter : androidx.recyclerview.widget.ListAdapter<User, MessageAda
         }
     }
 
-    class ItemComparator : DiffUtil.ItemCallback<User>() {
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+    class ItemComparator : DiffUtil.ItemCallback<Message>() {
+        override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
             return oldItem == newItem
         }
     }
