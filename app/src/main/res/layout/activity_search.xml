@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="TEST" />
+        app:title="TEST"
+        android:contentDescription="@string/act_search_toolbar"/>
 
     <ScrollView
         android:id="@+id/scroolViewMain"
@@ -29,7 +30,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchActToolbar">
+        app:layout_constraintTop_toBottomOf="@id/searchActToolbar"
+        android:contentDescription="@string/scroll">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,7 +70,8 @@
                         android:text="@string/select_country"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:contentDescription="@string/select_country"/>
 
                     <View
                         android:id="@+id/divider1"
@@ -96,7 +99,8 @@
                         android:text="@string/select_city"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:contentDescription="@string/select_city"/>
 
                     <View
                         android:id="@+id/divider2"
@@ -154,7 +158,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/apply_filter"
                 android:textColor="@color/text_color_pix"
-                app:backgroundTint="@color/white" />
+                app:backgroundTint="@color/white"
+                android:contentDescription="@string/apply_filter"/>
 
             <Button
                 android:id="@+id/btClear"
@@ -163,7 +168,8 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/clear_filter"
                 android:textColor="@color/text_color_pix"
-                app:backgroundTint="@color/white" />
+                app:backgroundTint="@color/white"
+                android:contentDescription="@string/clear_filter"/>
 
         </LinearLayout>
     </ScrollView>
