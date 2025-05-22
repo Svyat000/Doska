@@ -10,7 +10,7 @@
     tools:context=".act.ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/chatToolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/t_background"
@@ -26,7 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/materialToolbar"
+        app:layout_constraintTop_toBottomOf="@id/chatToolbar"
         app:layout_constraintBottom_toTopOf="@id/messageInputLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
