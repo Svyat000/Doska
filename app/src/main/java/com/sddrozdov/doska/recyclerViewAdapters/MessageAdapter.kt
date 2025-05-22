@@ -12,7 +12,7 @@ class MessageAdapter : androidx.recyclerview.widget.ListAdapter<Message, Message
     class ItemHolder(private val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message) = binding.apply {
             userMessage.text = message.text
-            userName.text = message.sender
+            userName.text = message.senderName
         }
 
         companion object {
