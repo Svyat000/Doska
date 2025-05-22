@@ -21,49 +21,51 @@
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Сообщения" />
 
-    <ScrollView
-        android:id="@+id/scrollViewMain"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/materialToolbar"
+        app:layout_constraintBottom_toTopOf="@id/messageInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/materialToolbar">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clipToPadding="false"
+        android:padding="8dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/messageInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:elevation="8dp">
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:hint="@string/message"
+            android:inputType="text"
+            android:padding="12dp"
+            android:background="@drawable/rounded_edittext"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/t_nav_text_color" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="493dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/white" />
+        <ImageButton
+            android:id="@+id/sendMessage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/send"
+            android:padding="12dp"
+            android:src="@drawable/ic_send_arrow" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/editTextText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginBottom="16dp"
-                android:ems="10"
-                android:hint="@string/message"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColorHint="@color/t_nav_text_color" />
-
-            <Button
-                android:id="@+id/sendMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/send"
-                android:textColor="@color/text_color_pix"
-                app:backgroundTint="@color/white" />
-
-        </LinearLayout>
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

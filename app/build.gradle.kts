@@ -99,4 +99,6 @@ dependencies {
 
     implementation("io.appwrite:sdk-for-android:7.0.0")
 
+    implementation (libs.circleimageview)
+
 }
