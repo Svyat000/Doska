@@ -10,18 +10,18 @@
         android:orderInCategory="1"
         app:iconTint="?attr/colorPrimary"/>
 
-    <!-- Favorites -->
+    <!-- Messages -->
     <item
-        android:id="@+id/id_favorites"
-        android:title="Favorites"
-        android:icon="@drawable/ic_favorite_material_design"
+        android:id="@+id/id_chat"
+        android:title="@string/Чат"
+        android:icon="@drawable/ic_chat"
         android:orderInCategory="2"
         app:iconTint="?attr/colorPrimary"/>
 
     <!-- My Ads -->
     <item
         android:id="@+id/id_my_ads"
-        android:title="My ads"
+        android:title="My Ads"
         android:icon="@drawable/ic_my_ads_material_design"
         android:orderInCategory="3"
         app:iconTint="?attr/colorPrimary"/>
@@ -29,7 +29,7 @@
     <!-- New Ad -->
     <item
         android:id="@+id/id_new_ads"
-        android:title="New add"
+        android:title="New Ad"
         android:icon="@drawable/ic_add_material_design"
         android:orderInCategory="4"
         app:iconTint="?attr/colorPrimary"/>

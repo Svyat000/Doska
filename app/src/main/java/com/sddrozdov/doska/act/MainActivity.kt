@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -117,7 +116,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
                 }
 
-                R.id.id_favorites -> firebaseViewModel.loadMyFavoriteAds()
+                R.id.id_chat -> firebaseViewModel.loadMyFavoriteAds()
 
                 R.id.id_home -> {
                     currentCategory = getString(R.string.menu_ads_main_ads)
@@ -185,8 +184,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         cleadUpdate = true
         when (item.itemId) {
+            R.id.menu_ads_favorite -> {
+                firebaseViewModel.loadMyFavoriteAds()
+                binding.mainContent.toolbar.title = getString(R.string.menu_ads_favorite)
+            }
+
             R.id.menu_ads_my_items -> {
-                Toast.makeText(this, "Нажали на мои объявления", Toast.LENGTH_LONG).show()
+                firebaseViewModel.loadMyAds()
+                binding.mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
             }
 
             R.id.menu_ads_cars -> {

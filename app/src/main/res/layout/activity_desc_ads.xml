@@ -69,7 +69,8 @@
                         app:layout_constraintTop_toBottomOf="@id/tvTitle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:contentDescription="@string/ad_images"/>
 
                     <TextView
                         android:id="@+id/tvImageCounter"
@@ -110,7 +111,8 @@
                         android:textColor="@color/t_on_surface"
                         android:textSize="14sp"
                         android:lineSpacingExtra="4dp"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="16dp"
+                        android:contentDescription="@string/ad_description"/>
 
                     <!-- Details Items -->
                     <LinearLayout

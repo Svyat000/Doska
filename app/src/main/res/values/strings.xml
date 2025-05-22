@@ -96,6 +96,10 @@
     <string name="message">Сообщение</string>
     <string name="act_search_toolbar">toolbar</string>
     <string name="scroll">scroll</string>
+    <string name="ad_images">Изображения объявлений</string>
+    <string name="ad_description">Описание объявления</string>
+    <string name="menu_ads_favorite">Избранные</string>
+    <string name="Чат">Messages</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
