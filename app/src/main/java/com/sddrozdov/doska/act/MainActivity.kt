@@ -1,5 +1,6 @@
 package com.sddrozdov.doska.act
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -116,7 +118,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
                 }
 
-                R.id.id_chat -> firebaseViewModel.loadMyFavoriteAds()
+                R.id.id_chat -> {
+                    val intent = Intent(this@MainActivity, DialogsActivity::class.java)
+                    startActivity(intent)
+                }
+
 
                 R.id.id_home -> {
                     currentCategory = getString(R.string.menu_ads_main_ads)
@@ -228,9 +234,26 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 accountHelperGoogle?.signOut()
 
             }
+            R.id.menu_help -> {
+                sendSupportEmail()
+            }
+
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun sendSupportEmail() {
+            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "message/rfc822"
+                putExtra(Intent.EXTRA_EMAIL, arrayOf("DoskaSupport@gmail.com"))
+            }
+            try {
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.OPEN_WITH)))
+            } catch (exception: ActivityNotFoundException) {
+                Toast.makeText(this,"Нет приложения для отправки почты",Toast.LENGTH_SHORT).show()
+            }
+
     }
 
     fun uiUpdate(user: FirebaseUser?) {
