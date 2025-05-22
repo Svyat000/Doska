@@ -13,7 +13,6 @@ import com.sddrozdov.doska.utilites.FilterManager
 class DbManager {
     val db = Firebase.database.getReference(MAIN)
     val auth = Firebase.auth
-    //val dbStorage = Firebase.storage.getReference(MAIN)
 
     private fun readDataFromDB(query: Query, readDataCallback: ReadDataCallback?) {
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -83,7 +82,6 @@ class DbManager {
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
-
             }
         })
     }

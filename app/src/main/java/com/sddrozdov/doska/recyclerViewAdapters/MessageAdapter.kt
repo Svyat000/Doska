@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseUser
 import com.sddrozdov.doska.databinding.ChatItemBinding
 import com.sddrozdov.doska.models.Message
 
-class MessageAdapter : androidx.recyclerview.widget.ListAdapter<Message, MessageAdapter.ItemHolder>(ItemComparator()) {
+class MessageAdapter :
+    androidx.recyclerview.widget.ListAdapter<Message, MessageAdapter.ItemHolder>(ItemComparator()) {
 
-    class ItemHolder(private val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemHolder(val binding: ChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message) = binding.apply {
             userMessage.text = message.text
             userName.text = message.senderName
