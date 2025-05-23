@@ -100,6 +100,8 @@
     <string name="ad_description">Описание объявления</string>
     <string name="menu_ads_favorite">Избранные</string>
     <string name="Чат">Messages</string>
+    <string name="back">Назад</string>
+    <string name="user_photo">Фото профиля</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
