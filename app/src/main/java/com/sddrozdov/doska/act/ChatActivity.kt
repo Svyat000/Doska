@@ -1,10 +1,12 @@
 package com.sddrozdov.doska.act
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +26,6 @@ import com.sddrozdov.doska.models.Dialog
 import com.sddrozdov.doska.models.Message
 import com.sddrozdov.doska.recyclerViewAdapters.MessageAdapter
 import com.squareup.picasso.Picasso
-import kotlin.concurrent.thread
 
 class ChatActivity : AppCompatActivity() {
     private var _binding: ActivityChatBinding? = null
@@ -59,11 +60,31 @@ class ChatActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.chatToolbar)
-        setUpActionBar()
+        toolbarInit()
         init()
         setupSendButton()
         checkExistingChats()
 
+    }
+
+    private fun toolbarInit(){
+        setSupportActionBar(binding.chatToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.chatToolbar.findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+        val userPhotoView = binding.chatToolbar.findViewById<ImageView>(R.id.userPhoto)
+        val toolbarTitle = binding.chatToolbar.findViewById<TextView>(R.id.toolbarTitle)
+
+        toolbarTitle.text = auth.currentUser?.displayName ?: "User"
+
+        val photoUrl = auth.currentUser?.photoUrl
+        if (photoUrl != null) {
+            Picasso.get().load(photoUrl).into(userPhotoView)
+        } else {
+            userPhotoView.setImageResource(R.drawable.ic_account_circle)
+        }
     }
 
     private fun init() = with(binding) {
@@ -97,25 +118,6 @@ class ChatActivity : AppCompatActivity() {
                         Log.e("ChatError", "Ошибка проверки чата: ${error.message}")
                     }
                 })
-        }
-    }
-
-    private fun setUpActionBar() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setHomeAsUpIndicator(R.drawable.ic_arrow_back) //
-            it.title = auth.currentUser?.displayName
-        }
-        thread {
-            val bitmap = Picasso.get().load(auth.currentUser?.photoUrl).get()
-            val drawable = BitmapDrawable(resources, bitmap)
-            runOnUiThread {
-//                supportActionBar?.apply {
-//                    setHomeAsUpIndicator(drawable)
-//                    title = auth.currentUser?.displayName
-//                }
-            }
         }
     }
 
@@ -213,8 +215,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun listenForMessages(chatKey: String) {
-        val query =
-            Firebase.database.getReference("main").child(adId!!).child("CHATS").child(chatKey)
+        val query = Firebase.database.getReference("main").child(adId!!).child("CHATS").child(chatKey)
                 .child("MESSAGES")
 
                 query.addChildEventListener(object : ChildEventListener {
