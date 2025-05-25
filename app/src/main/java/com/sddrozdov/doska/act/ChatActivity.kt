@@ -67,7 +67,7 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    private fun toolbarInit(){
+    private fun toolbarInit() {
         setSupportActionBar(binding.chatToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
@@ -89,8 +89,8 @@ class ChatActivity : AppCompatActivity() {
 
     private fun init() = with(binding) {
         adapter = MessageAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
-        recyclerView.adapter = adapter
+        chatRecyclerView.layoutManager = LinearLayoutManager(this@ChatActivity)
+        chatRecyclerView.adapter = adapter
     }
 
     private fun checkExistingChats() {
@@ -215,11 +215,12 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun listenForMessages(chatKey: String) {
-        val query = Firebase.database.getReference("main").child(adId!!).child("CHATS").child(chatKey)
+        val query =
+            Firebase.database.getReference("main").child(adId!!).child("CHATS").child(chatKey)
                 .child("MESSAGES")
 
-                query.addChildEventListener(object : ChildEventListener {
-                        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+        query.addChildEventListener(object : ChildEventListener {
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 val updatedMessage = snapshot.getValue(Message::class.java)
                 updatedMessage?.let {
                     val newList = adapter.currentList.toMutableList()
@@ -230,6 +231,7 @@ class ChatActivity : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onChildRemoved(snapshot: DataSnapshot) {
 //                val removedMessage = snapshot.getValue(Message::class.java)
 //                removedMessage?.let {
@@ -237,6 +239,7 @@ class ChatActivity : AppCompatActivity() {
 //                    adapter.submitList(newList)
 //                }
             }
+
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {
                 Log.e("ChatError", "Ошибка загрузки сообщений: ${error.message}")

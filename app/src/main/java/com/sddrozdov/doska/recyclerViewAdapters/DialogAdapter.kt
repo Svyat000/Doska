@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.DialogItemBinding
 import com.sddrozdov.doska.models.Dialog
 import java.text.SimpleDateFormat
@@ -20,11 +23,21 @@ class DialogAdapter(
         private val onDialogClick: (Dialog) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind( dialog: Dialog) {
+        private val user = FirebaseAuth.getInstance().currentUser
+        val photoUri = user?.photoUrl
+
+        fun bind(dialog: Dialog) {
             with(binding) {
+
                 lastMessage.text = dialog.lastMessage
                 time.text = SimpleDateFormat("HH:mm", Locale.getDefault())
                     .format(Date(dialog.timestamp))
+
+                Glide.with(root.context)
+                    .load(photoUri)
+                    .placeholder(R.drawable.ic_account_circle)
+                    .circleCrop()
+                    .into(userAvatar)
 
                 root.setOnClickListener { onDialogClick(dialog) }
             }
@@ -46,6 +59,6 @@ class DialogAdapter(
     }
 
     override fun onBindViewHolder(holder: DialogViewHolder, position: Int) {
-            holder.bind(getItem(position))
+        holder.bind(getItem(position))
     }
 }

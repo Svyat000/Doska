@@ -45,60 +45,53 @@ android {
 dependencies {
 
     // Firebase
-    implementation(platform(libs.firebase.bom))
-
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.storage)
+    implementation(platform(libs.firebase.bom)) // Firebase BOM for version management
+    implementation(libs.firebase.auth)           // Firebase Authentication
+    implementation(libs.firebase.database)       // Firebase Realtime Database
+    implementation(libs.firebase.storage)        // Firebase Storage
 
     // Google Auth
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
+    implementation(libs.androidx.credentials)                     // AndroidX Credentials Library
+    implementation(libs.androidx.credentials.play.services.auth)  // Play Services Auth for Credentials
+    implementation(libs.googleid)                                 // Google ID Library
 
-    // Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.exifinterface)
+    // Core Libraries
+    implementation(libs.androidx.core.ktx)                        // AndroidX Core KTX
+    implementation(libs.androidx.appcompat)                       // AndroidX AppCompat
+    implementation(libs.material)                                  // Material Components
+    implementation(libs.androidx.activity)                        // AndroidX Activity
+    implementation(libs.androidx.constraintlayout)               // Constraint Layout
+    implementation(libs.androidx.exifinterface)                  // Exif Interface for image metadata
 
-    // Room
-    //ksp(libs.androidx.room.compiler)
+    // Room (uncomment if using Room)
+    //ksp(libs.androidx.room.compiler)                            // Room Compiler for annotation processing
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.espresso.contrib)
+    // Testing Libraries
+    testImplementation(libs.junit)                                 // JUnit for unit testing
+    androidTestImplementation(libs.androidx.junit)               // AndroidX JUnit for Android testing
+    androidTestImplementation(libs.androidx.espresso.core)       // Espresso Core for UI testing
+    androidTestImplementation(libs.androidx.espresso.contrib)    // Espresso Contrib for additional testing features
+    testImplementation(libs.mockito.core)                         // Mockito for mocking in tests
+    testImplementation(libs.mockito.inline)                       // Inline Mockito for testing
+    androidTestImplementation(libs.androidx.core)                 // AndroidX Core for testing with Android context
 
-
-    testImplementation (libs.mockito.core)
-    testImplementation (libs.mockito.inline)
-    // Для работы с Android-контекстом в тестах
-    androidTestImplementation (libs.androidx.core)
-
-
-
-
-    // Coroutine
+    // Coroutine Libraries
+    // Uncomment if using ViewModel and Lifecycle with Coroutines
     //implementation(libs.androidx.lifecycle.viewmodel.ktx)
     //implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)                  // Kotlin Coroutines Core
+    implementation(libs.kotlinx.coroutines.android)               // Kotlin Coroutines for Android
 
-    // Images
-    implementation(libs.piximagepicker)
+    // Image Handling
+    implementation(libs.piximagepicker)                           // Image Picker Library
+    implementation(libs.picasso)                                  // Picasso for image loading
+    implementation(libs.circleimageview)                          // Circle Image View for circular images
+    implementation(libs.androidx.recyclerview)                    // RecyclerView for displaying lists
+    implementation(libs.glide)                                    // Glide for image loading and caching
 
-    // Picasso
-    implementation (libs.picasso)
+    // Test Advertising (uncomment if needed)
+    // implementation(libs.mytarget.sdk)                           // MyTarget SDK for advertising
 
-    //Test advertising vk
-    // implementation(libs.mytarget.sdk)
-
-    implementation("io.appwrite:sdk-for-android:7.0.0")
-
-    implementation (libs.circleimageview)
-
+    // Appwrite SDK
+    implementation("io.appwrite:sdk-for-android:7.0.0")          // Appwrite SDK for backend services
 }
