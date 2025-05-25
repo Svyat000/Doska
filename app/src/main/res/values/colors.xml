@@ -25,8 +25,6 @@
 
     <color name="t_menu_icon_tint">#757575</color>
     <color name="t_menu_text_color">#212121</color>
-
-
-
+    <color name="colorAccent">#9ACE9D</color>
 
 </resources>
