@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/t_surface"
         app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
+        app:cardElevation="4dp"
         app:strokeColor="@color/t_hint_text"
         app:strokeWidth="1dp">
 
@@ -54,39 +54,39 @@
 
             <ImageButton
                 android:id="@+id/imageSwapButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@color/t_primary"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image_swap" />
+                app:srcCompat="@drawable/ic_image_swap"
+                app:tint="@color/t_primary" />
 
             <ImageButton
                 android:id="@+id/editImageButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@color/t_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_edit" />
+                app:srcCompat="@drawable/ic_edit"
+                app:tint="@color/t_primary" />
 
             <ImageButton
                 android:id="@+id/imageDelete"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@color/t_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editImageButton"
-                app:srcCompat="@drawable/ic_delete_image" />
+                app:srcCompat="@drawable/ic_delete_image"
+                app:tint="@color/t_primary" />
 
             <ProgressBar
                 android:id="@+id/ProgressBarInSingleItem"

@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="User Name"
                 android:textColor="@color/t_primary"
-                android:textSize="30sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
