@@ -28,7 +28,8 @@
             android:exported="false" />
         <activity
             android:name=".act.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".act.SearchActivity"
             android:exported="false" />

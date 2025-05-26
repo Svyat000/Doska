@@ -31,19 +31,11 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiff
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_MESSAGE_SENT -> SentMessageHolder(
-                layoutInflater.inflate(
-                    R.layout.item_message_left,
-                    parent,
-                    false
-                )
+                layoutInflater.inflate(R.layout.item_message_right, parent, false)
             )
 
             VIEW_TYPE_MESSAGE_RECEIVED -> ReceivedMessageHolder(
-                layoutInflater.inflate(
-                    R.layout.item_message_right,
-                    parent,
-                    false
-                )
+                layoutInflater.inflate(R.layout.item_message_left, parent, false)
             )
 
             else -> throw IllegalArgumentException("Invalid view type")
