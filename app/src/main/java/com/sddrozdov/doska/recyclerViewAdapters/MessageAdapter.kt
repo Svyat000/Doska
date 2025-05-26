@@ -28,23 +28,33 @@ class MessageAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiff
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_MESSAGE_SENT -> SentMessageHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_message_left, parent, false)
+                layoutInflater.inflate(
+                    R.layout.item_message_left,
+                    parent,
+                    false
+                )
             )
 
-            else -> ReceivedMessageHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_message_right, parent, false)
+            VIEW_TYPE_MESSAGE_RECEIVED -> ReceivedMessageHolder(
+                layoutInflater.inflate(
+                    R.layout.item_message_right,
+                    parent,
+                    false
+                )
             )
+
+            else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val message = getItem(position)
         when (holder) {
-            is SentMessageHolder -> holder.bind(getItem(position))
-            is ReceivedMessageHolder -> holder.bind(getItem(position))
+            is SentMessageHolder -> holder.bind(message)
+            is ReceivedMessageHolder -> holder.bind(message)
         }
     }
 
@@ -73,8 +83,6 @@ class MessageDiffCallback : DiffUtil.ItemCallback<Message>() {
     }
 
     override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
-        return oldItem.text == newItem.text &&
-                oldItem.senderId == newItem.senderId &&
-                oldItem.senderName == newItem.senderName
+        return oldItem == newItem
     }
 }
