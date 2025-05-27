@@ -24,6 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.sddrozdov.doska.R
 import com.sddrozdov.doska.accountHelper.AccountHelperGoogleSignIn
@@ -32,7 +36,9 @@ import com.sddrozdov.doska.databinding.ActivityMainBinding
 import com.sddrozdov.doska.dialogHelper.DialogConstants
 import com.sddrozdov.doska.dialogHelper.DialogHelper
 import com.sddrozdov.doska.models.Ads
+import com.sddrozdov.doska.models.Dialog
 import com.sddrozdov.doska.recyclerViewAdapters.AdsAdapter
+import com.sddrozdov.doska.recyclerViewAdapters.DialogAdapter
 import com.sddrozdov.doska.utilites.FilterManager
 import com.sddrozdov.doska.viewModel.FirebaseViewModel
 import com.squareup.picasso.Picasso
@@ -54,6 +60,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private var filterDB: String = ""
     private lateinit var filterLauncher: ActivityResultLauncher<Intent>
     private val firebaseViewModel: FirebaseViewModel by viewModels()
+    private lateinit var dialogAdapter: DialogAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +74,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         accountHelperGoogle = AccountHelperGoogleSignIn(this)
         initViewModel()
         //firebaseViewModel.loadAllAds("0")
+
         bottomMenuOnClick()
         scrollListener()
         onActivityResultFilter()
@@ -104,6 +112,49 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         }
     }
 
+    private fun setupRecyclerView() {
+        dialogAdapter = DialogAdapter { dialog ->
+            val intent = Intent(this, ChatActivity::class.java).apply {
+                putExtra("AD_ID", dialog.adId)
+                putExtra("USER_ID", mAuth.currentUser?.uid)
+                putExtra("OWNER_ID", getOtherParticipantId(dialog.participants))
+                putExtra("CHAT_KEY", dialog.id)
+            }
+            startActivity(intent)
+        }
+        binding.apply {
+            mainContent.rcView.layoutManager = LinearLayoutManager(this@MainActivity)
+            mainContent.rcView.adapter = dialogAdapter
+        }
+    }
+
+    private fun getOtherParticipantId(participants: Map<String?, Boolean>): String {
+        val currentUserId = mAuth.currentUser?.uid ?: return ""
+        return participants.keys.firstOrNull { it != currentUserId } ?: ""
+    }
+
+    private fun loadDialogs() {
+        val currentUserId = mAuth.currentUser?.uid ?: return
+        val dialogsRef =
+            Firebase.database.reference.child("users").child(currentUserId).child("dialogs")
+
+        dialogsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val dialogs = mutableListOf<Dialog>()
+                for (dialogSnapshot in snapshot.children) {
+                    val dialog = dialogSnapshot.getValue(Dialog::class.java)
+                    dialog?.let { dialogs.add(it) }
+                }
+                dialogAdapter.submitList(dialogs)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MainActivity, "Ошибка загрузки диалогов", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+
     private fun bottomMenuOnClick() = with(binding) {
         mainContent.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             cleadUpdate = true
@@ -114,17 +165,22 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 }
 
                 R.id.id_my_ads -> {
+                    mainContent.rcView.adapter = adsAdapter
                     firebaseViewModel.loadMyAds()
                     mainContent.toolbar.title = getString(R.string.menu_ads_my_items)
                 }
 
                 R.id.id_chat -> {
-                    val intent = Intent(this@MainActivity, DialogsActivity::class.java)
-                    startActivity(intent)
+                    setupRecyclerView()
+                    loadDialogs()
+                    mainContent.toolbar.title = getString(R.string.Dialogs)
+//                    val intent = Intent(this@MainActivity, DialogsActivity::class.java)
+//                    startActivity(intent)
                 }
 
 
                 R.id.id_home -> {
+                    mainContent.rcView.adapter = adsAdapter
                     currentCategory = getString(R.string.menu_ads_main_ads)
                     firebaseViewModel.loadAllAdsFirstPage(filterDB)
                     mainContent.toolbar.title = getString(R.string.menu_ads_main_ads)
@@ -234,6 +290,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 accountHelperGoogle?.signOut()
 
             }
+
             R.id.menu_help -> {
                 sendSupportEmail()
             }
@@ -244,15 +301,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     private fun sendSupportEmail() {
-            val emailIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "message/rfc822"
-                putExtra(Intent.EXTRA_EMAIL, arrayOf("DoskaSupport@gmail.com"))
-            }
-            try {
-                startActivity(Intent.createChooser(emailIntent, getString(R.string.OPEN_WITH)))
-            } catch (exception: ActivityNotFoundException) {
-                Toast.makeText(this,"Нет приложения для отправки почты",Toast.LENGTH_SHORT).show()
-            }
+        val emailIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "message/rfc822"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("DoskaSupport@gmail.com"))
+        }
+        try {
+            startActivity(Intent.createChooser(emailIntent, getString(R.string.OPEN_WITH)))
+        } catch (exception: ActivityNotFoundException) {
+            Toast.makeText(this, "Нет приложения для отправки почты", Toast.LENGTH_SHORT).show()
+        }
 
     }
 
