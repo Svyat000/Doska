@@ -2,6 +2,7 @@ package com.sddrozdov.doska.act
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.sddrozdov.doska.R
 import com.sddrozdov.doska.databinding.ActivityDialogsBinding
 import com.sddrozdov.doska.models.Dialog
 import com.sddrozdov.doska.recyclerViewAdapters.DialogAdapter
@@ -27,8 +29,17 @@ class DialogsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
+        setupToolbar()
         setupRecyclerView()
         loadDialogs()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.dialogsToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.dialogsToolbar.findViewById<ImageButton>(R.id.backButton)
+            .setOnClickListener { finish() }
     }
 
     private fun setupRecyclerView() {
@@ -53,7 +64,8 @@ class DialogsActivity : AppCompatActivity() {
 
     private fun loadDialogs() {
         val currentUserId = auth.currentUser?.uid ?: return
-        val dialogsRef = Firebase.database.reference.child("users").child(currentUserId).child("dialogs")
+        val dialogsRef =
+            Firebase.database.reference.child("users").child(currentUserId).child("dialogs")
 
         dialogsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -66,7 +78,8 @@ class DialogsActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@DialogsActivity, "Ошибка загрузки диалогов", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DialogsActivity, "Ошибка загрузки диалогов", Toast.LENGTH_SHORT)
+                    .show()
             }
         })
     }

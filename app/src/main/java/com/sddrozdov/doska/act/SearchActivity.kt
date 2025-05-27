@@ -3,7 +3,7 @@ package com.sddrozdov.doska.act
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +26,8 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
         MainActivity.WindowInsetUtil.applyWindowInsets(binding.root)
 
-        setSupportActionBar(binding.searchActToolbar)
+
+        setupToolbar()
         onClickSelectCountry()
         onClickSelectCity()
         onClickSearch()
@@ -34,12 +35,21 @@ class SearchActivity : AppCompatActivity() {
         getFilter()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            Toast.makeText(this, "НАЖАЛИ НАЗАД ", Toast.LENGTH_LONG).show()
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
+//        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (item.itemId == android.R.id.background) {
+//            Toast.makeText(this, "НАЖАЛИ НАЗАД ", Toast.LENGTH_LONG).show()
+//            finish()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+
+    private fun setupToolbar() {
+
+        setSupportActionBar(binding.searchActToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.searchActToolbar.findViewById<ImageButton>(R.id.backButton)
+            .setOnClickListener { finish() }
     }
 
     private fun onClickSelectCountry() = with(binding) {

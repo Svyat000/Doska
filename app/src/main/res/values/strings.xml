@@ -102,6 +102,8 @@
     <string name="Чат">Messages</string>
     <string name="back">Назад</string>
     <string name="user_photo">Фото профиля</string>
+    <string name="Dialogs">Диалоги</string>
+    <string name="Filters">Фильтры</string>
 
     <!-- Поля и сообщения, необходимые для создания нового объявления. -->
 </resources>
