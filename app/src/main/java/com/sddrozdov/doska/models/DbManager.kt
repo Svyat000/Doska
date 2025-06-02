@@ -300,9 +300,11 @@ class DbManager {
         })
     }
 
-
     private fun saveBidHistory(adKey: String, bid: Bid) {
         db.child(adKey).child("auctionHistory").push().setValue(bid)
+            .addOnFailureListener { e ->
+                Log.e("DbManager", "Error saving bid history", e)
+            }
     }
 
     fun checkAuctionEnd(adKey: String) {
