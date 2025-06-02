@@ -131,12 +131,22 @@ class DescAdsActivity : AppCompatActivity() {
                 binding.auctionLayout.visibility = View.VISIBLE
                 updateAuctionUI(ad)
                 setupBidButton(ad)
+                setupShowBidsButton(ad)
                 startAuctionTimer(ad.auctionEndTime)
 
                 binding.tvCurrentBid.text = ad.auctionCurrentPrice?.let {
                     "Текущая ставка: $it"
                 } ?: "Начальная цена: ${ad.auctionStartPrice}"
             }
+        }
+    }
+
+    private fun setupShowBidsButton(ad: Ads) {
+        binding.btnShowBids.setOnClickListener {
+            val intent = Intent(this, AuctionBidsActivity::class.java).apply {
+                putExtra("AD_KEY", ad.key)
+            }
+            startActivity(intent)
         }
     }
 
